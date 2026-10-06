@@ -1,4 +1,145 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">GridPix</string>
+
+    <!-- Common -->
+    <string name="action_back">Back</string>
+    <string name="action_close">Close</string>
+    <string name="action_ok">OK</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_next">Next</string>
+    <string name="action_home">Home</string>
+    <string name="action_retry">Try again</string>
+    <string name="locked">Locked</string>
+    <string name="owned">Owned</string>
+    <string name="free">Free</string>
+    <string name="size_label">%1$d × %1$d</string>
+    <string name="time_format">%1$02d:%2$02d</string>
+    <string name="time_format_hours">%1$d:%2$02d:%3$02d</string>
+
+    <!-- Home (S1) -->
+    <string name="home_play">Play</string>
+    <string name="home_play_size">Play %1$d × %1$d</string>
+    <string name="home_continue">Continue %1$d × %1$d</string>
+    <string name="home_size_picker">Grid size</string>
+    <string name="home_daily">Daily puzzle</string>
+    <string name="home_daily_new">Today\'s puzzle is waiting</string>
+    <string name="home_daily_in_progress">In progress</string>
+    <string name="home_daily_done">Solved today</string>
+    <string name="home_streak">%1$d day streak</string>
+    <string name="home_streak_none">Start a streak</string>
+    <string name="home_packs">Picture packs</string>
+    <string name="home_stats">Stats</string>
+    <string name="home_settings">Settings</string>
+    <string name="home_shop">Shop</string>
+    <string name="home_hints_available">%1$d hints</string>
+    <string name="home_tutorial_title">New here?</string>
+    <string name="home_tutorial_body">Learn the rules in three quick puzzles.</string>
+    <string name="home_tutorial_start">Start tutorial</string>
+    <string name="home_large_locked">Sizes 15 and 20 are unlocked in the Shop</string>
+
+    <!-- Puzzle (S4) -->
+    <string name="puzzle_title_endless">Endless %1$d × %1$d</string>
+    <string name="puzzle_title_daily">Daily %1$s</string>
+    <string name="puzzle_title_pack">%1$s · %2$d / %3$d</string>
+    <string name="puzzle_title_tutorial">Tutorial %1$d / %2$d</string>
+    <string name="puzzle_mode_fill">Fill</string>
+    <string name="puzzle_mode_mark">X</string>
+    <string name="puzzle_undo">Undo</string>
+    <string name="puzzle_redo">Redo</string>
+    <string name="puzzle_hint">Hint</string>
+    <string name="puzzle_pause">Pause</string>
+    <string name="puzzle_resume">Resume</string>
+    <string name="puzzle_paused">Paused</string>
+    <string name="puzzle_check">Check</string>
+    <string name="puzzle_check_ok">No mistakes so far</string>
+    <string name="puzzle_check_mistakes">%1$d mistakes highlighted</string>
+    <string name="puzzle_check_incomplete">Not finished yet</string>
+    <string name="puzzle_hint_none_title">Out of hints</string>
+    <string name="puzzle_hint_none_body">You get 3 free hints every day. Extra hints are available in the Shop.</string>
+    <string name="puzzle_hint_none_shop">Open Shop</string>
+    <string name="puzzle_hint_none_later">Not now</string>
+    <string name="puzzle_hint_nothing">Nothing left to reveal</string>
+    <string name="puzzle_restart">Restart puzzle</string>
+    <string name="puzzle_restart_confirm">Clear the board and start this puzzle again?</string>
+    <string name="puzzle_loading">Loading…</string>
+    <string name="puzzle_board_description">Puzzle grid</string>
+
+    <!-- Solved (S5) -->
+    <string name="solved_title">Solved!</string>
+    <string name="solved_time">Time %1$s</string>
+    <string name="solved_hints">Hints used: %1$d</string>
+    <string name="solved_no_hints">No hints used</string>
+    <string name="solved_next_endless">Next puzzle</string>
+    <string name="solved_next_pack">Next picture</string>
+    <string name="solved_back_to_pack">Back to pack</string>
+    <string name="solved_daily_streak">Streak: %1$d days</string>
+    <string name="solved_tutorial_done">You know the rules. Have fun!</string>
+
+    <!-- Tutorial -->
+    <string name="tutorial_step1_title">Clues</string>
+    <string name="tutorial_step1_body">Each number says how many cells in that row or column are filled, in order. "5" means the whole line. "1 1" means two single cells with a gap. Tap cells to fill them.</string>
+    <string name="tutorial_step2_title">Marking empty cells</string>
+    <string name="tutorial_step2_body">A "0" means the line is empty. Switch to X and tap cells you know are empty. Marks are notes for you; only filled cells count.</string>
+    <string name="tutorial_step3_title">Dragging</string>
+    <string name="tutorial_step3_body">Press and drag along a row or column to fill several cells at once. Long-press a cell to use the other mode.</string>
+
+    <!-- Packs (S2, S3) -->
+    <string name="packs_title">Picture packs</string>
+    <string name="packs_progress">%1$d / %2$d solved</string>
+    <string name="pack_puzzle_number">%1$d</string>
+    <string name="pack_locked_hint">Unlock this pack in the Shop</string>
+    <string name="pack_thumbnail_solved">%1$s, solved</string>
+    <string name="pack_thumbnail_unsolved">Puzzle %1$d, not solved</string>
+
+    <!-- Shop (S6) -->
+    <string name="shop_title">Shop</string>
+    <string name="shop_intro">One-time purchases. No ads, no subscriptions.</string>
+    <string name="shop_hints_10">10 hints</string>
+    <string name="shop_hints_50">50 hints</string>
+    <string name="shop_hints_desc">Hints reveal one correct cell. 3 are free every day.</string>
+    <string name="shop_pack_desc">30 hand-made pictures, 10 × 10 and 15 × 15</string>
+    <string name="shop_pack_animals">Animals pack</string>
+    <string name="shop_pack_vehicles">Vehicles pack</string>
+    <string name="shop_pack_food">Food pack</string>
+    <string name="shop_pack_nature">Nature pack</string>
+    <string name="shop_large_grids">Large grids</string>
+    <string name="shop_large_grids_desc">15 × 15 and 20 × 20 puzzles in Endless mode</string>
+    <string name="shop_everything">Everything bundle</string>
+    <string name="shop_everything_desc">All picture packs, present and future, plus Large grids and 100 hints</string>
+    <string name="shop_buy">Buy</string>
+    <string name="shop_restore">Restore purchases</string>
+    <string name="shop_unavailable">The Play Store is not available right now</string>
+    <string name="shop_price_loading">…</string>
+    <string name="shop_event_purchased">Thank you! Purchase complete.</string>
+    <string name="shop_event_pending">Purchase pending. It will unlock once Play confirms it.</string>
+    <string name="shop_event_cancelled">Purchase cancelled</string>
+    <string name="shop_event_restored">Purchases restored</string>
+    <string name="shop_event_restored_none">No purchases found for this account</string>
+    <string name="shop_event_error">Purchase failed: %1$s</string>
+    <string name="shop_hints_balance">You have %1$d hints</string>
+
+    <!-- Settings (S7) -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_highlight_mistakes">Highlight mistakes immediately</string>
+    <string name="settings_highlight_mistakes_desc">Wrong cells turn red as you play. Counts as assisted.</string>
+    <string name="settings_haptics">Vibration</string>
+    <string name="settings_sound">Sound</string>
+    <string name="settings_theme">Theme</string>
+    <string name="settings_theme_system">System</string>
+    <string name="settings_theme_light">Light</string>
+    <string name="settings_theme_dark">Dark</string>
+    <string name="settings_replay_tutorial">Replay tutorial</string>
+    <string name="settings_privacy">Privacy policy</string>
+    <string name="settings_about">About</string>
+    <string name="settings_about_body">GridPix %1$s by Blanks Studio. Works fully offline; nothing leaves your phone.</string>
+
+    <!-- Stats (S8) -->
+    <string name="stats_title">Stats</string>
+    <string name="stats_total">Puzzles solved</string>
+    <string name="stats_streak">Daily streak</string>
+    <string name="stats_by_size">By size</string>
+    <string name="stats_solved_count">%1$d solved</string>
+    <string name="stats_best_time">Best %1$s</string>
+    <string name="stats_none_yet">No puzzles solved yet</string>
 </resources>
