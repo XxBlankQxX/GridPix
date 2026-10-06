@@ -20,6 +20,17 @@ val localProperties = Properties().apply {
 
 fun secret(name: String): String = localProperties.getProperty(name, "")
 
+/**
+ * Release signing (upload key for Play App Signing). keystore.properties is gitignored:
+ *   storeFile=C:/dev/Apps/keys/gridpix-upload.jks, storePassword=, keyAlias=gridpix-upload, keyPassword=
+ * Without it the release build is unsigned, so a CI/clean clone still compiles.
+ */
+val keystoreProperties = Properties().apply {
+    val file = rootProject.file("keystore.properties")
+    if (file.exists()) file.inputStream().use { load(it) }
+}
+val hasReleaseKey = keystoreProperties.getProperty("storeFile")?.let { file(it).exists() } == true
+
 android {
     namespace = "com.blanksstudio.gridpix"
     compileSdk = 37
@@ -36,6 +47,17 @@ android {
         buildConfigField("String", "PLAY_LICENSE_KEY", "\"${secret("PLAY_LICENSE_KEY")}\"")
     }
 
+    signingConfigs {
+        if (hasReleaseKey) {
+            create("release") {
+                storeFile = file(keystoreProperties.getProperty("storeFile"))
+                storePassword = keystoreProperties.getProperty("storePassword")
+                keyAlias = keystoreProperties.getProperty("keyAlias")
+                keyPassword = keystoreProperties.getProperty("keyPassword")
+            }
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = true
@@ -44,6 +66,8 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
             )
+            if (hasReleaseKey) signingConfig = signingConfigs.getByName("release")
+            else logger.warn("keystore.properties missing: release build will be unsigned")
         }
     }
 
