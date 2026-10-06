@@ -17,6 +17,7 @@ hiltNavigationCompose = "1.4.0"
 datastore = "1.2.1"
 playBilling = "9.1.0"
 junit = "4.13.2"
+orgJson = "20250517"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -41,6 +42,8 @@ hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref
 hilt-compiler = { group = "com.google.dagger", name = "hilt-compiler", version.ref = "hilt" }
 play-billing = { group = "com.android.billingclient", name = "billing", version.ref = "playBilling" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
+# Test only: android.jar stubs org.json on the JVM, this supplies the real one for the pack-content test.
+org-json = { group = "org.json", name = "json", version.ref = "orgJson" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

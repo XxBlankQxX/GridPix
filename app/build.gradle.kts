@@ -102,4 +102,5 @@ dependencies {
 
     // Tests (game/ is pure Kotlin and is unit-tested here)
     testImplementation(libs.junit)
+    testImplementation(libs.org.json) // real org.json so PackParser runs in JVM tests
 }
