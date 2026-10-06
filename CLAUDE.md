@@ -31,6 +31,9 @@ No network except Play Billing. No ads SDK. No Firebase.
 
 ## Current status
 
-- 2026-10-06: skeleton scaffolded and building (commit a7f82fe); repo https://github.com/XxBlankQxX/GridPix (private).
-- 2026-10-07: `game/` core done with 43 unit tests (commit c6fb8ab). Next: Room + DataStore in `data/`, then the puzzle screen (S4).
-- Build note: JAVA_HOME must point at `C:\Program Files\Android\Android Studio\jbr` (now set as a user env var).
+- 2026-10-07: **v1.0.0 code complete.** All screens (S1-S8 + tutorial), Room + DataStore, Play Billing, 5 packs x 30 puzzles, 54 unit tests, signed release bundle with R8, smoke-tested on the API 37 emulator. Repo https://github.com/XxBlankQxX/GridPix (private).
+- Remaining work is Play Console only; steps in OneDrive `Apps/GridPix/Play_Console_Checklist.md`; store text in `Store_Listing.md`; screenshots and graphics in `Apps/GridPix/screenshots/` and `graphics/`.
+- Release signing: `keystore.properties` (gitignored) -> `C:\dev\Apps\keys\gridpix-upload.jks`. Build with `gradlew.bat bundleRelease`.
+- Pack art validator: `python tools/nonogram_check.py app/src/main/assets/packs/<id>.json` (same algorithm as `game/LineSolver.kt`).
+- Build note: JAVA_HOME must point at `C:\Program Files\Android\Android Studio\jbr` (set as a user env var 2026-10-07).
+- Emulator `Medium_Phone_API_37.0` exists; adb install/input/screencap works for UI smoke tests.
