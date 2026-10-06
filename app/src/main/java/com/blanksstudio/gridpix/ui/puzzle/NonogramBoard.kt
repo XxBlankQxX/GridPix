@@ -152,6 +152,31 @@ fun NonogramBoard(
                             painting = true
                         }
 
+                        /** Extends the stroke to the cell under [pos], locked to the first row/column moved along. */
+                        fun paintTo(pos: Offset) {
+                            val here = cellAt(pos) ?: return
+                            val start = startCell ?: return
+                            if (axis == null && here != start) {
+                                axis = if (abs(here.col - start.col) >= abs(here.row - start.row)) 'r' else 'c'
+                            }
+                            val locked = when (axis) {
+                                'r' -> Cell(start.row, here.col)
+                                'c' -> Cell(here.row, start.col)
+                                else -> here
+                            }
+                            if (locked == lastCell) return
+                            // Paint every cell between the previous and current position so fast drags leave no gaps.
+                            val prev = lastCell ?: start
+                            val steps = max(abs(locked.row - prev.row), abs(locked.col - prev.col))
+                            for (i in 1..steps) {
+                                val r = prev.row + (locked.row - prev.row) * i / steps
+                                val c = prev.col + (locked.col - prev.col) * i / steps
+                                onPaint(r, c, target, from)
+                            }
+                            onTapFeedback()
+                            lastCell = locked
+                        }
+
                         var longPressFired = false
                         while (true) {
                             val event = if (!painting && !transforming && !longPressFired) {
@@ -167,7 +192,11 @@ fun NonogramBoard(
                                 continue
                             }
                             val pressed = event.changes.filter { it.pressed }
-                            if (pressed.isEmpty()) break
+                            if (pressed.isEmpty()) {
+                                // Finger lifted: the release point counts as part of the stroke.
+                                if (painting) event.changes.firstOrNull()?.let { paintTo(it.position) }
+                                break
+                            }
 
                             if (zoomEnabled && pressed.size >= 2) {
                                 if (painting) { onStrokeEnd(); painting = false }
@@ -196,28 +225,7 @@ fun NonogramBoard(
                             val positionChanged = change.positionChanged()
                             change.consume()
                             if (!positionChanged) continue
-                            val here = cellAt(change.position) ?: continue
-                            val start = startCell ?: continue
-                            if (axis == null && here != start) {
-                                axis = if (abs(here.col - start.col) >= abs(here.row - start.row)) 'r' else 'c'
-                            }
-                            val locked = when (axis) {
-                                'r' -> Cell(start.row, here.col)
-                                'c' -> Cell(here.row, start.col)
-                                else -> here
-                            }
-                            if (locked != lastCell) {
-                                // Paint every cell between the previous and current position so fast drags leave no gaps.
-                                val prev = lastCell ?: start
-                                val steps = max(abs(locked.row - prev.row), abs(locked.col - prev.col))
-                                for (i in 1..steps) {
-                                    val r = prev.row + (locked.row - prev.row) * i / steps
-                                    val c = prev.col + (locked.col - prev.col) * i / steps
-                                    onPaint(r, c, target, from)
-                                }
-                                onTapFeedback()
-                                lastCell = locked
-                            }
+                            paintTo(change.position)
                         }
                         if (!painting && !transforming && startCell != null) {
                             // Plain tap: paint once on release.
