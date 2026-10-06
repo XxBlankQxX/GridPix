@@ -31,4 +31,6 @@ No network except Play Billing. No ads SDK. No Firebase.
 
 ## Current status
 
-- 2026-10-06: project not yet created. Next: scaffold, then `game/` core with tests, then the puzzle screen.
+- 2026-10-06: skeleton scaffolded and building (commit a7f82fe); repo https://github.com/XxBlankQxX/GridPix (private).
+- 2026-10-07: `game/` core done with 43 unit tests (commit c6fb8ab). Next: Room + DataStore in `data/`, then the puzzle screen (S4).
+- Build note: JAVA_HOME must point at `C:Program FilesAndroidAndroid Studiojbr` (now set as a user env var).
