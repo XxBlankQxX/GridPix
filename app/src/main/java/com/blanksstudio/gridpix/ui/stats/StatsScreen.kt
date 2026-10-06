@@ -77,7 +77,7 @@ fun StatsScreen(onBack: () -> Unit, viewModel: StatsViewModel = hiltViewModel())
             (PuzzleGenerator.SIZES).forEach { size ->
                 val row = bySize[size]
                 Card(Modifier.fillMaxWidth()) {
-                    Row(Modifier.padding(16.dp), horizontalArrangement = Arrangement.SpaceBetween) {
+                    Row(Modifier.fillMaxWidth().padding(16.dp), horizontalArrangement = Arrangement.SpaceBetween) {
                         Text(stringResource(R.string.size_label, size), style = MaterialTheme.typography.titleMedium)
                         Column(horizontalAlignment = androidx.compose.ui.Alignment.End) {
                             Text(stringResource(R.string.stats_solved_count, row?.solvedCount ?: 0))

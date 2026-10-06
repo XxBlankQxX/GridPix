@@ -102,7 +102,7 @@ fun NonogramBoard(
         val clueBg = filledColor.copy(alpha = if (darkTheme) 0.10f else 0.06f)
         val clueDoneColor = filledColor.copy(alpha = 0.35f)
         val clueStyle = TextStyle(
-            fontSize = with(density) { (cell * clueRatio * 0.62f).toSp() },
+            fontSize = with(density) { (cell * clueRatio * 0.78f).toSp() },
             fontWeight = FontWeight.Medium,
             color = clueColor,
         )
@@ -193,8 +193,9 @@ fun NonogramBoard(
                                 if (moved && startCell != null) startStroke(alternate = false)
                                 else continue
                             }
+                            val positionChanged = change.positionChanged()
                             change.consume()
-                            if (!change.positionChanged()) continue
+                            if (!positionChanged) continue
                             val here = cellAt(change.position) ?: continue
                             val start = startCell ?: continue
                             if (axis == null && here != start) {
