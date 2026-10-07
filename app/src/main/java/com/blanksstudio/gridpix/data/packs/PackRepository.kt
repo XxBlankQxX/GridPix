@@ -41,6 +41,6 @@ class PackRepository @Inject constructor(
 
     companion object {
         const val PACKS_DIR = "packs"
-        val PACK_ORDER = listOf("starter", "animals", "vehicles", "food", "nature")
+        val PACK_ORDER = listOf("starter", "anime", "animals", "vehicles", "food", "nature")
     }
 }

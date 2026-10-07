@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.blanksstudio.gridpix.ui.collection.CollectionScreen
 import com.blanksstudio.gridpix.ui.home.HomeScreen
 import com.blanksstudio.gridpix.ui.packs.PackPuzzlesScreen
 import com.blanksstudio.gridpix.ui.packs.PacksScreen
@@ -24,7 +25,9 @@ fun GridPixNavHost(navController: NavHostController = rememberNavController()) {
                 onDaily = { date -> navController.navigate(Routes.daily(date)) },
                 onTutorial = { navController.navigate(Routes.tutorial(1)) },
                 onPacks = { navController.navigate(Routes.PACKS) },
-                onStats = { navController.navigate(Routes.STATS) },
+                onOpenPack = { packId -> navController.navigate(Routes.pack(packId)) },
+                onProgress = { navController.navigate(Routes.STATS) },
+                onCollection = { navController.navigate(Routes.COLLECTION) },
                 onSettings = { navController.navigate(Routes.SETTINGS) },
                 onShop = { navController.navigate(Routes.SHOP) },
             )
@@ -54,6 +57,13 @@ fun GridPixNavHost(navController: NavHostController = rememberNavController()) {
             )
         }
         composable(Routes.STATS) { StatsScreen(onBack = { navController.popBackStack() }) }
+        composable(Routes.COLLECTION) {
+            CollectionScreen(
+                onBack = { navController.popBackStack() },
+                onOpenPuzzle = { packId, index -> navController.navigate(Routes.packPuzzle(packId, index)) },
+                onShop = { navController.navigate(Routes.SHOP) },
+            )
+        }
         composable(
             Routes.PUZZLE,
             arguments = listOf(

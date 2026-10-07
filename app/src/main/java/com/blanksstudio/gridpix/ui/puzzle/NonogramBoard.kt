@@ -18,6 +18,7 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
@@ -62,7 +63,12 @@ fun NonogramBoard(
     board: GridState,
     mistakes: Set<Pair<Int, Int>>,
     lastHint: Pair<Int, Int>?,
-    darkTheme: Boolean,
+    /** Pack/mode colour for filled cells and clue tint. */
+    accent: Color,
+    /** Text and line colour (MaterialTheme onSurface). */
+    ink: Color,
+    /** Board background (MaterialTheme surfaceContainerLowest). */
+    paper: Color,
     enabled: Boolean,
     zoomEnabled: Boolean,
     targetFor: (row: Int, col: Int, alternate: Boolean) -> CellState,
@@ -95,12 +101,13 @@ fun NonogramBoard(
         val totalSize = with(density) { androidx.compose.ui.unit.DpSize(totalW.toDp(), totalH.toDp()) }
 
         val textMeasurer = rememberTextMeasurer()
-        val filledColor = if (darkTheme) BoardColors.filledDark else BoardColors.filledLight
-        val lineColor = filledColor.copy(alpha = 0.35f)
-        val thickColor = filledColor.copy(alpha = 0.9f)
-        val clueColor = filledColor
-        val clueBg = filledColor.copy(alpha = if (darkTheme) 0.10f else 0.06f)
-        val clueDoneColor = filledColor.copy(alpha = 0.35f)
+        val filledColor = accent
+        val lineColor = ink.copy(alpha = 0.18f)
+        val markColor = ink.copy(alpha = 0.45f)
+        val thickColor = ink.copy(alpha = 0.55f)
+        val clueColor = ink
+        val clueBg = accent.copy(alpha = 0.14f)
+        val clueDoneColor = ink.copy(alpha = 0.3f)
         val clueStyle = TextStyle(
             fontSize = with(density) { (cell * clueRatio * 0.78f).toSp() },
             fontWeight = FontWeight.Medium,
@@ -235,9 +242,10 @@ fun NonogramBoard(
                     }
                 },
         ) {
-            // Clue backgrounds
-            drawRect(clueBg, Offset(clueW, 0f), Size(n * cell, clueH))
-            drawRect(clueBg, Offset(0f, clueH), Size(clueW, n * cell))
+            // Board paper and clue backgrounds
+            drawRect(paper, Offset(clueW, clueH), Size(n * cell, n * cell))
+            drawRoundRect(clueBg, Offset(clueW, 0f), Size(n * cell, clueH), CornerRadius(cell * 0.3f))
+            drawRoundRect(clueBg, Offset(0f, clueH), Size(clueW, n * cell), CornerRadius(cell * 0.3f))
 
             // Cells
             for (r in 0 until n) {
@@ -253,11 +261,19 @@ fun NonogramBoard(
                                 isHint -> BoardColors.hint
                                 else -> filledColor
                             }
-                            drawRect(color, Offset(x + 1f, y + 1f), Size(cell - 2f, cell - 2f))
+                            val pad = max(1.5f, cell * 0.06f)
+                            drawRoundRect(color, Offset(x + pad, y + pad), Size(cell - 2 * pad, cell - 2 * pad), CornerRadius(cell * 0.16f))
+                            // Small highlight so filled cells look like glossy tiles.
+                            drawRoundRect(
+                                Color.White.copy(alpha = 0.18f),
+                                Offset(x + pad * 2, y + pad * 2),
+                                Size(cell - 4 * pad, (cell - 4 * pad) * 0.35f),
+                                CornerRadius(cell * 0.1f),
+                            )
                         }
                         CellState.MARKED -> {
                             val inset = cell * 0.3f
-                            val color = if (lastHint == (r to c)) BoardColors.hint else lineColor
+                            val color = if (lastHint == (r to c)) BoardColors.hint else markColor
                             val stroke = Stroke(width = max(2f, cell * 0.08f), cap = StrokeCap.Round)
                             drawLine(color, Offset(x + inset, y + inset), Offset(x + cell - inset, y + cell - inset), stroke.width, stroke.cap)
                             drawLine(color, Offset(x + cell - inset, y + inset), Offset(x + inset, y + cell - inset), stroke.width, stroke.cap)

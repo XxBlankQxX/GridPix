@@ -13,6 +13,13 @@ data class SizeStats(
     @androidx.room.ColumnInfo(name = "best_ms") val bestMs: Long?,
 )
 
+data class SolvedRow(
+    @androidx.room.ColumnInfo(name = "puzzle_id") val puzzleId: String,
+    @androidx.room.ColumnInfo(name = "size") val size: Int,
+    @androidx.room.ColumnInfo(name = "hints_used") val hintsUsed: Int,
+    @androidx.room.ColumnInfo(name = "elapsed_ms") val elapsedMs: Long,
+)
+
 @Dao
 interface PuzzleProgressDao {
 
@@ -51,6 +58,13 @@ interface PuzzleProgressDao {
         """,
     )
     fun observeLatestUnsolvedEndless(): Flow<PuzzleProgressEntity?>
+
+    /** Every solved puzzle, for XP, achievements, the streak calendar and the collection. */
+    @Query("SELECT puzzle_id, size, hints_used, elapsed_ms FROM puzzle_progress WHERE solved = 1")
+    fun observeSolved(): Flow<List<SolvedRow>>
+
+    @Query("SELECT puzzle_id, size, hints_used, elapsed_ms FROM puzzle_progress WHERE solved = 1")
+    suspend fun getSolved(): List<SolvedRow>
 
     @Query("DELETE FROM puzzle_progress WHERE puzzle_id = :puzzleId")
     suspend fun delete(puzzleId: String)

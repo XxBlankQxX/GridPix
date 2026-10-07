@@ -11,11 +11,15 @@ puzzle the ambiguous cells are printed as '?' so the artist can tweak them.
 Exit code 0 when every puzzle passes, 1 otherwise.
 """
 import json
+import re
 import sys
 
 UNKNOWN, FILLED, EMPTY = 0, 1, 2
-ALLOWED_SIZES = {10, 15}
 PUZZLES_PER_PACK = 30
+# (small, large): puzzles 1-20 use the small size, 21-30 the large size. Must match PackContentTest.kt.
+DEFAULT_SIZES = (10, 15)
+PACK_SIZES = {"anime": (15, 20)}
+HEX = re.compile(r"^#[0-9A-Fa-f]{6}$")
 
 
 def line_clue(cells):
@@ -131,11 +135,11 @@ def solve(rows_clues, cols_clues):
     return grid
 
 
-def check_grid(rows):
+def check_grid(rows, allowed=None):
     """Return (ok, message). rows: list of strings of '#' and '.'."""
     n = len(rows)
-    if n not in ALLOWED_SIZES:
-        return False, f"size {n} not in {sorted(ALLOWED_SIZES)}"
+    if allowed and n not in allowed:
+        return False, f"size {n} not in {sorted(allowed)}"
     for r, row in enumerate(rows):
         if len(row) != n:
             return False, f"row {r} has {len(row)} chars, expected {n}"
@@ -160,6 +164,37 @@ def check_grid(rows):
     return False, f"{unknown} cells not deducible by line logic (shown as ?):\n    " + "\n    ".join(lines)
 
 
+def check_colors(p):
+    """Colour map for the solved reveal. Returns a problem string or None.
+
+    "palette": {"a": "#RRGGBB", ...}  single lowercase letters (or digits) -> colour
+    "colors":  same shape as "grid"; '.' exactly where grid has '.', a palette key where grid has '#'.
+    """
+    grid = p.get("grid", [])
+    palette = p.get("palette")
+    colors = p.get("colors")
+    if palette is None or colors is None:
+        return "missing 'palette' or 'colors'"
+    if not isinstance(palette, dict) or not palette:
+        return "palette must be a non-empty object"
+    for k, v in palette.items():
+        if len(k) != 1 or k in ".#" or not (k.islower() or k.isdigit()):
+            return f"palette key {k!r} must be one lowercase letter or digit"
+        if not HEX.match(str(v)):
+            return f"palette value {v!r} must look like #RRGGBB"
+    if len(colors) != len(grid):
+        return f"colors has {len(colors)} rows, grid has {len(grid)}"
+    for r, (crow, grow) in enumerate(zip(colors, grid)):
+        if len(crow) != len(grow):
+            return f"colors row {r} length {len(crow)} != {len(grow)}"
+        for c, (ch, g) in enumerate(zip(crow, grow)):
+            if g == "." and ch != ".":
+                return f"colors row {r} col {c}: '{ch}' on an empty cell (must be '.')"
+            if g == "#" and ch not in palette:
+                return f"colors row {r} col {c}: '{ch}' is not a palette key (cell is filled)"
+    return None
+
+
 def check_pack(path):
     with open(path, encoding="utf-8") as f:
         pack = json.load(f)
@@ -174,6 +209,7 @@ def check_pack(path):
         problems += 1
     names = set()
     sizes = {}
+    small, large = PACK_SIZES.get(pack.get("id"), DEFAULT_SIZES)
     for i, p in enumerate(puzzles, start=1):
         name = p.get("name", "")
         if not name or name in names:
@@ -183,7 +219,12 @@ def check_pack(path):
         if "picross" in name.lower():
             print(f"{path} #{i:02d}: forbidden word in name")
             problems += 1
-        ok, msg = check_grid(p.get("grid", []))
+        expected = small if i <= 20 else large
+        ok, msg = check_grid(p.get("grid", []), {expected})
+        if ok:
+            color_problem = check_colors(p)
+            if color_problem:
+                ok, msg = False, "colour map: " + color_problem
         sizes[len(p.get("grid", []))] = sizes.get(len(p.get("grid", [])), 0) + 1
         status = "OK  " if ok else "FAIL"
         print(f"{status} {path} #{i:02d} {name!r}: {msg}")

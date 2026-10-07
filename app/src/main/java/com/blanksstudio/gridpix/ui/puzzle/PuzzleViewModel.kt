@@ -5,7 +5,13 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.blanksstudio.gridpix.billing.Entitlements
+import com.blanksstudio.gridpix.data.PlayerProgressRepository
 import com.blanksstudio.gridpix.data.ProgressRepository
+import com.blanksstudio.gridpix.data.packs.PixelColors
+import com.blanksstudio.gridpix.data.rules.Achievement
+import com.blanksstudio.gridpix.data.rules.LevelInfo
+import com.blanksstudio.gridpix.data.rules.ProgressSnapshot
+import com.blanksstudio.gridpix.ui.common.ArtColors
 import com.blanksstudio.gridpix.data.packs.PackRepository
 import com.blanksstudio.gridpix.data.rules.HintRules
 import com.blanksstudio.gridpix.data.settings.GameSettings
@@ -66,6 +72,18 @@ data class PuzzleUiState(
     val lastHint: Pair<Int, Int>? = null,
     val settings: GameSettings = GameSettings(false, true, true, ThemeMode.SYSTEM),
     val streakAfterSolve: Int? = null,
+    /** Per-pixel colours for the solved reveal (hand-made for packs, generated otherwise). */
+    val colors: PixelColors? = null,
+    /** Filled in when this solve just happened (not when reopening an already-solved puzzle). */
+    val reward: SolveReward? = null,
+)
+
+/** What a fresh solve earned: shown on the solved screen. */
+data class SolveReward(
+    val xpGained: Int,
+    val level: LevelInfo,
+    val leveledUp: Boolean,
+    val newAchievements: List<Achievement>,
 )
 
 sealed interface PuzzleEvent {
@@ -80,7 +98,11 @@ class PuzzleViewModel @Inject constructor(
     private val settings: SettingsRepository,
     private val progress: ProgressRepository,
     private val packs: PackRepository,
+    private val playerProgress: PlayerProgressRepository,
 ) : ViewModel() {
+
+    /** Progress just before this puzzle was solved, to work out XP and new achievements afterwards. */
+    private var progressBefore: ProgressSnapshot? = null
 
     private val kindArg: String = checkNotNull(savedStateHandle[Routes.ARG_KIND])
     private val argA: String = checkNotNull(savedStateHandle[Routes.ARG_A])
@@ -113,7 +135,7 @@ class PuzzleViewModel @Inject constructor(
     }
 
     private suspend fun load() {
-        val (kind, puzzle) = try {
+        val (kind, puzzle, colors) = try {
             withContext(Dispatchers.Default) { resolve() }
         } catch (e: Exception) {
             _uiState.update { it.copy(loading = false, error = true) }
@@ -133,6 +155,7 @@ class PuzzleViewModel @Inject constructor(
                 loading = false,
                 kind = kind,
                 puzzle = puzzle,
+                colors = colors,
                 board = board,
                 elapsedMs = baseElapsedMs,
                 hintsUsed = saved?.hintsUsed ?: 0,
@@ -140,28 +163,38 @@ class PuzzleViewModel @Inject constructor(
                 mistakes = mistakesFor(puzzle, board, it.settings),
             )
         }
-        if (!solved) startTimerIfVisible()
+        if (!solved) {
+            if (kind !is PuzzleKind.Tutorial) progressBefore = playerProgress.current()
+            startTimerIfVisible()
+        }
     }
 
-    private suspend fun resolve(): Pair<PuzzleKind, Puzzle>? = when (kindArg) {
+    private suspend fun resolve(): Triple<PuzzleKind, Puzzle, PixelColors>? = when (kindArg) {
         Routes.KIND_ENDLESS -> {
             val size = argA.toInt()
             val seed = argB.toLong()
-            PuzzleKind.Endless(size, seed) to PuzzleGenerator.generate(size, seed)
+            val puzzle = PuzzleGenerator.generate(size, seed)
+            Triple(PuzzleKind.Endless(size, seed), puzzle, ArtColors.generated(puzzle.solution, seed))
         }
-        Routes.KIND_DAILY -> PuzzleKind.Daily(argA) to DailyPuzzle.generate(argA)
+        Routes.KIND_DAILY -> {
+            val puzzle = DailyPuzzle.generate(argA)
+            Triple(PuzzleKind.Daily(argA), puzzle, ArtColors.generated(puzzle.solution, DailyPuzzle.seedFor(argA)))
+        }
         Routes.KIND_PACK -> {
             val pack = packs.pack(argA) ?: return null
             val index = argB.toInt()
             val entry = pack.puzzles.getOrNull(index - 1) ?: return null
             val owned = settings.snapshotOwned()
             val unlocked = Entitlements.packUnlocked(owned, pack.productId)
-            PuzzleKind.Pack(pack.id, pack.name, index, pack.puzzles.size, unlocked && index < pack.puzzles.size) to
-                entry.toPuzzle(pack.id)
+            Triple(
+                PuzzleKind.Pack(pack.id, pack.name, index, pack.puzzles.size, unlocked && index < pack.puzzles.size),
+                entry.toPuzzle(pack.id),
+                entry.colors ?: ArtColors.generated(entry.solution, index.toLong()),
+            )
         }
         Routes.KIND_TUTORIAL -> {
             val step = TutorialSteps.step(argA.toInt()) ?: return null
-            PuzzleKind.Tutorial(step) to step.puzzle
+            Triple(PuzzleKind.Tutorial(step), step.puzzle, ArtColors.generated(step.puzzle.solution, step.step.toLong()))
         }
         else -> null
     }
@@ -338,6 +371,20 @@ class PuzzleViewModel @Inject constructor(
                     _uiState.update { it.copy(streakAfterSolve = settings.streak.first().count) }
                 }
                 if (s.kind is PuzzleKind.Tutorial && s.kind.step.step == TutorialSteps.COUNT) settings.setTutorialDone()
+                val before = progressBefore
+                if (before != null) {
+                    val after = playerProgress.current()
+                    _uiState.update {
+                        it.copy(
+                            reward = SolveReward(
+                                xpGained = after.level.totalXp - before.level.totalXp,
+                                level = after.level,
+                                leveledUp = after.level.level > before.level.level,
+                                newAchievements = (after.unlocked - before.unlocked).sortedBy { a -> a.ordinal },
+                            ),
+                        )
+                    }
+                }
             }
         } else {
             viewModelScope.launch { persist() }

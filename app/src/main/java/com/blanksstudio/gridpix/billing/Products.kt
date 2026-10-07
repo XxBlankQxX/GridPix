@@ -8,12 +8,14 @@ object Products {
     const val PACK_VEHICLES = "pack_vehicles"
     const val PACK_FOOD = "pack_food"
     const val PACK_NATURE = "pack_nature"
+    /** Added 2026-10-07 (Christopher approved, decision D25). */
+    const val PACK_ANIME = "pack_anime"
     const val LARGE_GRIDS = "large_grids"
     const val EVERYTHING = "everything"
 
     val CONSUMABLES: Set<String> = setOf(HINTS_10, HINTS_50)
     val NON_CONSUMABLES: Set<String> =
-        setOf(PACK_ANIMALS, PACK_VEHICLES, PACK_FOOD, PACK_NATURE, LARGE_GRIDS, EVERYTHING)
+        setOf(PACK_ANIMALS, PACK_VEHICLES, PACK_FOOD, PACK_NATURE, PACK_ANIME, LARGE_GRIDS, EVERYTHING)
     val ALL: Set<String> = CONSUMABLES + NON_CONSUMABLES
 
     /** Hints granted when a consumable is bought (SPEC section 6; `everything` grants 100 once). */

@@ -1,6 +1,19 @@
 package com.blanksstudio.gridpix.ui.puzzle
 
-import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.Surface
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import com.blanksstudio.gridpix.ui.common.ConfettiBurst
+import com.blanksstudio.gridpix.ui.common.ui
+import com.blanksstudio.gridpix.ui.theme.Accents
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -56,8 +69,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.blanksstudio.gridpix.R
 import com.blanksstudio.gridpix.ui.common.PicturePreview
 import com.blanksstudio.gridpix.ui.common.rememberFeedback
-import com.blanksstudio.gridpix.ui.theme.BoardColors
-import com.blanksstudio.gridpix.ui.theme.isDarkTheme
 import com.blanksstudio.gridpix.util.formatElapsed
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -185,7 +196,9 @@ fun PuzzleScreen(
                             board = state.board,
                             mistakes = state.mistakes,
                             lastHint = state.lastHint,
-                            darkTheme = isDarkTheme(state.settings.theme),
+                            accent = accentFor(state.kind),
+                            ink = MaterialTheme.colorScheme.onSurface,
+                            paper = MaterialTheme.colorScheme.surfaceContainerLowest,
                             enabled = !state.solved,
                             zoomEnabled = puzzle.size >= 15,
                             targetFor = viewModel::targetFor,
@@ -270,51 +283,134 @@ private fun Controls(state: PuzzleUiState, viewModel: PuzzleViewModel, modifier:
     }
 }
 
+/** Accent colour for the board and solved screen: the pack's colour, or the mode's. */
+fun accentFor(kind: PuzzleKind?): Color = when (kind) {
+    is PuzzleKind.Pack -> Accents.forPack(kind.packId)
+    is PuzzleKind.Endless -> Accents.forEndless(kind.size)
+    is PuzzleKind.Daily -> Accents.daily
+    is PuzzleKind.Tutorial -> Accents.tutorial
+    null -> Accents.starter
+}
+
 @Composable
 private fun SolvedContent(state: PuzzleUiState, modifier: Modifier, onNext: () -> Unit, onHome: () -> Unit) {
     val puzzle = state.puzzle ?: return
-    val reveal by animateFloatAsState(
-        targetValue = puzzle.size.toFloat() + 1f,
-        animationSpec = tween(durationMillis = 1400),
-        label = "reveal",
-    )
-    val dark = isDarkTheme(state.settings.theme)
-    Column(
-        modifier.padding(24.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(16.dp),
+    val accent = accentFor(state.kind)
+    val reveal = remember { Animatable(0f) }
+    LaunchedEffect(puzzle.id) { reveal.animateTo(1f, tween(durationMillis = 1600, easing = FastOutSlowInEasing)) }
+    val reward = state.reward
+
+    Box(modifier) {
+        Column(
+            Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = 24.dp, vertical = 12.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(14.dp),
+        ) {
+            Text(stringResource(R.string.solved_title), style = MaterialTheme.typography.headlineMedium, color = accent)
+            Card(
+                shape = RoundedCornerShape(28.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLowest),
+                elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+                modifier = Modifier.fillMaxWidth(0.82f).aspectRatio(1f),
+            ) {
+                PicturePreview(
+                    solution = puzzle.solution,
+                    color = accent,
+                    colors = state.colors,
+                    reveal = reveal.value,
+                    roundedPixels = true,
+                    modifier = Modifier.fillMaxSize().padding(18.dp),
+                )
+            }
+            puzzle.name?.let { Text(it, style = MaterialTheme.typography.headlineSmall) }
+            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                StatPill("\u23F1", elapsedText(state.elapsedMs))
+                StatPill(
+                    "\uD83D\uDCA1",
+                    if (state.hintsUsed == 0) stringResource(R.string.solved_no_hints) else stringResource(R.string.solved_hints, state.hintsUsed),
+                )
+            }
+            if (reward != null) RewardCard(reward, accent)
+            when (val k = state.kind) {
+                is PuzzleKind.Daily -> state.streakAfterSolve?.let {
+                    Text("\uD83D\uDD25 " + stringResource(R.string.solved_daily_streak, it), style = MaterialTheme.typography.titleMedium)
+                }
+                is PuzzleKind.Tutorial -> if (k.step.step == TutorialSteps.COUNT) {
+                    Text(stringResource(R.string.solved_tutorial_done), style = MaterialTheme.typography.titleMedium)
+                }
+                else -> Unit
+            }
+            Spacer(Modifier.height(4.dp))
+            val nextLabel = when (val k = state.kind) {
+                is PuzzleKind.Endless -> stringResource(R.string.solved_next_endless)
+                is PuzzleKind.Pack -> if (k.nextUnlocked) stringResource(R.string.solved_next_pack) else stringResource(R.string.action_home)
+                is PuzzleKind.Tutorial -> if (k.step.step < TutorialSteps.COUNT) stringResource(R.string.action_next) else stringResource(R.string.action_home)
+                is PuzzleKind.Daily, null -> stringResource(R.string.action_home)
+            }
+            Button(
+                onClick = onNext,
+                colors = ButtonDefaults.buttonColors(containerColor = accent, contentColor = Color.White),
+                modifier = Modifier.fillMaxWidth().height(56.dp),
+            ) { Text(nextLabel, style = MaterialTheme.typography.titleMedium) }
+            if (state.kind !is PuzzleKind.Daily) {
+                OutlinedButton(onClick = onHome, modifier = Modifier.fillMaxWidth()) { Text(stringResource(R.string.action_home)) }
+            }
+        }
+        if (reward != null) ConfettiBurst(Modifier.fillMaxSize())
+    }
+}
+
+@Composable
+private fun StatPill(icon: String, text: String) {
+    Surface(shape = RoundedCornerShape(50), color = MaterialTheme.colorScheme.surfaceContainerHigh) {
+        Text("$icon  $text", style = MaterialTheme.typography.labelLarge, modifier = Modifier.padding(horizontal = 14.dp, vertical = 8.dp))
+    }
+}
+
+@Composable
+private fun RewardCard(reward: SolveReward, accent: Color) {
+    Card(
+        shape = RoundedCornerShape(24.dp),
+        colors = CardDefaults.cardColors(containerColor = accent.copy(alpha = 0.12f)),
+        modifier = Modifier.fillMaxWidth(),
     ) {
-        Text(stringResource(R.string.solved_title), style = MaterialTheme.typography.headlineMedium)
-        PicturePreview(
-            solution = puzzle.solution,
-            color = if (dark) BoardColors.filledDark else BoardColors.filledLight,
-            background = MaterialTheme.colorScheme.surfaceVariant,
-            revealRows = reveal,
-            modifier = Modifier
-                .fillMaxWidth(0.8f)
-                .aspectRatio(1f),
-        )
-        puzzle.name?.let { Text(it, style = MaterialTheme.typography.headlineSmall) }
-        Text(stringResource(R.string.solved_time, elapsedText(state.elapsedMs)), style = MaterialTheme.typography.titleMedium)
-        Text(
-            if (state.hintsUsed == 0) stringResource(R.string.solved_no_hints) else stringResource(R.string.solved_hints, state.hintsUsed),
-            style = MaterialTheme.typography.bodyMedium,
-        )
-        when (val k = state.kind) {
-            is PuzzleKind.Daily -> state.streakAfterSolve?.let { Text(stringResource(R.string.solved_daily_streak, it)) }
-            is PuzzleKind.Tutorial -> if (k.step.step == TutorialSteps.COUNT) Text(stringResource(R.string.solved_tutorial_done))
-            else -> Unit
-        }
-        Spacer(Modifier.weight(1f))
-        val nextLabel = when (val k = state.kind) {
-            is PuzzleKind.Endless -> stringResource(R.string.solved_next_endless)
-            is PuzzleKind.Pack -> if (k.nextUnlocked) stringResource(R.string.solved_next_pack) else stringResource(R.string.action_home)
-            is PuzzleKind.Tutorial -> if (k.step.step < TutorialSteps.COUNT) stringResource(R.string.action_next) else stringResource(R.string.action_home)
-            is PuzzleKind.Daily, null -> stringResource(R.string.action_home)
-        }
-        Button(onClick = onNext, modifier = Modifier.fillMaxWidth().height(52.dp)) { Text(nextLabel) }
-        if (state.kind !is PuzzleKind.Daily) {
-            OutlinedButton(onClick = onHome, modifier = Modifier.fillMaxWidth()) { Text(stringResource(R.string.action_home)) }
+        Column(Modifier.padding(18.dp), verticalArrangement = Arrangement.spacedBy(10.dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    stringResource(R.string.reward_xp, reward.xpGained),
+                    style = MaterialTheme.typography.headlineSmall,
+                    color = accent,
+                    modifier = Modifier.weight(1f),
+                )
+                Text(stringResource(R.string.level_label, reward.level.level), style = MaterialTheme.typography.titleMedium)
+            }
+            LinearProgressIndicator(
+                progress = { reward.level.fraction },
+                color = accent,
+                trackColor = accent.copy(alpha = 0.2f),
+                modifier = Modifier.fillMaxWidth().height(10.dp).clip(RoundedCornerShape(50)),
+            )
+            Text(
+                stringResource(R.string.level_xp_progress, reward.level.xpIntoLevel, reward.level.xpForNextLevel),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            if (reward.leveledUp) {
+                Text("\uD83C\uDF89 " + stringResource(R.string.reward_level_up, reward.level.level), style = MaterialTheme.typography.titleMedium)
+            }
+            reward.newAchievements.forEach { a ->
+                val ui = a.ui
+                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                    Text(ui.emoji, style = MaterialTheme.typography.headlineSmall)
+                    Column {
+                        Text(stringResource(R.string.reward_new_badge), style = MaterialTheme.typography.labelSmall, color = accent)
+                        Text(stringResource(ui.title), style = MaterialTheme.typography.titleSmall)
+                    }
+                }
+            }
         }
     }
 }

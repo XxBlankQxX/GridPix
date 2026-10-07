@@ -8,6 +8,7 @@ object Routes {
     const val SHOP = "shop"
     const val SETTINGS = "settings"
     const val STATS = "stats"
+    const val COLLECTION = "collection"
     const val PUZZLE = "puzzle/{kind}/{a}/{b}"
 
     const val ARG_PACK_ID = "packId"

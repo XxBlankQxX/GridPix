@@ -78,6 +78,6 @@ class RulesTest {
         assertEquals(50, Products.hintsGranted(Products.HINTS_50))
         assertEquals(100, Products.hintsGranted(Products.EVERYTHING))
         assertEquals(0, Products.hintsGranted(Products.PACK_ANIMALS))
-        assertEquals(8, Products.ALL.size)
+        assertEquals(9, Products.ALL.size)
     }
 }

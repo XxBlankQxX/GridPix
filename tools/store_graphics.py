@@ -1,46 +1,59 @@
 #!/usr/bin/env python3
-"""Render the Play Store icon (512x512) and feature graphic (1024x500) for GridPix.
+"""Render the GridPix icon art: Play Store icon (512x512), feature graphic (1024x500) and the
+adaptive launcher foreground vector (res/drawable/ic_launcher_foreground.xml).
 
-Usage: python tools/store_graphics.py <output-dir>
-Needs Pillow (pip install pillow). Uses the Starter pack's pixel heart so the store art
-matches the in-app adaptive icon (res/drawable/ic_launcher_foreground.xml).
+Usage: python tools/store_graphics.py <output-dir-for-pngs>
+Needs Pillow (pip install pillow).
+
+Design: a 7x7 pixel mosaic spelling "G" in a violet -> pink -> orange -> gold diagonal gradient,
+with the unfilled cells as faint tiles, on a deep night-violet background. Same art everywhere.
 """
 import os
 import sys
 
 from PIL import Image, ImageDraw, ImageFont
 
-HEART = [
-    "..........",
-    "..##..##..",
-    ".########.",
-    "##########",
-    "##########",
-    ".########.",
-    "..######..",
-    "...####...",
-    "....##....",
-    "..........",
+G = [
+    ".#####.",
+    "##...##",
+    "##.....",
+    "##.####",
+    "##...##",
+    "##...##",
+    ".#####.",
 ]
-BG = (30, 58, 95)        # #1E3A5F, same as ic_launcher_background
-FG = (255, 255, 255)
-ACCENT = (247, 189, 72)  # tertiary from the dark palette, used for a few picture pixels
+BG = (27, 21, 48)  # #1B1530
+STOPS = [(0x7B, 0x5C, 0xFF), (0xC0, 0x5C, 0xF0), (0xFF, 0x4F, 0x8B), (0xFF, 0x8A, 0x3D), (0xFF, 0xC9, 0x3D)]
+FAINT = (255, 255, 255, 26)
+HERE = os.path.dirname(os.path.abspath(__file__))
+VECTOR_OUT = os.path.join(HERE, "..", "app", "src", "main", "res", "drawable", "ic_launcher_foreground.xml")
 
 
-def draw_heart(img, x, y, px, color=FG, grid=None):
-    d = ImageDraw.Draw(img)
-    for r, row in enumerate(HEART):
+def grad(t):
+    t = max(0.0, min(1.0, t)) * (len(STOPS) - 1)
+    i = min(int(t), len(STOPS) - 2)
+    f = t - i
+    a, b = STOPS[i], STOPS[i + 1]
+    return tuple(round(a[k] + (b[k] - a[k]) * f) for k in range(3))
+
+
+def cell_color(r, c):
+    return grad((r + c) / 12)
+
+
+def draw_mosaic(img, x0, y0, pitch, tile, radius):
+    d = ImageDraw.Draw(img, "RGBA")
+    for r, row in enumerate(G):
         for c, ch in enumerate(row):
-            if ch == "#":
-                d.rectangle([x + c * px, y + r * px, x + (c + 1) * px - 1, y + (r + 1) * px - 1], fill=color)
-    if grid:
-        for i in range(11):
-            d.line([x + i * px, y, x + i * px, y + 10 * px], fill=grid, width=1)
-            d.line([x, y + i * px, x + 10 * px, y + i * px], fill=grid, width=1)
+            x = x0 + c * pitch
+            y = y0 + r * pitch
+            fill = cell_color(r, c) + (255,) if ch == "#" else FAINT
+            d.rounded_rectangle([x, y, x + tile, y + tile], radius=radius, fill=fill)
 
 
 def font(size, bold=True):
-    for name in (["segoeuib.ttf", "arialbd.ttf"] if bold else ["segoeui.ttf", "arial.ttf"]):
+    names = ["segoeuib.ttf", "arialbd.ttf"] if bold else ["segoeui.ttf", "arial.ttf"]
+    for name in names:
         path = os.path.join(os.environ.get("WINDIR", r"C:\Windows"), "Fonts", name)
         if os.path.exists(path):
             return ImageFont.truetype(path, size)
@@ -49,23 +62,49 @@ def font(size, bold=True):
 
 def icon(out):
     img = Image.new("RGB", (512, 512), BG)
-    draw_heart(img, 64, 64, 38.4 and 38)  # 10 px * 38 = 380, centred with 66 margin
-    # Recentre exactly: heart block is 380 wide/high
-    img = Image.new("RGB", (512, 512), BG)
-    draw_heart(img, (512 - 380) // 2, (512 - 380) // 2, 38)
+    pitch, tile = 50, 44
+    size = pitch * 6 + tile
+    draw_mosaic(img, (512 - size) // 2, (512 - size) // 2, pitch, tile, 10)
     img.save(os.path.join(out, "play_icon_512.png"))
 
 
 def feature(out):
     img = Image.new("RGB", (1024, 500), BG)
+    pitch, tile = 50, 44
+    draw_mosaic(img, 70, (500 - (pitch * 6 + tile)) // 2, pitch, tile, 10)
     d = ImageDraw.Draw(img)
-    # Heart with faint grid on the left
-    draw_heart(img, 70, 70, 36, grid=(255, 255, 255, 40) and (60, 88, 125))
-    # Title and tagline
-    d.text((470, 150), "GridPix", font=font(96), fill=FG)
-    d.text((474, 270), "Nonogram puzzles", font=font(44, bold=False), fill=(214, 227, 255))
-    d.text((474, 330), "Offline  •  No ads  •  Daily puzzle", font=font(30, bold=False), fill=(169, 199, 255))
+    d.text((470, 120), "GridPix", font=font(104), fill=(255, 255, 255))
+    d.text((476, 250), "Colourful nonogram puzzles", font=font(40, bold=False), fill=(230, 222, 255))
+    d.text((476, 315), "Anime pack  \u2022  Daily puzzle  \u2022  No ads", font=font(30, bold=False), fill=(255, 201, 61))
     img.save(os.path.join(out, "feature_graphic_1024x500.png"))
+
+
+def vector():
+    """Adaptive-icon foreground: 108dp canvas, mosaic centred inside the 66dp safe zone."""
+    pitch, tile, rad = 7.6, 6.8, 1.5
+    size = pitch * 6 + tile
+    x0 = y0 = (108 - size) / 2
+    paths = []
+    for r, row in enumerate(G):
+        for c, ch in enumerate(row):
+            x, y = x0 + c * pitch, y0 + r * pitch
+            w = tile - 2 * rad
+            d = (f"M{x + rad:.2f},{y:.2f} h{w:.2f} a{rad},{rad} 0 0 1 {rad},{rad} v{w:.2f} "
+                 f"a{rad},{rad} 0 0 1 -{rad},{rad} h-{w:.2f} a{rad},{rad} 0 0 1 -{rad},-{rad} v-{w:.2f} "
+                 f"a{rad},{rad} 0 0 1 {rad},-{rad} z")
+            if ch == "#":
+                color = "#FF%02X%02X%02X" % cell_color(r, c)
+            else:
+                color = "#1AFFFFFF"
+            paths.append(f'    <path android:fillColor="{color}" android:pathData="{d}" />')
+    xml = ('<?xml version="1.0" encoding="utf-8"?>\n'
+           '<!-- Generated by tools/store_graphics.py: 7x7 pixel "G" mosaic, violet-to-gold gradient. -->\n'
+           '<vector xmlns:android="http://schemas.android.com/apk/res/android"\n'
+           '    android:width="108dp"\n    android:height="108dp"\n'
+           '    android:viewportWidth="108"\n    android:viewportHeight="108">\n'
+           + "\n".join(paths) + "\n</vector>\n")
+    with open(VECTOR_OUT, "w", encoding="utf-8", newline="\n") as f:
+        f.write(xml)
 
 
 def main():
@@ -73,7 +112,8 @@ def main():
     os.makedirs(out, exist_ok=True)
     icon(out)
     feature(out)
-    print("wrote play_icon_512.png and feature_graphic_1024x500.png to", out)
+    vector()
+    print("wrote play_icon_512.png, feature_graphic_1024x500.png to", out, "and", os.path.normpath(VECTOR_OUT))
 
 
 if __name__ == "__main__":

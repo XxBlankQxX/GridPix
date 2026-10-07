@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Level / XP -->
+    <string name="level_label">Level %1$d</string>
+    <string name="level_xp_progress">%1$d / %2$d XP to next level</string>
+    <string name="reward_xp">+%1$d XP</string>
+    <string name="reward_level_up">Level up! You reached level %1$d</string>
+    <string name="reward_new_badge">New badge</string>
+
+    <!-- Home -->
+    <string name="home_play_title">Endless puzzles</string>
+    <string name="home_daily_streak">%1$d day streak</string>
+    <string name="home_collection">Collection</string>
+    <string name="home_progress">Progress</string>
+    <string name="home_see_all">See all</string>
+    <string name="home_badges_count">%1$d / %2$d badges</string>
+    <string name="home_collected_count">%1$d / %2$d pictures</string>
+    <string name="home_hints_chip">%1$d hints</string>
+    <string name="home_pack_progress">%1$d / %2$d</string>
+
+    <!-- Progress screen -->
+    <string name="progress_title">Progress</string>
+    <string name="progress_total_xp">%1$d XP total</string>
+    <string name="progress_current_streak">Current streak</string>
+    <string name="progress_best_streak">Best streak</string>
+    <string name="progress_days">%1$d days</string>
+    <string name="progress_calendar">Daily calendar</string>
+    <string name="progress_month_solved">%1$d of %2$d days solved</string>
+    <string name="progress_trophy_none">Solve 10 daily puzzles this month to earn a trophy</string>
+    <string name="progress_trophy_bronze">Bronze trophy · 20 days for silver</string>
+    <string name="progress_trophy_silver">Silver trophy · every day for gold</string>
+    <string name="progress_trophy_gold">Gold trophy · every day solved!</string>
+    <string name="progress_badges">Badges</string>
+    <string name="progress_badge_progress">%1$d / %2$d</string>
+    <string name="progress_by_size">Solved by size</string>
+    <string name="progress_prev_month">Previous month</string>
+    <string name="progress_next_month">Next month</string>
+
+    <!-- Collection -->
+    <string name="collection_title">Collection</string>
+    <string name="collection_count">%1$d / %2$d pictures collected</string>
+    <string name="collection_pack_count">%1$d / %2$d</string>
+
+    <!-- Shop: Anime pack -->
+    <string name="shop_pack_anime">Anime pack</string>
+    <string name="shop_pack_anime_desc">30 original anime-style pictures, 15 × 15 and 20 × 20</string>
+
+    <!-- Achievements -->
+    <string name="ach_first_solve">First picture</string>
+    <string name="ach_first_solve_desc">Solve your first puzzle</string>
+    <string name="ach_solves_10">Getting started</string>
+    <string name="ach_solves_10_desc">Solve 10 puzzles</string>
+    <string name="ach_solves_50">Puzzle fan</string>
+    <string name="ach_solves_50_desc">Solve 50 puzzles</string>
+    <string name="ach_solves_100">Century</string>
+    <string name="ach_solves_100_desc">Solve 100 puzzles</string>
+    <string name="ach_solves_250">Grid master</string>
+    <string name="ach_solves_250_desc">Solve 250 puzzles</string>
+    <string name="ach_pure_logic">Pure logic</string>
+    <string name="ach_pure_logic_desc">Solve a puzzle without hints</string>
+    <string name="ach_pure_logic_25">Brainiac</string>
+    <string name="ach_pure_logic_25_desc">Solve 25 puzzles without hints</string>
+    <string name="ach_big_grid">Big picture</string>
+    <string name="ach_big_grid_desc">Solve a 15 × 15 puzzle</string>
+    <string name="ach_giant_grid">Giant grid</string>
+    <string name="ach_giant_grid_desc">Solve a 20 × 20 puzzle</string>
+    <string name="ach_speedy">Speedy</string>
+    <string name="ach_speedy_desc">Solve a 10 × 10 or bigger in under 3 minutes, no hints</string>
+    <string name="ach_daily_first">Daily player</string>
+    <string name="ach_daily_first_desc">Solve a daily puzzle</string>
+    <string name="ach_streak_7">On fire</string>
+    <string name="ach_streak_7_desc">Solve the daily puzzle 7 days in a row</string>
+    <string name="ach_streak_30">Unstoppable</string>
+    <string name="ach_streak_30_desc">Solve the daily puzzle 30 days in a row</string>
+    <string name="ach_pack_complete">Pack complete</string>
+    <string name="ach_pack_complete_desc">Solve every picture in a pack</string>
+    <string name="ach_collector_50">Collector</string>
+    <string name="ach_collector_50_desc">Collect 50 pack pictures</string>
+    <string name="ach_collector_all">Completionist</string>
+    <string name="ach_collector_all_desc">Collect every pack picture</string>
+    <string name="ach_level_10">Rising star</string>
+    <string name="ach_level_10_desc">Reach level 10</string>
+    <string name="ach_level_25">Superstar</string>
+    <string name="ach_level_25_desc">Reach level 25</string>
+</resources>

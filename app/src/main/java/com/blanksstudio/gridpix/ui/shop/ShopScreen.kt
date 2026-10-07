@@ -63,6 +63,7 @@ class ShopViewModel @Inject constructor(
     private val catalogue = listOf(
         Triple(Products.HINTS_10, R.string.shop_hints_10, R.string.shop_hints_desc),
         Triple(Products.HINTS_50, R.string.shop_hints_50, R.string.shop_hints_desc),
+        Triple(Products.PACK_ANIME, R.string.shop_pack_anime, R.string.shop_pack_anime_desc),
         Triple(Products.PACK_ANIMALS, R.string.shop_pack_animals, R.string.shop_pack_desc),
         Triple(Products.PACK_VEHICLES, R.string.shop_pack_vehicles, R.string.shop_pack_desc),
         Triple(Products.PACK_FOOD, R.string.shop_pack_food, R.string.shop_pack_desc),

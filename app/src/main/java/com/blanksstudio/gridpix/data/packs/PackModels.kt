@@ -20,8 +20,50 @@ data class PackPuzzle(
     val index: Int,
     val name: String,
     val solution: Solution,
+    /** Colours for the solved reveal (see [PixelColors]); null for packs without colour data. */
+    val colors: PixelColors? = null,
 ) {
     fun toPuzzle(packId: String): Puzzle = Puzzle.from(PuzzleIds.pack(packId, index), solution, name)
+}
+
+/**
+ * Per-cell colours for a solved picture: 0xAARRGGBB, or 0 for an empty cell. Only used for the
+ * reveal, thumbnails and the collection; solving stays one colour (SPEC section 7: no colour nonograms).
+ */
+class PixelColors(val size: Int, private val argb: IntArray) {
+    init {
+        require(argb.size == size * size)
+    }
+
+    operator fun get(row: Int, col: Int): Int = argb[row * size + col]
+
+    companion object {
+        /**
+         * Builds from the pack JSON `palette` (letter -> #RRGGBB) and `colors` rows. Every filled cell of
+         * [solution] must have a palette letter and every empty cell must be '.', so the colour map can
+         * never disagree with the puzzle.
+         */
+        fun parse(solution: Solution, palette: Map<Char, String>, rows: List<String>): PixelColors {
+            val n = solution.size
+            require(rows.size == n) { "colors has ${rows.size} rows, expected $n" }
+            val parsed = palette.mapValues { (key, hex) ->
+                require(Regex("#[0-9A-Fa-f]{6}").matches(hex)) { "palette '$key' has bad colour $hex" }
+                (0xFF000000L or hex.substring(1).toLong(16)).toInt()
+            }
+            val argb = IntArray(n * n)
+            rows.forEachIndexed { r, row ->
+                require(row.length == n) { "colors row $r has ${row.length} chars, expected $n" }
+                row.forEachIndexed { c, ch ->
+                    if (solution[r, c]) {
+                        argb[r * n + c] = parsed[ch] ?: throw IllegalArgumentException("colors row $r col $c: '$ch' not in palette")
+                    } else {
+                        require(ch == '.') { "colors row $r col $c: '$ch' on an empty cell" }
+                    }
+                }
+            }
+            return PixelColors(n, argb)
+        }
+    }
 }
 
 /** Parses the pack JSON text. Pure Kotlin apart from org.json, which the unit tests supply for the JVM. */
@@ -36,8 +78,16 @@ object PackParser {
         val puzzles = List(array.length()) { i ->
             val obj = array.getJSONObject(i)
             val grid = obj.getJSONArray("grid")
-            val rows = List(grid.length()) { r -> grid.getString(r) }
-            PackPuzzle(index = i + 1, name = obj.getString("name"), solution = Solution.fromText(rows))
+            val solution = Solution.fromText(List(grid.length()) { r -> grid.getString(r) })
+            val colors = if (obj.has("palette") && obj.has("colors")) {
+                val paletteJson = obj.getJSONObject("palette")
+                val palette = paletteJson.keys().asSequence().associate { key -> key.single() to paletteJson.getString(key) }
+                val colorRows = obj.getJSONArray("colors")
+                PixelColors.parse(solution, palette, List(colorRows.length()) { r -> colorRows.getString(r) })
+            } else {
+                null
+            }
+            PackPuzzle(index = i + 1, name = obj.getString("name"), solution = solution, colors = colors)
         }
         return Pack(id, name, productId, puzzles)
     }
