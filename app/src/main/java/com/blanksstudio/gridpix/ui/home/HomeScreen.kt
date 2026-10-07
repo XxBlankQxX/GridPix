@@ -25,11 +25,10 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.FilledTonalButton
-import androidx.compose.material3.FilterChip
-import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
@@ -140,7 +139,10 @@ fun HomeScreen(
                     Column(Modifier.padding(18.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                         Text(stringResource(R.string.home_tutorial_title), style = MaterialTheme.typography.titleMedium)
                         Text(stringResource(R.string.home_tutorial_body), style = MaterialTheme.typography.bodyMedium)
-                        FilledTonalButton(onClick = onTutorial) { Text(stringResource(R.string.home_tutorial_start)) }
+                        Button(
+                            onClick = onTutorial,
+                            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.tertiary, contentColor = MaterialTheme.colorScheme.onTertiary),
+                        ) { Text(stringResource(R.string.home_tutorial_start)) }
                     }
                 }
             }
@@ -154,21 +156,14 @@ fun HomeScreen(
             ) {
                 Column(Modifier.padding(18.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                     Text(stringResource(R.string.home_play_title), style = MaterialTheme.typography.titleLarge)
-                    Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+                    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         state.sizes.forEach { size ->
-                            val unlocked = size in state.unlockedSizes
-                            val sizeAccent = Accents.forEndless(size)
-                            FilterChip(
+                            SizePill(
+                                size = size,
                                 selected = state.selectedSize == size,
-                                onClick = { if (unlocked) viewModel.selectSize(size) else onShop() },
-                                label = { Text(stringResource(R.string.size_label, size)) },
-                                leadingIcon = if (unlocked) null else {
-                                    { Icon(Icons.Default.Lock, contentDescription = stringResource(R.string.locked), modifier = Modifier.size(16.dp)) }
-                                },
-                                colors = FilterChipDefaults.filterChipColors(
-                                    selectedContainerColor = sizeAccent,
-                                    selectedLabelColor = Color.White,
-                                ),
+                                unlocked = size in state.unlockedSizes,
+                                onClick = { if (size in state.unlockedSizes) viewModel.selectSize(size) else onShop() },
+                                modifier = Modifier.weight(1f),
                             )
                         }
                     }
@@ -264,6 +259,35 @@ fun HomeScreen(
                 HomeTile("🛒", stringResource(R.string.home_shop), stringResource(R.string.home_hints_chip, state.hintsAvailable), onShop, Modifier.weight(1f))
             }
             Spacer(Modifier.height(4.dp))
+        }
+    }
+}
+
+/** Equal-width grid-size selector; locked sizes show a small lock and open the Shop. */
+@Composable
+private fun SizePill(size: Int, selected: Boolean, unlocked: Boolean, onClick: () -> Unit, modifier: Modifier = Modifier) {
+    val accent = Accents.forEndless(size)
+    Box(
+        modifier
+            .height(48.dp)
+            .clip(RoundedCornerShape(16.dp))
+            .background(if (selected) accent else accent.copy(alpha = 0.12f))
+            .clickable(onClick = onClick),
+        contentAlignment = Alignment.Center,
+    ) {
+        Text(
+            stringResource(R.string.size_label_compact, size),
+            style = MaterialTheme.typography.titleMedium,
+            color = if (selected) Color.White else accent,
+            maxLines = 1,
+        )
+        if (!unlocked) {
+            Icon(
+                Icons.Default.Lock,
+                contentDescription = stringResource(R.string.locked),
+                tint = accent,
+                modifier = Modifier.align(Alignment.TopEnd).padding(4.dp).size(12.dp),
+            )
         }
     }
 }

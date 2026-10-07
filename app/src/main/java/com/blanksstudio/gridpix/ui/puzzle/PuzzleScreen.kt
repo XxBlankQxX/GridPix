@@ -247,18 +247,27 @@ fun PuzzleScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun Controls(state: PuzzleUiState, viewModel: PuzzleViewModel, modifier: Modifier = Modifier) {
+    val accent = accentFor(state.kind)
+    val toggleColors = SegmentedButtonDefaults.colors(
+        activeContainerColor = accent,
+        activeContentColor = Color.White,
+        activeBorderColor = accent,
+        inactiveBorderColor = accent.copy(alpha = 0.5f),
+    )
     Column(modifier, verticalArrangement = Arrangement.spacedBy(10.dp)) {
         SingleChoiceSegmentedButtonRow(Modifier.fillMaxWidth()) {
             SegmentedButton(
                 selected = state.mode == PaintMode.FILL,
                 onClick = { viewModel.setMode(PaintMode.FILL) },
                 shape = SegmentedButtonDefaults.itemShape(0, 2),
+                colors = toggleColors,
                 icon = { Icon(painterResource(R.drawable.ic_fill), contentDescription = null) },
             ) { Text(stringResource(R.string.puzzle_mode_fill)) }
             SegmentedButton(
                 selected = state.mode == PaintMode.MARK,
                 onClick = { viewModel.setMode(PaintMode.MARK) },
                 shape = SegmentedButtonDefaults.itemShape(1, 2),
+                colors = toggleColors,
                 icon = { Icon(painterResource(R.drawable.ic_cross), contentDescription = null) },
             ) { Text(stringResource(R.string.puzzle_mode_mark)) }
         }
