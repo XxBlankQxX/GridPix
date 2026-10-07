@@ -17,6 +17,7 @@ import com.blanksstudio.gridpix.data.rules.HintRules
 import com.blanksstudio.gridpix.data.settings.GameSettings
 import com.blanksstudio.gridpix.data.settings.SettingsRepository
 import com.blanksstudio.gridpix.data.settings.ThemeMode
+import com.blanksstudio.gridpix.game.AutoCross
 import com.blanksstudio.gridpix.game.CellState
 import com.blanksstudio.gridpix.game.DailyPuzzle
 import com.blanksstudio.gridpix.game.GridState
@@ -84,6 +85,10 @@ data class SolveReward(
     val level: LevelInfo,
     val leveledUp: Boolean,
     val newAchievements: List<Achievement>,
+    /** Free hints credited for reaching new levels (HintRules.levelRewards). */
+    val hintsEarned: Int = 0,
+    /** Ask Google Play for a rating now (5th solve or later, asked once). */
+    val askForReview: Boolean = false,
 )
 
 sealed interface PuzzleEvent {
@@ -276,6 +281,7 @@ class PuzzleViewModel @Inject constructor(
         strokeStart = null
         val s = _uiState.value
         if (s.board == start) return
+        applyAutoCross()
         undoStack.addLast(start)
         if (undoStack.size > 500) undoStack.removeFirst()
         redoStack.clear()
@@ -329,8 +335,18 @@ class PuzzleViewModel @Inject constructor(
                     lastHint = hint.row to hint.col,
                 )
             }
+            applyAutoCross()
             afterMove()
         }
+    }
+
+    /** Setting "Auto-cross finished lines": X the empty cells of lines whose fills match the clue. Same undo step as the move. */
+    private fun applyAutoCross() {
+        val s = _uiState.value
+        val puzzle = s.puzzle ?: return
+        if (!s.settings.autoCross) return
+        val crossed = AutoCross.apply(puzzle.clues, s.board)
+        if (crossed !== s.board) _uiState.update { it.copy(board = crossed) }
     }
 
     /** "Check on completion" default (SPEC section 2): shows mistakes once, without changing settings. */
@@ -374,6 +390,9 @@ class PuzzleViewModel @Inject constructor(
                 val before = progressBefore
                 if (before != null) {
                     val after = playerProgress.current()
+                    val hintsEarned = settings.claimLevelRewards(after.level.level)
+                    val askForReview = after.solvedCount >= REVIEW_AFTER_SOLVES && !settings.reviewAsked()
+                    if (askForReview) settings.setReviewAsked()
                     _uiState.update {
                         it.copy(
                             reward = SolveReward(
@@ -381,6 +400,8 @@ class PuzzleViewModel @Inject constructor(
                                 level = after.level,
                                 leveledUp = after.level.level > before.level.level,
                                 newAchievements = (after.unlocked - before.unlocked).sortedBy { a -> a.ordinal },
+                                hintsEarned = hintsEarned,
+                                askForReview = askForReview,
                             ),
                         )
                     }
@@ -414,5 +435,8 @@ class PuzzleViewModel @Inject constructor(
         super.onCleared()
     }
 }
+
+/** Google's rating prompt is offered once, after this many solved puzzles. */
+const val REVIEW_AFTER_SOLVES = 5
 
 fun PaintMode.other(): PaintMode = if (this == PaintMode.FILL) PaintMode.MARK else PaintMode.FILL

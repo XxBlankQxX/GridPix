@@ -24,7 +24,8 @@ class PlayerProgressRepository @Inject constructor(
     suspend fun current(): ProgressSnapshot = compute(dao.getSolved())
 
     private suspend fun compute(rows: List<SolvedRow>): ProgressSnapshot {
-        val totals = packs.packs().associate { it.id to it.puzzles.size }
+        // Seasonal packs are only visible part of the year, so they don't count toward "collect everything".
+        val totals = packs.packs().filterNot { it.isSeasonal }.associate { it.id to it.puzzles.size }
         val solved = rows.map { SolvedPuzzle(it.puzzleId, it.size, it.hintsUsed, it.elapsedMs) }
         return ProgressRules.snapshot(solved, totals, LocalDate.parse(LocalDates.today()))
     }

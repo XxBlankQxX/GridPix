@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Daily reminder -->
+    <string name="reminder_channel_name">Daily puzzle reminder</string>
+    <string name="reminder_channel_desc">One reminder a day when today\'s puzzle is still waiting</string>
+    <string name="reminder_title">Your daily puzzle is ready</string>
+    <string name="reminder_text">A new picture is waiting. Tap to play.</string>
+    <string name="reminder_text_streak">Keep your %1$d-day streak going!</string>
+    <string name="reminder_card_title">Never miss a daily puzzle</string>
+    <string name="reminder_card_body">Get one friendly reminder a day, only when today\'s puzzle is still waiting.</string>
+    <string name="reminder_card_enable">Turn on</string>
+    <string name="reminder_card_dismiss">No thanks</string>
+    <string name="reminder_denied">Notifications are blocked. You can allow them in your phone settings.</string>
+
+    <!-- Settings -->
+    <string name="settings_auto_cross">Auto-cross finished lines</string>
+    <string name="settings_auto_cross_desc">When a row or column matches its clue, its empty cells get an X.</string>
+    <string name="settings_share">Show Share button</string>
+    <string name="settings_share_desc">Share solved pictures with friends. Turn off to hide the button.</string>
+    <string name="settings_reminder">Daily reminder</string>
+    <string name="settings_reminder_desc">A notification when today\'s puzzle is still waiting.</string>
+    <string name="settings_reminder_time">Reminder time</string>
+    <string name="settings_reminder_hour">%1$02d:00</string>
+    <string name="settings_section_play">Play</string>
+    <string name="settings_section_app">App</string>
+
+    <!-- Share -->
+    <string name="share_button">Share picture</string>
+    <string name="share_chooser">Share your picture</string>
+    <string name="share_made_in">Made in GridPix · nonogram puzzles</string>
+    <string name="share_message_named">I just revealed \"%1$s\" in GridPix! %2$s</string>
+    <string name="share_message_size">I just solved a %1$d×%1$d puzzle in GridPix! %2$s</string>
+
+    <!-- Level-up hints -->
+    <plurals name="reward_free_hints">
+        <item quantity="one">+%1$d free hint for levelling up</item>
+        <item quantity="other">+%1$d free hints for levelling up</item>
+    </plurals>
+
+    <!-- Seasonal packs -->
+    <string name="pack_limited_time">Limited time</string>
+</resources>

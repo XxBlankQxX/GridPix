@@ -35,6 +35,7 @@ data class PackCard(
     val price: String?,
     /** Most recently listed solved picture, shown in colour on the card; null until one is solved. */
     val cover: PackCover?,
+    val seasonal: Boolean = false,
 )
 
 /** Pack cards with progress, ownership and Play prices. Shared by Home (carousel) and the Packs screen. */
@@ -43,7 +44,7 @@ fun packCardsFlow(
     progress: ProgressRepository,
     settings: SettingsRepository,
     billing: BillingManager,
-): Flow<List<PackCard>> = flow { emit(packs.packs()) }
+): Flow<List<PackCard>> = flow { emit(packs.visiblePacks()) }
     .flatMapLatest { list ->
         if (list.isEmpty()) return@flatMapLatest flowOf(emptyList())
         val solvedFlows = list.map { pack -> progress.observePack(pack.idPrefix) }
@@ -60,6 +61,7 @@ fun packCardsFlow(
                     unlocked = Entitlements.packUnlocked(owned, pack.productId),
                     price = pack.productId?.let { prices[it] },
                     cover = coverPuzzle?.let { PackCover(it.solution, it.colors) },
+                    seasonal = pack.isSeasonal,
                 )
             }
         }

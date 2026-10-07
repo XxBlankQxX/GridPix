@@ -101,6 +101,8 @@ object Accents {
     val nature = Color(0xFF27A35A)
     val daily = Color(0xFFF5A524)
     val tutorial = Color(0xFF12A594)
+    val halloween = Color(0xFFFF7A1A)
+    val christmas = Color(0xFFD7263D)
 
     fun forPack(packId: String): Color = when (packId) {
         "starter" -> starter
@@ -109,6 +111,8 @@ object Accents {
         "vehicles" -> vehicles
         "food" -> food
         "nature" -> nature
+        "halloween" -> halloween
+        "christmas" -> christmas
         else -> starter
     }
 

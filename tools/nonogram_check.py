@@ -15,10 +15,15 @@ import re
 import sys
 
 UNKNOWN, FILLED, EMPTY = 0, 1, 2
-PUZZLES_PER_PACK = 30
-# (small, large): puzzles 1-20 use the small size, 21-30 the large size. Must match PackContentTest.kt.
-DEFAULT_SIZES = (10, 15)
-PACK_SIZES = {"anime": (15, 20)}
+# Pack shape rules: (puzzle count, small size, large size, how many puzzles use the small size).
+# Must match PackContentTest.kt.
+DEFAULT_RULE = (30, 10, 15, 20)
+PACK_RULES = {
+    "anime": (30, 15, 20, 20),
+    # Seasonal free mini-packs: 10 puzzles, all 10x10, shown only in their "season_months".
+    "halloween": (10, 10, 10, 10),
+    "christmas": (10, 10, 10, 10),
+}
 HEX = re.compile(r"^#[0-9A-Fa-f]{6}$")
 
 
@@ -203,13 +208,21 @@ def check_pack(path):
         if key not in pack:
             print(f"{path}: missing '{key}'")
             problems += 1
+    count, small, large, small_count = PACK_RULES.get(pack.get("id"), DEFAULT_RULE)
     puzzles = pack.get("puzzles", [])
-    if len(puzzles) != PUZZLES_PER_PACK:
-        print(f"{path}: {len(puzzles)} puzzles, expected {PUZZLES_PER_PACK}")
+    if len(puzzles) != count:
+        print(f"{path}: {len(puzzles)} puzzles, expected {count}")
         problems += 1
+    months = pack.get("season_months")
+    if months is not None:
+        if not isinstance(months, list) or not months or not all(isinstance(m, int) and 1 <= m <= 12 for m in months):
+            print(f"{path}: season_months must be a non-empty list of month numbers 1-12")
+            problems += 1
+        if pack.get("product_id") is not None:
+            print(f"{path}: seasonal packs must be free (product_id null)")
+            problems += 1
     names = set()
     sizes = {}
-    small, large = PACK_SIZES.get(pack.get("id"), DEFAULT_SIZES)
     for i, p in enumerate(puzzles, start=1):
         name = p.get("name", "")
         if not name or name in names:
@@ -219,7 +232,7 @@ def check_pack(path):
         if "picross" in name.lower():
             print(f"{path} #{i:02d}: forbidden word in name")
             problems += 1
-        expected = small if i <= 20 else large
+        expected = small if i <= small_count else large
         ok, msg = check_grid(p.get("grid", []), {expected})
         if ok:
             color_problem = check_colors(p)

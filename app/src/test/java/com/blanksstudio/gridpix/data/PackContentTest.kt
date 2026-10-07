@@ -22,7 +22,12 @@ class PackContentTest {
 
     private fun packFiles() = PackRepository.PACK_ORDER.map { File(packsDir, "$it.json") }
 
-    private fun sizesFor(packId: String) = if (packId == "anime") 15 to 20 else 10 to 15
+    /** (puzzle count, small size, large size, small count) - same table as tools/nonogram_check.py. */
+    private fun ruleFor(packId: String) = when (packId) {
+        "anime" -> listOf(30, 15, 20, 20)
+        "halloween", "christmas" -> listOf(10, 10, 10, 10)
+        else -> listOf(30, 10, 15, 20)
+    }
 
     @Test
     fun `all packs are present`() {
@@ -35,13 +40,17 @@ class PackContentTest {
             if (!file.isFile) continue
             val pack = PackParser.parse(file.readText())
             assertEquals(file.nameWithoutExtension, pack.id)
-            assertEquals("${pack.id}: puzzle count", 30, pack.puzzles.size)
-            assertEquals("${pack.id}: duplicate names", 30, pack.puzzles.map { it.name }.toSet().size)
-            if (pack.id == "starter") assertEquals(null, pack.productId) else assertEquals("pack_${pack.id}", pack.productId)
-            val (small, large) = sizesFor(pack.id)
+            val (count, small, large, smallCount) = ruleFor(pack.id)
+            assertEquals("${pack.id}: puzzle count", count, pack.puzzles.size)
+            assertEquals("${pack.id}: duplicate names", count, pack.puzzles.map { it.name }.toSet().size)
+            when {
+                pack.isSeasonal -> assertEquals("${pack.id}: seasonal packs are free", null, pack.productId)
+                pack.id == "starter" -> assertEquals(null, pack.productId)
+                else -> assertEquals("pack_${pack.id}", pack.productId)
+            }
             for (p in pack.puzzles) {
                 val where = "${pack.id} #${p.index} ${p.name}"
-                assertEquals("$where: size", if (p.index <= 20) small else large, p.solution.size)
+                assertEquals("$where: size", if (p.index <= smallCount) small else large, p.solution.size)
                 assertTrue("$where: not line-solvable", PuzzleSolver.isLineSolvable(p.solution))
                 assertTrue("$where: forbidden word", !p.name.contains("picross", ignoreCase = true))
                 assertEquals("pack-${pack.id}-" + p.index.toString().padStart(2, '0'), p.toPuzzle(pack.id).id)

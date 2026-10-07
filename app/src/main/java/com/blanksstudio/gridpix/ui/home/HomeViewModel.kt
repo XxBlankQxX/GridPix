@@ -1,6 +1,10 @@
 package com.blanksstudio.gridpix.ui.home
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
+import com.blanksstudio.gridpix.notifications.DailyReminder
+import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.first
 import androidx.lifecycle.viewModelScope
 import com.blanksstudio.gridpix.billing.BillingManager
 import com.blanksstudio.gridpix.billing.Entitlements
@@ -48,10 +52,13 @@ data class HomeUiState(
     val week: List<Pair<LocalDate, Boolean>> = emptyList(),
     val monthTrophy: Trophy = Trophy.NONE,
     val packs: List<PackCard> = emptyList(),
+    /** One-time "Never miss a daily puzzle" card, after the first solve. */
+    val showReminderCard: Boolean = false,
 )
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
+    @ApplicationContext private val appContext: Context,
     private val settings: SettingsRepository,
     progressRepo: ProgressRepository,
     playerProgress: PlayerProgressRepository,
@@ -80,8 +87,10 @@ class HomeViewModel @Inject constructor(
         settings.ownedProducts,
         settings.hintWallet,
         settings.tutorialDone,
-    ) { lastSize, owned, wallet, tutorialDone ->
+        settings.reminderPromptShown,
+    ) { lastSize, owned, wallet, tutorialDone, reminderPromptShown ->
         HomeUiState(
+            showReminderCard = !reminderPromptShown,
             loading = false,
             selectedSize = lastSize,
             unlockedSizes = PuzzleGenerator.SIZES.filter { Entitlements.sizeUnlocked(owned, it) }.toSet(),
@@ -107,10 +116,24 @@ class HomeViewModel @Inject constructor(
             week = (6 downTo 0).map { todayDate.minusDays(it.toLong()) }.map { it to (it in progress.dailyDays) },
             monthTrophy = CalendarRules.trophy(YearMonth.from(todayDate), progress.dailyDays),
             packs = packCards,
+            showReminderCard = base.showReminderCard && progress.solvedCount >= 1,
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), HomeUiState())
 
     val badgeTotal: Int = Achievement.entries.size
+
+    /** From the Home card: [granted] is false when the player declined the notification permission. */
+    fun answerReminder(granted: Boolean) {
+        viewModelScope.launch {
+            settings.setReminderEnabled(granted)
+            val s = settings.settings.first()
+            DailyReminder.sync(appContext, granted, s.reminderHour)
+        }
+    }
+
+    fun dismissReminderCard() {
+        viewModelScope.launch { settings.setReminderPromptShown() }
+    }
 
     fun selectSize(size: Int) {
         viewModelScope.launch { settings.setLastSize(size) }

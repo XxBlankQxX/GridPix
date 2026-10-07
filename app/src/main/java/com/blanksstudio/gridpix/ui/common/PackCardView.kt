@@ -80,6 +80,7 @@ fun PackCardView(card: PackCard, onClick: () -> Unit, modifier: Modifier = Modif
             )
             Text(
                 when {
+                    card.seasonal -> stringResource(R.string.pack_limited_time)
                     card.productId == null -> stringResource(R.string.free)
                     card.unlocked -> stringResource(R.string.home_pack_progress, card.solved, card.total)
                     else -> card.price ?: stringResource(R.string.locked)

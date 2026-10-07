@@ -22,7 +22,17 @@ data class GameSettings(
     val haptics: Boolean,
     val sound: Boolean,
     val theme: ThemeMode,
+    /** Cross the empty cells of a line once its filled cells match the clue. */
+    val autoCross: Boolean = true,
+    /** Show the Share button on the solved screen. Players who never share can switch it off. */
+    val shareEnabled: Boolean = true,
+    /** Opt-in daily puzzle reminder notification. */
+    val reminderEnabled: Boolean = false,
+    /** Local hour (0-23) for the reminder. */
+    val reminderHour: Int = DEFAULT_REMINDER_HOUR,
 )
+
+const val DEFAULT_REMINDER_HOUR = 18
 
 /** SPEC section 5 DataStore `settings`. Keys are stable strings; never rename without a migration. */
 @Singleton
@@ -116,7 +126,41 @@ class SettingsRepository @Inject constructor(
             sound = it[KEY_SOUND] ?: true,
             theme = it[KEY_THEME]?.let { name -> ThemeMode.entries.firstOrNull { t -> t.name == name } }
                 ?: ThemeMode.SYSTEM,
+            autoCross = it[KEY_AUTO_CROSS] ?: true,
+            shareEnabled = it[KEY_SHARE_ENABLED] ?: true,
+            reminderEnabled = it[KEY_REMINDER_ENABLED] ?: false,
+            reminderHour = it[KEY_REMINDER_HOUR] ?: DEFAULT_REMINDER_HOUR,
         )
+    }
+
+    suspend fun setAutoCross(on: Boolean) = dataStore.edit { it[KEY_AUTO_CROSS] = on }
+    suspend fun setShareEnabled(on: Boolean) = dataStore.edit { it[KEY_SHARE_ENABLED] = on }
+    suspend fun setReminderEnabled(on: Boolean) = dataStore.edit {
+        it[KEY_REMINDER_ENABLED] = on
+        it[KEY_REMINDER_PROMPT_SHOWN] = true
+    }
+    suspend fun setReminderHour(hour: Int) = dataStore.edit { it[KEY_REMINDER_HOUR] = hour.coerceIn(0, 23) }
+
+    /** The one-time "Get a daily reminder?" card on Home. */
+    val reminderPromptShown: Flow<Boolean> = dataStore.data.map { it[KEY_REMINDER_PROMPT_SHOWN] ?: false }
+    suspend fun setReminderPromptShown() = dataStore.edit { it[KEY_REMINDER_PROMPT_SHOWN] = true }
+
+    /** Google's in-app review is requested at most once by GridPix (Play also rate-limits it). */
+    suspend fun reviewAsked(): Boolean = dataStore.data.first()[KEY_REVIEW_ASKED] ?: false
+    suspend fun setReviewAsked() = dataStore.edit { it[KEY_REVIEW_ASKED] = true }
+
+    /** Credits one hint per newly reached level (HintRules.levelRewards) and returns how many were added. */
+    suspend fun claimLevelRewards(currentLevel: Int): Int {
+        var credited = 0
+        dataStore.edit { prefs ->
+            val reward = HintRules.levelRewards(prefs[KEY_LEVEL_REWARDED] ?: 1, currentLevel)
+            if (reward > 0) {
+                prefs.write(HintRules.credit(prefs.wallet(), reward))
+                prefs[KEY_LEVEL_REWARDED] = currentLevel
+                credited = reward
+            }
+        }
+        return credited
     }
 
     suspend fun setHighlightMistakes(on: Boolean) = dataStore.edit { it[KEY_HIGHLIGHT_MISTAKES] = on }
@@ -153,5 +197,12 @@ class SettingsRepository @Inject constructor(
         val KEY_LAST_SIZE = intPreferencesKey("last_size")
         val KEY_TUTORIAL_DONE = booleanPreferencesKey("tutorial_done")
         val KEY_HINT_PROMPT_SHOWN = booleanPreferencesKey("hint_prompt_shown")
+        val KEY_AUTO_CROSS = booleanPreferencesKey("auto_cross")
+        val KEY_SHARE_ENABLED = booleanPreferencesKey("share_enabled")
+        val KEY_REMINDER_ENABLED = booleanPreferencesKey("reminder_enabled")
+        val KEY_REMINDER_HOUR = intPreferencesKey("reminder_hour")
+        val KEY_REMINDER_PROMPT_SHOWN = booleanPreferencesKey("reminder_prompt_shown")
+        val KEY_REVIEW_ASKED = booleanPreferencesKey("review_asked")
+        val KEY_LEVEL_REWARDED = intPreferencesKey("level_rewarded")
     }
 }

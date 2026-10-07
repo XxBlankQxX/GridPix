@@ -64,13 +64,14 @@ class CollectionViewModel @Inject constructor(
         .flatMapLatest { list ->
             combine(progress.observePack("pack-"), settings.ownedProducts) { rows, owned ->
                 val solvedIds = rows.filter { it.solved }.map { it.puzzleId }.toSet()
+                val month = java.time.LocalDate.now().monthValue
                 list.map { pack ->
                     CollectionSection(
                         pack = pack,
                         unlocked = Entitlements.packUnlocked(owned, pack.productId),
                         solved = pack.puzzles.filter { it.toPuzzle(pack.id).id in solvedIds }.map { it.index }.toSet(),
                     )
-                }
+                }.filter { it.pack.visibleIn(month) || it.solved.isNotEmpty() }
             }
         }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())

@@ -10,7 +10,16 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import android.content.Context
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import com.blanksstudio.gridpix.notifications.DailyReminder
+import com.blanksstudio.gridpix.ui.common.rememberEnableReminder
+import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.first
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
@@ -45,8 +54,22 @@ import javax.inject.Inject
 const val PRIVACY_POLICY_URL = "https://xxblankqxx.github.io/GridPix/privacy.html"
 
 @HiltViewModel
-class SettingsViewModel @Inject constructor(private val settings: SettingsRepository) : ViewModel() {
+class SettingsViewModel @Inject constructor(
+    private val settings: SettingsRepository,
+    @ApplicationContext private val appContext: Context,
+) : ViewModel() {
     val state: StateFlow<GameSettings?> = settings.settings.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), null)
+    fun setAutoCross(on: Boolean) = viewModelScope.launch { settings.setAutoCross(on) }
+    fun setShareEnabled(on: Boolean) = viewModelScope.launch { settings.setShareEnabled(on) }
+    fun setReminderEnabled(on: Boolean) = viewModelScope.launch {
+        settings.setReminderEnabled(on)
+        DailyReminder.sync(appContext, on, settings.settings.first().reminderHour)
+    }
+    fun setReminderHour(hour: Int) = viewModelScope.launch {
+        settings.setReminderHour(hour)
+        val current = settings.settings.first()
+        DailyReminder.sync(appContext, current.reminderEnabled, hour)
+    }
     fun setHighlightMistakes(on: Boolean) = viewModelScope.launch { settings.setHighlightMistakes(on) }
     fun setHaptics(on: Boolean) = viewModelScope.launch { settings.setHaptics(on) }
     fun setSound(on: Boolean) = viewModelScope.launch { settings.setSound(on) }
@@ -61,7 +84,14 @@ fun SettingsScreen(
 ) {
     val settings by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
-    ScreenScaffold(title = stringResource(R.string.settings_title), onBack = onBack) { padding ->
+    val snackbar = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
+    val deniedText = stringResource(R.string.reminder_denied)
+    val enableReminder = rememberEnableReminder { granted ->
+        viewModel.setReminderEnabled(granted)
+        if (!granted) scope.launch { snackbar.showSnackbar(deniedText) }
+    }
+    ScreenScaffold(title = stringResource(R.string.settings_title), onBack = onBack, snackbarHostState = snackbar) { padding ->
         val s = settings ?: return@ScreenScaffold
         Column(
             Modifier
@@ -73,6 +103,39 @@ fun SettingsScreen(
                 headlineContent = { Text(stringResource(R.string.settings_highlight_mistakes)) },
                 supportingContent = { Text(stringResource(R.string.settings_highlight_mistakes_desc)) },
                 trailingContent = { Switch(checked = s.highlightMistakes, onCheckedChange = viewModel::setHighlightMistakes) },
+            )
+            ListItem(
+                headlineContent = { Text(stringResource(R.string.settings_auto_cross)) },
+                supportingContent = { Text(stringResource(R.string.settings_auto_cross_desc)) },
+                trailingContent = { Switch(checked = s.autoCross, onCheckedChange = viewModel::setAutoCross) },
+            )
+            ListItem(
+                headlineContent = { Text(stringResource(R.string.settings_reminder)) },
+                supportingContent = { Text(stringResource(R.string.settings_reminder_desc)) },
+                trailingContent = {
+                    Switch(checked = s.reminderEnabled, onCheckedChange = { on -> if (on) enableReminder() else viewModel.setReminderEnabled(false) })
+                },
+            )
+            if (s.reminderEnabled) {
+                Text(
+                    stringResource(R.string.settings_reminder_time),
+                    style = MaterialTheme.typography.labelLarge,
+                    modifier = Modifier.padding(start = 16.dp, top = 4.dp),
+                )
+                Row(Modifier.padding(horizontal = 16.dp, vertical = 8.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    listOf(8, 12, 18, 20).forEach { hour ->
+                        FilterChip(
+                            selected = s.reminderHour == hour,
+                            onClick = { viewModel.setReminderHour(hour) },
+                            label = { Text(stringResource(R.string.settings_reminder_hour, hour)) },
+                        )
+                    }
+                }
+            }
+            ListItem(
+                headlineContent = { Text(stringResource(R.string.settings_share)) },
+                supportingContent = { Text(stringResource(R.string.settings_share_desc)) },
+                trailingContent = { Switch(checked = s.shareEnabled, onCheckedChange = viewModel::setShareEnabled) },
             )
             ListItem(
                 headlineContent = { Text(stringResource(R.string.settings_haptics)) },

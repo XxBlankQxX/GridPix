@@ -11,6 +11,12 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Surface
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.filled.Share
+import com.blanksstudio.gridpix.ui.common.SharePicture
+import com.google.android.play.core.review.ReviewManagerFactory
 import com.blanksstudio.gridpix.ui.common.ConfettiBurst
 import com.blanksstudio.gridpix.ui.common.ui
 import com.blanksstudio.gridpix.ui.theme.Accents
@@ -308,6 +314,17 @@ private fun SolvedContent(state: PuzzleUiState, modifier: Modifier, onNext: () -
     val reveal = remember { Animatable(0f) }
     LaunchedEffect(puzzle.id) { reveal.animateTo(1f, tween(durationMillis = 1600, easing = FastOutSlowInEasing)) }
     val reward = state.reward
+    val activity = LocalContext.current as? android.app.Activity
+    // Google Play rating prompt: once, after the 5th solve, a moment after the reveal (decision D27).
+    LaunchedEffect(reward?.askForReview) {
+        if (reward?.askForReview == true && activity != null) {
+            kotlinx.coroutines.delay(1800)
+            val manager = ReviewManagerFactory.create(activity)
+            manager.requestReviewFlow().addOnCompleteListener { task ->
+                if (task.isSuccessful) manager.launchReviewFlow(activity, task.result)
+            }
+        }
+    }
 
     Box(modifier) {
         Column(
@@ -343,6 +360,20 @@ private fun SolvedContent(state: PuzzleUiState, modifier: Modifier, onNext: () -
                 )
             }
             if (reward != null) RewardCard(reward, accent)
+            if (state.settings.shareEnabled) {
+                val context = LocalContext.current
+                val title = puzzle.name ?: stringResource(R.string.size_label, puzzle.size)
+                val message = puzzle.name?.let { stringResource(R.string.share_message_named, it, SharePicture.PLAY_URL) }
+                    ?: stringResource(R.string.share_message_size, puzzle.size, SharePicture.PLAY_URL)
+                OutlinedButton(
+                    onClick = { SharePicture.share(context, puzzle.solution, state.colors, accent.toArgb(), title, message) },
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    Icon(Icons.Default.Share, contentDescription = null)
+                    Spacer(Modifier.width(8.dp))
+                    Text(stringResource(R.string.share_button))
+                }
+            }
             when (val k = state.kind) {
                 is PuzzleKind.Daily -> state.streakAfterSolve?.let {
                     Text("\uD83D\uDD25 " + stringResource(R.string.solved_daily_streak, it), style = MaterialTheme.typography.titleMedium)
@@ -407,6 +438,12 @@ private fun RewardCard(reward: SolveReward, accent: Color) {
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
+            if (reward.hintsEarned > 0) {
+                Text(
+                    "\uD83D\uDCA1 " + pluralStringResource(R.plurals.reward_free_hints, reward.hintsEarned, reward.hintsEarned),
+                    style = MaterialTheme.typography.titleSmall,
+                )
+            }
             if (reward.leveledUp) {
                 Text("\uD83C\uDF89 " + stringResource(R.string.reward_level_up, reward.level.level), style = MaterialTheme.typography.titleMedium)
             }

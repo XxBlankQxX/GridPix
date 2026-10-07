@@ -73,6 +73,16 @@ class RulesTest {
     }
 
     @Test
+    fun `one hint per level reached, paid once`() {
+        assertEquals(0, HintRules.levelRewards(rewardedLevel = 1, currentLevel = 1))
+        assertEquals(1, HintRules.levelRewards(rewardedLevel = 1, currentLevel = 2))
+        assertEquals(3, HintRules.levelRewards(rewardedLevel = 2, currentLevel = 5))
+        assertEquals(0, HintRules.levelRewards(rewardedLevel = 5, currentLevel = 5))
+        assertEquals(0, HintRules.levelRewards(rewardedLevel = 6, currentLevel = 5))
+        assertEquals(2, HintRules.levelRewards(rewardedLevel = 0, currentLevel = 3)) // never stored yet
+    }
+
+    @Test
     fun `hint grants per product`() {
         assertEquals(10, Products.hintsGranted(Products.HINTS_10))
         assertEquals(50, Products.hintsGranted(Products.HINTS_50))

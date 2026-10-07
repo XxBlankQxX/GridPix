@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Monochrome status-bar icon: the 7x7 pixel "G" from the launcher icon (Android tints it). -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="7"
+    android:viewportHeight="7">
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M1,0h5v0.85h-5z M0,1h2v5h-2z M5,1h2v0.85h-2z M3,3h4v0.85h-4z M5,4h2v2h-2z M1,6h5v0.85h-5z" />
+</vector>

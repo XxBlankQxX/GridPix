@@ -53,6 +53,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.blanksstudio.gridpix.R
 import com.blanksstudio.gridpix.data.rules.Trophy
 import com.blanksstudio.gridpix.ui.common.PackCardView
+import com.blanksstudio.gridpix.ui.common.rememberEnableReminder
 import com.blanksstudio.gridpix.ui.common.emoji
 import com.blanksstudio.gridpix.ui.theme.Accents
 import java.time.format.TextStyle
@@ -127,6 +128,27 @@ fun HomeScreen(
                     HeroChip("🔥 " + stringResource(R.string.home_daily_streak, progress.currentStreak))
                     HeroChip("💡 " + stringResource(R.string.home_hints_chip, state.hintsAvailable))
                     HeroChip("🏅 " + stringResource(R.string.home_badges_count, progress.unlocked.size, viewModel.badgeTotal))
+                }
+            }
+
+            if (state.showReminderCard) {
+                val enableReminder = rememberEnableReminder { granted -> viewModel.answerReminder(granted) }
+                Card(
+                    modifier = Modifier.padding(horizontal = 20.dp).fillMaxWidth(),
+                    shape = RoundedCornerShape(24.dp),
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer),
+                ) {
+                    Column(Modifier.padding(18.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        Text("\uD83D\uDD14 " + stringResource(R.string.reminder_card_title), style = MaterialTheme.typography.titleMedium)
+                        Text(stringResource(R.string.reminder_card_body), style = MaterialTheme.typography.bodyMedium)
+                        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                            Button(
+                                onClick = enableReminder,
+                                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary, contentColor = MaterialTheme.colorScheme.onSecondary),
+                            ) { Text(stringResource(R.string.reminder_card_enable)) }
+                            TextButton(onClick = viewModel::dismissReminderCard) { Text(stringResource(R.string.reminder_card_dismiss)) }
+                        }
+                    }
                 }
             }
 

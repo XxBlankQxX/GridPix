@@ -11,8 +11,14 @@ data class Pack(
     /** Play product id, or null when the pack is free (Starter). */
     val productId: String?,
     val puzzles: List<PackPuzzle>,
+    /** Months (1-12) a free seasonal pack is shown in; empty for regular packs. */
+    val seasonMonths: List<Int> = emptyList(),
 ) {
     val idPrefix: String get() = "pack-$id-"
+    val isSeasonal: Boolean get() = seasonMonths.isNotEmpty()
+
+    /** Regular packs are always listed; seasonal ones only in their months. */
+    fun visibleIn(month: Int): Boolean = !isSeasonal || month in seasonMonths
 }
 
 data class PackPuzzle(
@@ -89,6 +95,7 @@ object PackParser {
             }
             PackPuzzle(index = i + 1, name = obj.getString("name"), solution = solution, colors = colors)
         }
-        return Pack(id, name, productId, puzzles)
+        val months = root.optJSONArray("season_months")?.let { a -> List(a.length()) { a.getInt(it) } } ?: emptyList()
+        return Pack(id, name, productId, puzzles, months)
     }
 }

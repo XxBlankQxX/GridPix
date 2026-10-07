@@ -124,6 +124,10 @@ dependencies {
     // Google Play Billing: hints, packs, large grids, everything bundle (SPEC section 6). The only network use.
     implementation(libs.play.billing)
 
+    // Daily reminder notification (opt-in) and the Play rating prompt (decision D27).
+    implementation(libs.androidx.work.runtime.ktx)
+    implementation(libs.play.review)
+
     // Tests (game/ is pure Kotlin and is unit-tested here)
     testImplementation(libs.junit)
     testImplementation(libs.org.json) // real org.json so PackParser runs in JVM tests

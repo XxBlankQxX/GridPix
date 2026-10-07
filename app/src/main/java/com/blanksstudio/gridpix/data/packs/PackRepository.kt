@@ -26,6 +26,10 @@ class PackRepository @Inject constructor(
 
     suspend fun pack(packId: String): Pack? = packs().firstOrNull { it.id == packId }
 
+    /** Packs to list right now: seasonal packs (listed first) appear only in their month. */
+    suspend fun visiblePacks(month: Int = java.time.LocalDate.now().monthValue): List<Pack> =
+        packs().filter { it.visibleIn(month) }
+
     suspend fun puzzle(packId: String, index: Int): PackPuzzle? =
         pack(packId)?.puzzles?.getOrNull(index - 1)
 
@@ -41,6 +45,6 @@ class PackRepository @Inject constructor(
 
     companion object {
         const val PACKS_DIR = "packs"
-        val PACK_ORDER = listOf("starter", "anime", "animals", "vehicles", "food", "nature")
+        val PACK_ORDER = listOf("halloween", "christmas", "starter", "anime", "animals", "vehicles", "food", "nature")
     }
 }

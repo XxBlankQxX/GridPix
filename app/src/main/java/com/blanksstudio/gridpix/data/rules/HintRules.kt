@@ -39,6 +39,14 @@ object HintRules {
         require(hints >= 0)
         return wallet.copy(balance = wallet.balance + hints)
     }
+
+    /**
+     * Level-up reward (decision D27): one free hint per level reached above level 1, paid once.
+     * [rewardedLevel] is the highest level already paid out (stored), so the reward can never be
+     * claimed twice, and players who levelled up before this feature get their hints on the next solve.
+     */
+    fun levelRewards(rewardedLevel: Int, currentLevel: Int): Int =
+        (currentLevel - maxOf(rewardedLevel, 1)).coerceAtLeast(0)
 }
 
 /** Daily puzzle streak (SPEC section 3). Dates are local `yyyy-MM-dd` strings. */
