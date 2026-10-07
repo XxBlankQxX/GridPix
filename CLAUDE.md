@@ -31,6 +31,7 @@ No network except Play Billing. No ads SDK. No Firebase.
 
 ## Current status
 
+- 2026-10-07 (evening): **v1.2.0** (build 5): daily reminder (WorkManager, opt-in), Play review prompt, auto-cross, share picture (with off switch), level-up hints, seasonal Halloween/Christmas packs, es/pt/fr/de translations (`res/values-xx`, `assets/packs/i18n/xx.json`, TranslationsTest keeps them complete). 72 unit tests.
 - 2026-10-07 (later): **v1.1.0 redesign** (build 4): colour reveal, Anime pack (`pack_anime`), level/XP, badges, streak calendar, Collection, new icon. 62 unit tests. Pack JSON now has `palette` + `colors` per puzzle (validated by the tool and PackContentTest).
 - 2026-10-07: **v1.0.0 code complete.** All screens (S1-S8 + tutorial), Room + DataStore, Play Billing, 5 packs x 30 puzzles, 54 unit tests, signed release bundle with R8, smoke-tested on the API 37 emulator. Repo https://github.com/XxBlankQxX/GridPix (public, so GitHub Pages can host docs/privacy.html).
 - Remaining work is Play Console only; steps in OneDrive `Apps/GridPix/Play_Console_Checklist.md`; store text in `Store_Listing.md`; screenshots and graphics in `Apps/GridPix/screenshots/` and `graphics/`.
