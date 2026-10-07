@@ -126,8 +126,9 @@ fun HomeScreen(
                 )
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                     HeroChip("🔥 " + stringResource(R.string.home_daily_streak, progress.currentStreak))
-                    HeroChip("💡 " + stringResource(R.string.home_hints_chip, state.hintsAvailable))
-                    HeroChip("🏅 " + stringResource(R.string.home_badges_count, progress.unlocked.size, viewModel.badgeTotal))
+                    // Icon + number only, so the row fits in every language.
+                    HeroChip("💡 ${state.hintsAvailable}")
+                    HeroChip("🏅 ${progress.unlocked.size}/${viewModel.badgeTotal}")
                 }
             }
 

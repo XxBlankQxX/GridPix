@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Level / XP -->
+    <string name="level_label">Level %1$d</string>
+    <string name="level_xp_progress">%1$d / %2$d XP bis zum nächsten Level</string>
+    <string name="reward_xp">+%1$d XP</string>
+    <string name="reward_level_up">Level geschafft! Du hast Level %1$d erreicht</string>
+    <string name="reward_new_badge">Neues Abzeichen</string>
+
+    <!-- Home -->
+    <string name="home_play_title">Endlos-Rätsel</string>
+    <string name="home_daily_streak">%1$d Tage in Serie</string>
+    <string name="home_collection">Sammlung</string>
+    <string name="home_progress">Fortschritt</string>
+    <string name="home_see_all">Alle ansehen</string>
+    <string name="home_badges_count">%1$d / %2$d Abzeichen</string>
+    <string name="home_collected_count">%1$d / %2$d Bilder</string>
+    <string name="home_hints_chip">%1$d Hinweise</string>
+    <string name="home_pack_progress">%1$d / %2$d</string>
+
+    <!-- Progress screen -->
+    <string name="progress_title">Fortschritt</string>
+    <string name="progress_total_xp">%1$d XP insgesamt</string>
+    <string name="progress_current_streak">Aktuelle Serie</string>
+    <string name="progress_best_streak">Beste Serie</string>
+    <string name="progress_days">%1$d Tage</string>
+    <string name="progress_calendar">Tageskalender</string>
+    <string name="progress_month_solved">%1$d von %2$d Tagen gelöst</string>
+    <string name="progress_trophy_none">Löse in diesem Monat 10 Tagesrätsel und hol dir einen Pokal</string>
+    <string name="progress_trophy_bronze">Bronzepokal · 20 Tage für Silber</string>
+    <string name="progress_trophy_silver">Silberpokal · jeden Tag für Gold</string>
+    <string name="progress_trophy_gold">Goldpokal · jeden Tag gelöst!</string>
+    <string name="progress_badges">Abzeichen</string>
+    <string name="progress_badge_progress">%1$d / %2$d</string>
+    <string name="progress_by_size">Gelöst nach Größe</string>
+    <string name="progress_prev_month">Voriger Monat</string>
+    <string name="progress_next_month">Nächster Monat</string>
+
+    <!-- Collection -->
+    <string name="collection_title">Sammlung</string>
+    <string name="collection_count">%1$d / %2$d Bilder gesammelt</string>
+    <string name="collection_pack_count">%1$d / %2$d</string>
+
+    <!-- Shop: Anime pack -->
+    <string name="shop_pack_anime">Anime-Paket</string>
+    <string name="shop_pack_anime_desc">30 eigene Bilder im Anime-Stil, 15 × 15 und 20 × 20</string>
+
+    <!-- Achievements -->
+    <string name="ach_first_solve">Erstes Bild</string>
+    <string name="ach_first_solve_desc">Löse dein erstes Rätsel</string>
+    <string name="ach_solves_10">Guter Start</string>
+    <string name="ach_solves_10_desc">Löse 10 Rätsel</string>
+    <string name="ach_solves_50">Rätselfan</string>
+    <string name="ach_solves_50_desc">Löse 50 Rätsel</string>
+    <string name="ach_solves_100">Hunderter</string>
+    <string name="ach_solves_100_desc">Löse 100 Rätsel</string>
+    <string name="ach_solves_250">Rastermeister</string>
+    <string name="ach_solves_250_desc">Löse 250 Rätsel</string>
+    <string name="ach_pure_logic">Pure Logik</string>
+    <string name="ach_pure_logic_desc">Löse ein Rätsel ohne Hinweise</string>
+    <string name="ach_pure_logic_25">Superhirn</string>
+    <string name="ach_pure_logic_25_desc">Löse 25 Rätsel ohne Hinweise</string>
+    <string name="ach_big_grid">Großes Bild</string>
+    <string name="ach_big_grid_desc">Löse ein 15 × 15 Rätsel</string>
+    <string name="ach_giant_grid">Riesenraster</string>
+    <string name="ach_giant_grid_desc">Löse ein 20 × 20 Rätsel</string>
+    <string name="ach_speedy">Blitzschnell</string>
+    <string name="ach_speedy_desc">Löse ein 10 × 10 Rätsel oder größer in unter 3 Minuten, ohne Hinweise</string>
+    <string name="ach_daily_first">Tagesspieler</string>
+    <string name="ach_daily_first_desc">Löse ein Tagesrätsel</string>
+    <string name="ach_streak_7">Feuer und Flamme</string>
+    <string name="ach_streak_7_desc">Löse das Tagesrätsel 7 Tage in Folge</string>
+    <string name="ach_streak_30">Nicht zu stoppen</string>
+    <string name="ach_streak_30_desc">Löse das Tagesrätsel 30 Tage in Folge</string>
+    <string name="ach_pack_complete">Paket komplett</string>
+    <string name="ach_pack_complete_desc">Löse jedes Bild in einem Paket</string>
+    <string name="ach_collector_50">Sammler</string>
+    <string name="ach_collector_50_desc">Sammle 50 Paketbilder</string>
+    <string name="ach_collector_all">Komplettist</string>
+    <string name="ach_collector_all_desc">Sammle jedes Paketbild</string>
+    <string name="ach_level_10">Aufsteigender Stern</string>
+    <string name="ach_level_10_desc">Erreiche Level 10</string>
+    <string name="ach_level_25">Superstar</string>
+    <string name="ach_level_25_desc">Erreiche Level 25</string>
+</resources>

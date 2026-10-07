@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Daily reminder -->
+    <string name="reminder_channel_name">Erinnerung ans Tagesrätsel</string>
+    <string name="reminder_channel_desc">Eine Erinnerung pro Tag, wenn das heutige Rätsel noch wartet</string>
+    <string name="reminder_title">Dein Tagesrätsel ist bereit</string>
+    <string name="reminder_text">Ein neues Bild wartet auf dich. Tippe zum Spielen.</string>
+    <string name="reminder_text_streak">Halte deine %1$d-Tage-Serie am Laufen!</string>
+    <string name="reminder_card_title">Verpasse kein Tagesrätsel</string>
+    <string name="reminder_card_body">Bekomme jeden Tag eine freundliche Erinnerung, nur wenn das heutige Rätsel noch wartet.</string>
+    <string name="reminder_card_enable">Einschalten</string>
+    <string name="reminder_card_dismiss">Nein danke</string>
+    <string name="reminder_denied">Benachrichtigungen sind blockiert. Du kannst sie in den Handy-Einstellungen erlauben.</string>
+
+    <!-- Settings -->
+    <string name="settings_auto_cross">Fertige Linien automatisch abkreuzen</string>
+    <string name="settings_auto_cross_desc">Wenn eine Zeile oder Spalte zu ihren Zahlen passt, bekommen die leeren Felder ein X.</string>
+    <string name="settings_share">Teilen-Button anzeigen</string>
+    <string name="settings_share_desc">Teile gelöste Bilder mit Freunden. Ausschalten, um den Button zu verstecken.</string>
+    <string name="settings_reminder">Tägliche Erinnerung</string>
+    <string name="settings_reminder_desc">Eine Benachrichtigung, wenn das heutige Rätsel noch wartet.</string>
+    <string name="settings_reminder_time">Uhrzeit der Erinnerung</string>
+    <string name="settings_reminder_hour">%1$02d:00</string>
+    <string name="settings_section_play">Spielen</string>
+    <string name="settings_section_app">App</string>
+
+    <!-- Share -->
+    <string name="share_button">Bild teilen</string>
+    <string name="share_chooser">Teile dein Bild</string>
+    <string name="share_made_in">Gemacht mit GridPix · Nonogramm-Rätsel</string>
+    <string name="share_message_named">Ich habe gerade \"%1$s\" in GridPix aufgedeckt! %2$s</string>
+    <string name="share_message_size">Ich habe gerade ein %1$d×%1$d Rätsel in GridPix gelöst! %2$s</string>
+
+    <!-- Level-up hints -->
+    <plurals name="reward_free_hints">
+        <item quantity="one">+%1$d Gratis-Hinweis fürs Aufsteigen</item>
+        <item quantity="other">+%1$d Gratis-Hinweise fürs Aufsteigen</item>
+    </plurals>
+
+    <!-- Seasonal packs -->
+    <string name="pack_limited_time">Nur für kurze Zeit</string>
+</resources>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Level / XP -->
+    <string name="level_label">Nivel %1$d</string>
+    <string name="level_xp_progress">%1$d / %2$d XP para el siguiente nivel</string>
+    <string name="reward_xp">+%1$d XP</string>
+    <string name="reward_level_up">¡Subiste de nivel! Llegaste al nivel %1$d</string>
+    <string name="reward_new_badge">Nueva insignia</string>
+
+    <!-- Home -->
+    <string name="home_play_title">Puzles infinitos</string>
+    <string name="home_daily_streak">Racha de %1$d días</string>
+    <string name="home_collection">Colección</string>
+    <string name="home_progress">Progreso</string>
+    <string name="home_see_all">Ver todo</string>
+    <string name="home_badges_count">%1$d / %2$d insignias</string>
+    <string name="home_collected_count">%1$d / %2$d imágenes</string>
+    <string name="home_hints_chip">%1$d pistas</string>
+    <string name="home_pack_progress">%1$d / %2$d</string>
+
+    <!-- Progress screen -->
+    <string name="progress_title">Progreso</string>
+    <string name="progress_total_xp">%1$d XP en total</string>
+    <string name="progress_current_streak">Racha actual</string>
+    <string name="progress_best_streak">Mejor racha</string>
+    <string name="progress_days">%1$d días</string>
+    <string name="progress_calendar">Calendario diario</string>
+    <string name="progress_month_solved">%1$d de %2$d días resueltos</string>
+    <string name="progress_trophy_none">Resuelve 10 puzles diarios este mes para ganar un trofeo</string>
+    <string name="progress_trophy_bronze">Trofeo de bronce · 20 días para el de plata</string>
+    <string name="progress_trophy_silver">Trofeo de plata · todos los días para el de oro</string>
+    <string name="progress_trophy_gold">Trofeo de oro · ¡todos los días resueltos!</string>
+    <string name="progress_badges">Insignias</string>
+    <string name="progress_badge_progress">%1$d / %2$d</string>
+    <string name="progress_by_size">Resueltos por tamaño</string>
+    <string name="progress_prev_month">Mes anterior</string>
+    <string name="progress_next_month">Mes siguiente</string>
+
+    <!-- Collection -->
+    <string name="collection_title">Colección</string>
+    <string name="collection_count">%1$d / %2$d imágenes coleccionadas</string>
+    <string name="collection_pack_count">%1$d / %2$d</string>
+
+    <!-- Shop: Anime pack -->
+    <string name="shop_pack_anime">Paquete Anime</string>
+    <string name="shop_pack_anime_desc">30 imágenes originales de estilo anime, de 15 × 15 y 20 × 20</string>
+
+    <!-- Achievements -->
+    <string name="ach_first_solve">Primera imagen</string>
+    <string name="ach_first_solve_desc">Resuelve tu primer puzle</string>
+    <string name="ach_solves_10">Calentando motores</string>
+    <string name="ach_solves_10_desc">Resuelve 10 puzles</string>
+    <string name="ach_solves_50">Fan de los puzles</string>
+    <string name="ach_solves_50_desc">Resuelve 50 puzles</string>
+    <string name="ach_solves_100">Centenario</string>
+    <string name="ach_solves_100_desc">Resuelve 100 puzles</string>
+    <string name="ach_solves_250">Maestro de la cuadrícula</string>
+    <string name="ach_solves_250_desc">Resuelve 250 puzles</string>
+    <string name="ach_pure_logic">Pura lógica</string>
+    <string name="ach_pure_logic_desc">Resuelve un puzle sin pistas</string>
+    <string name="ach_pure_logic_25">Genio</string>
+    <string name="ach_pure_logic_25_desc">Resuelve 25 puzles sin pistas</string>
+    <string name="ach_big_grid">Gran imagen</string>
+    <string name="ach_big_grid_desc">Resuelve un puzle de 15 × 15</string>
+    <string name="ach_giant_grid">Cuadrícula gigante</string>
+    <string name="ach_giant_grid_desc">Resuelve un puzle de 20 × 20</string>
+    <string name="ach_speedy">Veloz</string>
+    <string name="ach_speedy_desc">Resuelve uno de 10 × 10 o más grande en menos de 3 minutos, sin pistas</string>
+    <string name="ach_daily_first">Jugador diario</string>
+    <string name="ach_daily_first_desc">Resuelve un puzle diario</string>
+    <string name="ach_streak_7">¡En llamas!</string>
+    <string name="ach_streak_7_desc">Resuelve el puzle diario 7 días seguidos</string>
+    <string name="ach_streak_30">Imparable</string>
+    <string name="ach_streak_30_desc">Resuelve el puzle diario 30 días seguidos</string>
+    <string name="ach_pack_complete">Paquete completo</string>
+    <string name="ach_pack_complete_desc">Resuelve todas las imágenes de un paquete</string>
+    <string name="ach_collector_50">Coleccionista</string>
+    <string name="ach_collector_50_desc">Colecciona 50 imágenes de paquetes</string>
+    <string name="ach_collector_all">Lo tiene todo</string>
+    <string name="ach_collector_all_desc">Colecciona todas las imágenes de los paquetes</string>
+    <string name="ach_level_10">Estrella en ascenso</string>
+    <string name="ach_level_10_desc">Llega al nivel 10</string>
+    <string name="ach_level_25">Superestrella</string>
+    <string name="ach_level_25_desc">Llega al nivel 25</string>
+</resources>

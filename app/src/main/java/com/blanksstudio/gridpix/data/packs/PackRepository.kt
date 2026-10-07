@@ -35,12 +35,22 @@ class PackRepository @Inject constructor(
 
     private suspend fun load(): List<Pack> = withContext(Dispatchers.IO) {
         val available = context.assets.list(PACKS_DIR).orEmpty().toSet()
-        PACK_ORDER
+        val packs = PACK_ORDER
             .filter { "$it.json" in available }
             .map { id ->
                 val text = context.assets.open("$PACKS_DIR/$id.json").bufferedReader().use { it.readText() }
                 PackParser.parse(text)
             }
+        // Pack and picture names in the phone's language, when a names file exists (English otherwise).
+        val language = java.util.Locale.getDefault().language
+        if (language in PackTranslations.LANGUAGES) {
+            runCatching {
+                val json = context.assets.open("$PACKS_DIR/i18n/$language.json").bufferedReader().use { it.readText() }
+                PackTranslations.apply(packs, PackTranslations.parse(json))
+            }.getOrDefault(packs)
+        } else {
+            packs
+        }
     }
 
     companion object {

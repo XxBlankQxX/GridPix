@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Nível / XP -->
+    <string name="level_label">Nível %1$d</string>
+    <string name="level_xp_progress">%1$d / %2$d XP para o próximo nível</string>
+    <string name="reward_xp">+%1$d XP</string>
+    <string name="reward_level_up">Subiu de nível! Você chegou ao nível %1$d</string>
+    <string name="reward_new_badge">Nova medalha</string>
+
+    <!-- Início -->
+    <string name="home_play_title">Quebra-cabeças infinitos</string>
+    <string name="home_daily_streak">Sequência de %1$d dias</string>
+    <string name="home_collection">Coleção</string>
+    <string name="home_progress">Progresso</string>
+    <string name="home_see_all">Ver tudo</string>
+    <string name="home_badges_count">%1$d / %2$d medalhas</string>
+    <string name="home_collected_count">%1$d / %2$d imagens</string>
+    <string name="home_hints_chip">%1$d dicas</string>
+    <string name="home_pack_progress">%1$d / %2$d</string>
+
+    <!-- Tela de progresso -->
+    <string name="progress_title">Progresso</string>
+    <string name="progress_total_xp">%1$d XP no total</string>
+    <string name="progress_current_streak">Sequência atual</string>
+    <string name="progress_best_streak">Melhor sequência</string>
+    <string name="progress_days">%1$d dias</string>
+    <string name="progress_calendar">Calendário diário</string>
+    <string name="progress_month_solved">%1$d de %2$d dias resolvidos</string>
+    <string name="progress_trophy_none">Resolva 10 desafios do dia neste mês para ganhar um troféu</string>
+    <string name="progress_trophy_bronze">Troféu de bronze · 20 dias para o de prata</string>
+    <string name="progress_trophy_silver">Troféu de prata · todos os dias para o de ouro</string>
+    <string name="progress_trophy_gold">Troféu de ouro · todos os dias resolvidos!</string>
+    <string name="progress_badges">Medalhas</string>
+    <string name="progress_badge_progress">%1$d / %2$d</string>
+    <string name="progress_by_size">Resolvidos por tamanho</string>
+    <string name="progress_prev_month">Mês anterior</string>
+    <string name="progress_next_month">Próximo mês</string>
+
+    <!-- Coleção -->
+    <string name="collection_title">Coleção</string>
+    <string name="collection_count">%1$d / %2$d imagens coletadas</string>
+    <string name="collection_pack_count">%1$d / %2$d</string>
+
+    <!-- Loja: Pacote Anime -->
+    <string name="shop_pack_anime">Pacote Anime</string>
+    <string name="shop_pack_anime_desc">30 imagens originais em estilo anime, 15 × 15 e 20 × 20</string>
+
+    <!-- Conquistas -->
+    <string name="ach_first_solve">Primeira imagem</string>
+    <string name="ach_first_solve_desc">Resolva seu primeiro quebra-cabeça</string>
+    <string name="ach_solves_10">Pegando o jeito</string>
+    <string name="ach_solves_10_desc">Resolva 10 quebra-cabeças</string>
+    <string name="ach_solves_50">Fã de quebra-cabeças</string>
+    <string name="ach_solves_50_desc">Resolva 50 quebra-cabeças</string>
+    <string name="ach_solves_100">Centenário</string>
+    <string name="ach_solves_100_desc">Resolva 100 quebra-cabeças</string>
+    <string name="ach_solves_250">Mestre da grade</string>
+    <string name="ach_solves_250_desc">Resolva 250 quebra-cabeças</string>
+    <string name="ach_pure_logic">Lógica pura</string>
+    <string name="ach_pure_logic_desc">Resolva um quebra-cabeça sem dicas</string>
+    <string name="ach_pure_logic_25">Geniozinho</string>
+    <string name="ach_pure_logic_25_desc">Resolva 25 quebra-cabeças sem dicas</string>
+    <string name="ach_big_grid">Imagem grande</string>
+    <string name="ach_big_grid_desc">Resolva um quebra-cabeça 15 × 15</string>
+    <string name="ach_giant_grid">Grade gigante</string>
+    <string name="ach_giant_grid_desc">Resolva um quebra-cabeça 20 × 20</string>
+    <string name="ach_speedy">Velocista</string>
+    <string name="ach_speedy_desc">Resolva um 10 × 10 ou maior em menos de 3 minutos, sem dicas</string>
+    <string name="ach_daily_first">Jogador do dia</string>
+    <string name="ach_daily_first_desc">Resolva um desafio do dia</string>
+    <string name="ach_streak_7">Pegando fogo</string>
+    <string name="ach_streak_7_desc">Resolva o desafio do dia 7 dias seguidos</string>
+    <string name="ach_streak_30">Imparável</string>
+    <string name="ach_streak_30_desc">Resolva o desafio do dia 30 dias seguidos</string>
+    <string name="ach_pack_complete">Pacote completo</string>
+    <string name="ach_pack_complete_desc">Resolva todas as imagens de um pacote</string>
+    <string name="ach_collector_50">Colecionador</string>
+    <string name="ach_collector_50_desc">Colecione 50 imagens de pacotes</string>
+    <string name="ach_collector_all">Completista</string>
+    <string name="ach_collector_all_desc">Colecione todas as imagens dos pacotes</string>
+    <string name="ach_level_10">Estrela em ascensão</string>
+    <string name="ach_level_10_desc">Chegue ao nível 10</string>
+    <string name="ach_level_25">Superestrela</string>
+    <string name="ach_level_25_desc">Chegue ao nível 25</string>
+</resources>

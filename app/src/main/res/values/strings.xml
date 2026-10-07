@@ -79,9 +79,9 @@
 
     <!-- Tutorial -->
     <string name="tutorial_step1_title">Clues</string>
-    <string name="tutorial_step1_body">Each number says how many cells in that row or column are filled, in order. "5" means the whole line. "1 1" means two single cells with a gap. Tap cells to fill them.</string>
+    <string name="tutorial_step1_body">Each number says how many cells in that row or column are filled, in order. \"5\" means the whole line. \"1 1\" means two single cells with a gap. Tap cells to fill them.</string>
     <string name="tutorial_step2_title">Marking empty cells</string>
-    <string name="tutorial_step2_body">A "0" means the line is empty. Switch to X and tap cells you know are empty. Marks are notes for you; only filled cells count.</string>
+    <string name="tutorial_step2_body">A \"0\" means the line is empty. Switch to X and tap cells you know are empty. Marks are notes for you; only filled cells count.</string>
     <string name="tutorial_step3_title">Dragging</string>
     <string name="tutorial_step3_body">Press and drag along a row or column to fill several cells at once. Long-press a cell to use the other mode.</string>
 

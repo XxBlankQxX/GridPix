@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Lembrete diário -->
+    <string name="reminder_channel_name">Lembrete do desafio do dia</string>
+    <string name="reminder_channel_desc">Um lembrete por dia quando o desafio de hoje ainda estiver esperando</string>
+    <string name="reminder_title">Seu desafio do dia está pronto</string>
+    <string name="reminder_text">Uma nova imagem está esperando. Toque para jogar.</string>
+    <string name="reminder_text_streak">Mantenha sua sequência de %1$d dias!</string>
+    <string name="reminder_card_title">Nunca perca um desafio do dia</string>
+    <string name="reminder_card_body">Receba um lembrete simpático por dia, só quando o desafio de hoje ainda estiver esperando.</string>
+    <string name="reminder_card_enable">Ativar</string>
+    <string name="reminder_card_dismiss">Não, obrigado</string>
+    <string name="reminder_denied">As notificações estão bloqueadas. Você pode permiti-las nos ajustes do celular.</string>
+
+    <!-- Ajustes -->
+    <string name="settings_auto_cross">Marcar X em linhas completas</string>
+    <string name="settings_auto_cross_desc">Quando uma linha ou coluna bate com a pista, as células vazias ganham um X.</string>
+    <string name="settings_share">Mostrar botão Compartilhar</string>
+    <string name="settings_share_desc">Compartilhe imagens resolvidas com os amigos. Desative para esconder o botão.</string>
+    <string name="settings_reminder">Lembrete diário</string>
+    <string name="settings_reminder_desc">Uma notificação quando o desafio de hoje ainda estiver esperando.</string>
+    <string name="settings_reminder_time">Horário do lembrete</string>
+    <string name="settings_reminder_hour">%1$02d:00</string>
+    <string name="settings_section_play">Jogo</string>
+    <string name="settings_section_app">App</string>
+
+    <!-- Compartilhar -->
+    <string name="share_button">Compartilhar imagem</string>
+    <string name="share_chooser">Compartilhe sua imagem</string>
+    <string name="share_made_in">Feito no GridPix · nonogramas</string>
+    <string name="share_message_named">Acabei de revelar \"%1$s\" no GridPix! %2$s</string>
+    <string name="share_message_size">Acabei de resolver um quebra-cabeça %1$d×%1$d no GridPix! %2$s</string>
+
+    <!-- Dicas por subir de nível -->
+    <plurals name="reward_free_hints">
+        <item quantity="one">+%1$d dica grátis por subir de nível</item>
+        <item quantity="many">+%1$d de dicas grátis por subir de nível</item>
+        <item quantity="other">+%1$d dicas grátis por subir de nível</item>
+    </plurals>
+
+    <!-- Pacotes sazonais -->
+    <string name="pack_limited_time">Por tempo limitado</string>
+</resources>

@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Common -->
+    <string name="action_back">Atrás</string>
+    <string name="action_close">Cerrar</string>
+    <string name="action_ok">OK</string>
+    <string name="action_cancel">Cancelar</string>
+    <string name="action_next">Siguiente</string>
+    <string name="action_home">Inicio</string>
+    <string name="action_retry">Reintentar</string>
+    <string name="locked">Bloqueado</string>
+    <string name="owned">Comprado</string>
+    <string name="free">Gratis</string>
+    <string name="size_label">%1$d × %1$d</string>
+    <string name="size_label_compact">%1$d×%1$d</string>
+    <string name="time_format">%1$02d:%2$02d</string>
+    <string name="time_format_hours">%1$d:%2$02d:%3$02d</string>
+
+    <!-- Home (S1) -->
+    <string name="home_play">Jugar</string>
+    <string name="home_play_size">Jugar %1$d × %1$d</string>
+    <string name="home_continue">Continuar %1$d × %1$d</string>
+    <string name="home_size_picker">Tamaño de cuadrícula</string>
+    <string name="home_daily">Puzle diario</string>
+    <string name="home_daily_new">El puzle de hoy te espera</string>
+    <string name="home_daily_in_progress">En curso</string>
+    <string name="home_daily_done">Resuelto hoy</string>
+    <string name="home_streak">Racha de %1$d días</string>
+    <string name="home_streak_none">Empieza una racha</string>
+    <string name="home_packs">Paquetes de imágenes</string>
+    <string name="home_stats">Estadísticas</string>
+    <string name="home_settings">Ajustes</string>
+    <string name="home_shop">Tienda</string>
+    <string name="home_hints_available">%1$d pistas</string>
+    <string name="home_tutorial_title">¿Eres nuevo?</string>
+    <string name="home_tutorial_body">Aprende las reglas con tres puzles rápidos.</string>
+    <string name="home_tutorial_start">Empezar tutorial</string>
+    <string name="home_large_locked">Los tamaños 15 y 20 se desbloquean en la Tienda</string>
+
+    <!-- Puzzle (S4) -->
+    <string name="puzzle_title_endless">Infinito %1$d × %1$d</string>
+    <string name="puzzle_title_daily">Diario %1$s</string>
+    <string name="puzzle_title_pack">%1$s · %2$d / %3$d</string>
+    <string name="puzzle_title_tutorial">Tutorial %1$d / %2$d</string>
+    <string name="puzzle_mode_fill">Rellenar</string>
+    <string name="puzzle_mode_mark">X</string>
+    <string name="puzzle_undo">Deshacer</string>
+    <string name="puzzle_redo">Rehacer</string>
+    <string name="puzzle_hint">Pista</string>
+    <string name="puzzle_pause">Pausa</string>
+    <string name="puzzle_resume">Seguir</string>
+    <string name="puzzle_paused">En pausa</string>
+    <string name="puzzle_check">Revisar</string>
+    <string name="puzzle_check_ok">Sin errores hasta ahora</string>
+    <string name="puzzle_check_mistakes">%1$d errores resaltados</string>
+    <string name="puzzle_check_incomplete">Aún no has terminado</string>
+    <string name="puzzle_hint_none_title">Sin pistas</string>
+    <string name="puzzle_hint_none_body">Tienes 3 pistas gratis cada día. Puedes conseguir más en la Tienda.</string>
+    <string name="puzzle_hint_none_shop">Abrir Tienda</string>
+    <string name="puzzle_hint_none_later">Ahora no</string>
+    <string name="puzzle_hint_nothing">No queda nada por revelar</string>
+    <string name="puzzle_restart">Reiniciar puzle</string>
+    <string name="puzzle_restart_confirm">¿Borrar el tablero y empezar este puzle de nuevo?</string>
+    <string name="puzzle_loading">Cargando…</string>
+    <string name="puzzle_board_description">Cuadrícula del puzle</string>
+
+    <!-- Solved (S5) -->
+    <string name="solved_title">¡Resuelto!</string>
+    <string name="solved_time">Tiempo %1$s</string>
+    <string name="solved_hints">Pistas usadas: %1$d</string>
+    <string name="solved_no_hints">Sin usar pistas</string>
+    <string name="solved_next_endless">Siguiente puzle</string>
+    <string name="solved_next_pack">Siguiente imagen</string>
+    <string name="solved_back_to_pack">Volver al paquete</string>
+    <string name="solved_daily_streak">Racha: %1$d días</string>
+    <string name="solved_tutorial_done">¡Ya sabes las reglas! A divertirse.</string>
+
+    <!-- Tutorial -->
+    <string name="tutorial_step1_title">Pistas</string>
+    <string name="tutorial_step1_body">Cada número indica cuántas casillas de esa fila o columna van rellenas, en orden. \"5\" es la línea completa. \"1 1\" son dos casillas sueltas con un hueco en medio. Toca las casillas para rellenarlas.</string>
+    <string name="tutorial_step2_title">Marcar casillas vacías</string>
+    <string name="tutorial_step2_body">Un \"0\" significa que la línea está vacía. Cambia a X y toca las casillas que sabes que están vacías. Las marcas son notas para ti; solo cuentan las casillas rellenas.</string>
+    <string name="tutorial_step3_title">Arrastrar</string>
+    <string name="tutorial_step3_body">Mantén pulsado y arrastra por una fila o columna para rellenar varias casillas a la vez. Con una pulsación larga en una casilla usas el otro modo.</string>
+
+    <!-- Packs (S2, S3) -->
+    <string name="packs_title">Paquetes de imágenes</string>
+    <string name="packs_progress">%1$d / %2$d resueltos</string>
+    <string name="pack_puzzle_number">%1$d</string>
+    <string name="pack_locked_hint">Desbloquea este paquete en la Tienda</string>
+    <string name="pack_thumbnail_solved">%1$s, resuelto</string>
+    <string name="pack_thumbnail_unsolved">Puzle %1$d, sin resolver</string>
+
+    <!-- Shop (S6) -->
+    <string name="shop_title">Tienda</string>
+    <string name="shop_intro">Compras únicas. Sin anuncios ni suscripciones.</string>
+    <string name="shop_hints_10">10 pistas</string>
+    <string name="shop_hints_50">50 pistas</string>
+    <string name="shop_hints_desc">Cada pista revela una casilla correcta. 3 son gratis cada día.</string>
+    <string name="shop_pack_desc">30 imágenes hechas a mano, de 10 × 10 y 15 × 15</string>
+    <string name="shop_pack_animals">Paquete Animales</string>
+    <string name="shop_pack_vehicles">Paquete Vehículos</string>
+    <string name="shop_pack_food">Paquete Comida</string>
+    <string name="shop_pack_nature">Paquete Naturaleza</string>
+    <string name="shop_large_grids">Cuadrículas grandes</string>
+    <string name="shop_large_grids_desc">Puzles de 15 × 15 y 20 × 20 en modo Infinito</string>
+    <string name="shop_everything">Paquete Todo incluido</string>
+    <string name="shop_everything_desc">Todos los paquetes de imágenes, actuales y futuros, más Cuadrículas grandes y 100 pistas</string>
+    <string name="shop_buy">Comprar</string>
+    <string name="shop_restore">Restaurar compras</string>
+    <string name="shop_unavailable">Play Store no está disponible en este momento</string>
+    <string name="shop_price_loading">…</string>
+    <string name="shop_event_purchased">¡Gracias! Compra completada.</string>
+    <string name="shop_event_pending">Compra pendiente. Se desbloqueará cuando Play la confirme.</string>
+    <string name="shop_event_cancelled">Compra cancelada</string>
+    <string name="shop_event_restored">Compras restauradas</string>
+    <string name="shop_event_restored_none">No se encontraron compras en esta cuenta</string>
+    <string name="shop_event_error">La compra falló: %1$s</string>
+    <string name="shop_hints_balance">Tienes %1$d pistas</string>
+
+    <!-- Settings (S7) -->
+    <string name="settings_title">Ajustes</string>
+    <string name="settings_highlight_mistakes">Resaltar errores al instante</string>
+    <string name="settings_highlight_mistakes_desc">Las casillas incorrectas se ponen en rojo mientras juegas. Cuenta como partida con ayuda.</string>
+    <string name="settings_haptics">Vibración</string>
+    <string name="settings_sound">Sonido</string>
+    <string name="settings_theme">Tema</string>
+    <string name="settings_theme_system">Sistema</string>
+    <string name="settings_theme_light">Claro</string>
+    <string name="settings_theme_dark">Oscuro</string>
+    <string name="settings_replay_tutorial">Repetir tutorial</string>
+    <string name="settings_privacy">Política de privacidad</string>
+    <string name="settings_about">Acerca de</string>
+    <string name="settings_about_body">GridPix %1$s de Blanks Studio. Funciona totalmente sin conexión; nada sale de tu teléfono.</string>
+
+    <!-- Stats (S8) -->
+    <string name="stats_title">Estadísticas</string>
+    <string name="stats_total">Puzles resueltos</string>
+    <string name="stats_streak">Racha diaria</string>
+    <string name="stats_by_size">Por tamaño</string>
+    <string name="stats_solved_count">%1$d resueltos</string>
+    <string name="stats_best_time">Mejor %1$s</string>
+    <string name="stats_none_yet">Aún no has resuelto ningún puzle</string>
+</resources>

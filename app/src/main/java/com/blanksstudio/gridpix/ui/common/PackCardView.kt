@@ -63,6 +63,16 @@ fun PackCardView(card: PackCard, onClick: () -> Unit, modifier: Modifier = Modif
             } else {
                 MosaicPlaceholder(accent, card.id.hashCode().toLong(), Modifier.fillMaxSize().padding(10.dp))
             }
+            if (card.seasonal) {
+                Surface(shape = RoundedCornerShape(50), color = Color(0xE61C1A27), modifier = Modifier.align(Alignment.TopStart).padding(6.dp)) {
+                    Text(
+                        stringResource(R.string.pack_limited_time),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = Color.White,
+                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
+                    )
+                }
+            }
             if (!card.unlocked) {
                 Surface(shape = RoundedCornerShape(50), color = Color(0xCC1C1A27), modifier = Modifier.align(Alignment.TopEnd).padding(6.dp)) {
                     Icon(Icons.Default.Lock, contentDescription = stringResource(R.string.locked), tint = Color.White, modifier = Modifier.padding(6.dp).size(16.dp))
@@ -80,7 +90,6 @@ fun PackCardView(card: PackCard, onClick: () -> Unit, modifier: Modifier = Modif
             )
             Text(
                 when {
-                    card.seasonal -> stringResource(R.string.pack_limited_time)
                     card.productId == null -> stringResource(R.string.free)
                     card.unlocked -> stringResource(R.string.home_pack_progress, card.solved, card.total)
                     else -> card.price ?: stringResource(R.string.locked)

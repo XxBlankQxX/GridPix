@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Level / XP -->
+    <string name="level_label">Niveau %1$d</string>
+    <string name="level_xp_progress">%1$d / %2$d XP avant le niveau suivant</string>
+    <string name="reward_xp">+%1$d XP</string>
+    <string name="reward_level_up">Niveau supérieur ! Tu as atteint le niveau %1$d</string>
+    <string name="reward_new_badge">Nouveau badge</string>
+
+    <!-- Home -->
+    <string name="home_play_title">Puzzles infinis</string>
+    <string name="home_daily_streak">Série de %1$d jours</string>
+    <string name="home_collection">Collection</string>
+    <string name="home_progress">Progression</string>
+    <string name="home_see_all">Tout voir</string>
+    <string name="home_badges_count">%1$d / %2$d badges</string>
+    <string name="home_collected_count">%1$d / %2$d images</string>
+    <string name="home_hints_chip">%1$d indices</string>
+    <string name="home_pack_progress">%1$d / %2$d</string>
+
+    <!-- Progress screen -->
+    <string name="progress_title">Progression</string>
+    <string name="progress_total_xp">%1$d XP au total</string>
+    <string name="progress_current_streak">Série en cours</string>
+    <string name="progress_best_streak">Meilleure série</string>
+    <string name="progress_days">%1$d jours</string>
+    <string name="progress_calendar">Calendrier des défis</string>
+    <string name="progress_month_solved">%1$d jours résolus sur %2$d</string>
+    <string name="progress_trophy_none">Résous 10 défis du jour ce mois-ci pour gagner un trophée</string>
+    <string name="progress_trophy_bronze">Trophée de bronze · 20 jours pour l\'argent</string>
+    <string name="progress_trophy_silver">Trophée d\'argent · tous les jours pour l\'or</string>
+    <string name="progress_trophy_gold">Trophée d\'or · tous les jours résolus !</string>
+    <string name="progress_badges">Badges</string>
+    <string name="progress_badge_progress">%1$d / %2$d</string>
+    <string name="progress_by_size">Résolus par taille</string>
+    <string name="progress_prev_month">Mois précédent</string>
+    <string name="progress_next_month">Mois suivant</string>
+
+    <!-- Collection -->
+    <string name="collection_title">Collection</string>
+    <string name="collection_count">%1$d / %2$d images collectées</string>
+    <string name="collection_pack_count">%1$d / %2$d</string>
+
+    <!-- Shop: Anime pack -->
+    <string name="shop_pack_anime">Pack Anime</string>
+    <string name="shop_pack_anime_desc">30 images originales de style anime, en 15 × 15 et 20 × 20</string>
+
+    <!-- Achievements -->
+    <string name="ach_first_solve">Première image</string>
+    <string name="ach_first_solve_desc">Résous ton premier puzzle</string>
+    <string name="ach_solves_10">Bien parti</string>
+    <string name="ach_solves_10_desc">Résous 10 puzzles</string>
+    <string name="ach_solves_50">Fan de puzzles</string>
+    <string name="ach_solves_50_desc">Résous 50 puzzles</string>
+    <string name="ach_solves_100">Centenaire</string>
+    <string name="ach_solves_100_desc">Résous 100 puzzles</string>
+    <string name="ach_solves_250">Maître des grilles</string>
+    <string name="ach_solves_250_desc">Résous 250 puzzles</string>
+    <string name="ach_pure_logic">Logique pure</string>
+    <string name="ach_pure_logic_desc">Résous un puzzle sans indice</string>
+    <string name="ach_pure_logic_25">Cerveau en feu</string>
+    <string name="ach_pure_logic_25_desc">Résous 25 puzzles sans indice</string>
+    <string name="ach_big_grid">Grande image</string>
+    <string name="ach_big_grid_desc">Résous un puzzle 15 × 15</string>
+    <string name="ach_giant_grid">Grille géante</string>
+    <string name="ach_giant_grid_desc">Résous un puzzle 20 × 20</string>
+    <string name="ach_speedy">Éclair</string>
+    <string name="ach_speedy_desc">Résous un 10 × 10 ou plus grand en moins de 3 minutes, sans indice</string>
+    <string name="ach_daily_first">Joueur du jour</string>
+    <string name="ach_daily_first_desc">Résous un défi du jour</string>
+    <string name="ach_streak_7">En feu</string>
+    <string name="ach_streak_7_desc">Résous le défi du jour 7 jours de suite</string>
+    <string name="ach_streak_30">Inarrêtable</string>
+    <string name="ach_streak_30_desc">Résous le défi du jour 30 jours de suite</string>
+    <string name="ach_pack_complete">Pack terminé</string>
+    <string name="ach_pack_complete_desc">Résous toutes les images d\'un pack</string>
+    <string name="ach_collector_50">Collectionneur</string>
+    <string name="ach_collector_50_desc">Collecte 50 images de packs</string>
+    <string name="ach_collector_all">Collection complète</string>
+    <string name="ach_collector_all_desc">Collecte toutes les images des packs</string>
+    <string name="ach_level_10">Étoile montante</string>
+    <string name="ach_level_10_desc">Atteins le niveau 10</string>
+    <string name="ach_level_25">Superstar</string>
+    <string name="ach_level_25_desc">Atteins le niveau 25</string>
+</resources>

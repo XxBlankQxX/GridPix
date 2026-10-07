@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Common -->
+    <string name="action_back">Retour</string>
+    <string name="action_close">Fermer</string>
+    <string name="action_ok">OK</string>
+    <string name="action_cancel">Annuler</string>
+    <string name="action_next">Suivant</string>
+    <string name="action_home">Accueil</string>
+    <string name="action_retry">Réessayer</string>
+    <string name="locked">Verrouillé</string>
+    <string name="owned">Débloqué</string>
+    <string name="free">Gratuit</string>
+    <string name="size_label">%1$d × %1$d</string>
+    <string name="size_label_compact">%1$d×%1$d</string>
+    <string name="time_format">%1$02d:%2$02d</string>
+    <string name="time_format_hours">%1$d:%2$02d:%3$02d</string>
+
+    <!-- Home (S1) -->
+    <string name="home_play">Jouer</string>
+    <string name="home_play_size">Jouer en %1$d × %1$d</string>
+    <string name="home_continue">Continuer le %1$d × %1$d</string>
+    <string name="home_size_picker">Taille de la grille</string>
+    <string name="home_daily">Défi du jour</string>
+    <string name="home_daily_new">Le défi du jour t\'attend</string>
+    <string name="home_daily_in_progress">En cours</string>
+    <string name="home_daily_done">Résolu aujourd\'hui</string>
+    <string name="home_streak">Série de %1$d jours</string>
+    <string name="home_streak_none">Lance une série</string>
+    <string name="home_packs">Packs d\'images</string>
+    <string name="home_stats">Stats</string>
+    <string name="home_settings">Réglages</string>
+    <string name="home_shop">Boutique</string>
+    <string name="home_hints_available">%1$d indices</string>
+    <string name="home_tutorial_title">Nouveau ici ?</string>
+    <string name="home_tutorial_body">Apprends les règles en trois petites grilles.</string>
+    <string name="home_tutorial_start">Lancer le tutoriel</string>
+    <string name="home_large_locked">Les tailles 15 et 20 se débloquent dans la boutique</string>
+
+    <!-- Puzzle (S4) -->
+    <string name="puzzle_title_endless">Infini %1$d × %1$d</string>
+    <string name="puzzle_title_daily">Défi du %1$s</string>
+    <string name="puzzle_title_pack">%1$s · %2$d / %3$d</string>
+    <string name="puzzle_title_tutorial">Tutoriel %1$d / %2$d</string>
+    <string name="puzzle_mode_fill">Remplir</string>
+    <string name="puzzle_mode_mark">X</string>
+    <string name="puzzle_undo">Annuler</string>
+    <string name="puzzle_redo">Rétablir</string>
+    <string name="puzzle_hint">Indice</string>
+    <string name="puzzle_pause">Pause</string>
+    <string name="puzzle_resume">Reprendre</string>
+    <string name="puzzle_paused">En pause</string>
+    <string name="puzzle_check">Vérifier</string>
+    <string name="puzzle_check_ok">Aucune erreur pour l\'instant</string>
+    <string name="puzzle_check_mistakes">%1$d erreurs en surbrillance</string>
+    <string name="puzzle_check_incomplete">Pas encore terminé</string>
+    <string name="puzzle_hint_none_title">Plus d\'indices</string>
+    <string name="puzzle_hint_none_body">Tu as 3 indices gratuits par jour. Tu peux en obtenir d\'autres dans la boutique.</string>
+    <string name="puzzle_hint_none_shop">Ouvrir la boutique</string>
+    <string name="puzzle_hint_none_later">Pas maintenant</string>
+    <string name="puzzle_hint_nothing">Plus rien à révéler</string>
+    <string name="puzzle_restart">Recommencer la grille</string>
+    <string name="puzzle_restart_confirm">Vider la grille et recommencer ce puzzle ?</string>
+    <string name="puzzle_loading">Chargement…</string>
+    <string name="puzzle_board_description">Grille du puzzle</string>
+
+    <!-- Solved (S5) -->
+    <string name="solved_title">Résolu !</string>
+    <string name="solved_time">Temps : %1$s</string>
+    <string name="solved_hints">Indices utilisés : %1$d</string>
+    <string name="solved_no_hints">Aucun indice utilisé</string>
+    <string name="solved_next_endless">Puzzle suivant</string>
+    <string name="solved_next_pack">Image suivante</string>
+    <string name="solved_back_to_pack">Retour au pack</string>
+    <string name="solved_daily_streak">Série : %1$d jours</string>
+    <string name="solved_tutorial_done">Tu connais les règles. Amuse-toi bien !</string>
+
+    <!-- Tutorial -->
+    <string name="tutorial_step1_title">Les indices</string>
+    <string name="tutorial_step1_body">Chaque nombre indique combien de cases de la ligne ou de la colonne sont remplies, dans l\'ordre. \"5\" veut dire toute la ligne. \"1 1\" veut dire deux cases seules séparées par un vide. Touche les cases pour les remplir.</string>
+    <string name="tutorial_step2_title">Marquer les cases vides</string>
+    <string name="tutorial_step2_body">Un \"0\" veut dire que la ligne est vide. Passe en mode X et touche les cases que tu sais vides. Les croix sont des notes pour toi ; seules les cases remplies comptent.</string>
+    <string name="tutorial_step3_title">Glisser</string>
+    <string name="tutorial_step3_body">Appuie et glisse le long d\'une ligne ou d\'une colonne pour remplir plusieurs cases d\'un coup. Appuie longuement sur une case pour utiliser l\'autre mode.</string>
+
+    <!-- Packs (S2, S3) -->
+    <string name="packs_title">Packs d\'images</string>
+    <string name="packs_progress">%1$d / %2$d résolus</string>
+    <string name="pack_puzzle_number">%1$d</string>
+    <string name="pack_locked_hint">Débloque ce pack dans la boutique</string>
+    <string name="pack_thumbnail_solved">%1$s, résolu</string>
+    <string name="pack_thumbnail_unsolved">Puzzle %1$d, pas résolu</string>
+
+    <!-- Shop (S6) -->
+    <string name="shop_title">Boutique</string>
+    <string name="shop_intro">Achats uniques. Pas de pubs, pas d\'abonnement.</string>
+    <string name="shop_hints_10">10 indices</string>
+    <string name="shop_hints_50">50 indices</string>
+    <string name="shop_hints_desc">Un indice révèle une case correcte. 3 sont gratuits chaque jour.</string>
+    <string name="shop_pack_desc">30 images faites main, en 10 × 10 et 15 × 15</string>
+    <string name="shop_pack_animals">Pack Animaux</string>
+    <string name="shop_pack_vehicles">Pack Véhicules</string>
+    <string name="shop_pack_food">Pack Gourmandises</string>
+    <string name="shop_pack_nature">Pack Nature</string>
+    <string name="shop_large_grids">Grandes grilles</string>
+    <string name="shop_large_grids_desc">Des puzzles 15 × 15 et 20 × 20 en mode Infini</string>
+    <string name="shop_everything">Pack Tout-en-un</string>
+    <string name="shop_everything_desc">Tous les packs d\'images, actuels et à venir, plus les grandes grilles et 100 indices</string>
+    <string name="shop_buy">Acheter</string>
+    <string name="shop_restore">Restaurer les achats</string>
+    <string name="shop_unavailable">Le Play Store n\'est pas disponible pour le moment</string>
+    <string name="shop_price_loading">…</string>
+    <string name="shop_event_purchased">Merci ! Achat terminé.</string>
+    <string name="shop_event_pending">Achat en attente. Il sera débloqué dès que Google Play le confirmera.</string>
+    <string name="shop_event_cancelled">Achat annulé</string>
+    <string name="shop_event_restored">Achats restaurés</string>
+    <string name="shop_event_restored_none">Aucun achat trouvé pour ce compte</string>
+    <string name="shop_event_error">Échec de l\'achat : %1$s</string>
+    <string name="shop_hints_balance">Tu as %1$d indices</string>
+
+    <!-- Settings (S7) -->
+    <string name="settings_title">Réglages</string>
+    <string name="settings_highlight_mistakes">Montrer les erreurs tout de suite</string>
+    <string name="settings_highlight_mistakes_desc">Les mauvaises cases deviennent rouges pendant que tu joues. Compte comme jeu assisté.</string>
+    <string name="settings_haptics">Vibration</string>
+    <string name="settings_sound">Son</string>
+    <string name="settings_theme">Thème</string>
+    <string name="settings_theme_system">Système</string>
+    <string name="settings_theme_light">Clair</string>
+    <string name="settings_theme_dark">Sombre</string>
+    <string name="settings_replay_tutorial">Revoir le tutoriel</string>
+    <string name="settings_privacy">Politique de confidentialité</string>
+    <string name="settings_about">À propos</string>
+    <string name="settings_about_body">GridPix %1$s par Blanks Studio. Fonctionne entièrement hors ligne ; rien ne quitte ton téléphone.</string>
+
+    <!-- Stats (S8) -->
+    <string name="stats_title">Stats</string>
+    <string name="stats_total">Puzzles résolus</string>
+    <string name="stats_streak">Série quotidienne</string>
+    <string name="stats_by_size">Par taille</string>
+    <string name="stats_solved_count">%1$d résolus</string>
+    <string name="stats_best_time">Record : %1$s</string>
+    <string name="stats_none_yet">Aucun puzzle résolu pour l\'instant</string>
+</resources>

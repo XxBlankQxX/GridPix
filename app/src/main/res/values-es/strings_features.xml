@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Daily reminder -->
+    <string name="reminder_channel_name">Recordatorio del puzle diario</string>
+    <string name="reminder_channel_desc">Un recordatorio al día cuando el puzle de hoy aún te espera</string>
+    <string name="reminder_title">Tu puzle diario está listo</string>
+    <string name="reminder_text">Una nueva imagen te espera. Toca para jugar.</string>
+    <string name="reminder_text_streak">¡Mantén tu racha de %1$d días!</string>
+    <string name="reminder_card_title">No te pierdas ningún puzle diario</string>
+    <string name="reminder_card_body">Recibe un recordatorio amistoso al día, solo cuando el puzle de hoy aún te espera.</string>
+    <string name="reminder_card_enable">Activar</string>
+    <string name="reminder_card_dismiss">No, gracias</string>
+    <string name="reminder_denied">Las notificaciones están bloqueadas. Puedes permitirlas en los ajustes del teléfono.</string>
+
+    <!-- Settings -->
+    <string name="settings_auto_cross">Tachar líneas terminadas</string>
+    <string name="settings_auto_cross_desc">Cuando una fila o columna cumple su pista, sus casillas vacías se marcan con una X.</string>
+    <string name="settings_share">Mostrar botón Compartir</string>
+    <string name="settings_share_desc">Comparte tus imágenes resueltas con tus amigos. Desactívalo para ocultar el botón.</string>
+    <string name="settings_reminder">Recordatorio diario</string>
+    <string name="settings_reminder_desc">Una notificación cuando el puzle de hoy aún te espera.</string>
+    <string name="settings_reminder_time">Hora del recordatorio</string>
+    <string name="settings_reminder_hour">%1$02d:00</string>
+    <string name="settings_section_play">Juego</string>
+    <string name="settings_section_app">App</string>
+
+    <!-- Share -->
+    <string name="share_button">Compartir imagen</string>
+    <string name="share_chooser">Comparte tu imagen</string>
+    <string name="share_made_in">Hecho en GridPix · puzles nonograma</string>
+    <string name="share_message_named">¡Acabo de revelar \"%1$s\" en GridPix! %2$s</string>
+    <string name="share_message_size">¡Acabo de resolver un puzle de %1$d×%1$d en GridPix! %2$s</string>
+
+    <!-- Level-up hints -->
+    <plurals name="reward_free_hints">
+        <item quantity="one">+%1$d pista gratis por subir de nivel</item>
+        <item quantity="many">+%1$d pistas gratis por subir de nivel</item>
+        <item quantity="other">+%1$d pistas gratis por subir de nivel</item>
+    </plurals>
+
+    <!-- Seasonal packs -->
+    <string name="pack_limited_time">Por tiempo limitado</string>
+</resources>
