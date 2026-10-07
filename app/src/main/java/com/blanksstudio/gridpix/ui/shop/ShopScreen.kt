@@ -87,6 +87,10 @@ class ShopViewModel @Inject constructor(
         )
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), ShopUiState())
 
+    init {
+        billing.refreshProducts()
+    }
+
     fun buy(activity: Activity, productId: String) = billing.launchPurchase(activity, productId)
 
     fun restore() = viewModelScope.launch { billing.restorePurchases(silent = false) }

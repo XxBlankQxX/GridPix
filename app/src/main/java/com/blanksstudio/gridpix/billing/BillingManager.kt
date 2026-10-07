@@ -108,7 +108,37 @@ class BillingManager @Inject constructor(
         })
     }
 
+    /**
+     * Called when the Shop or Packs screen opens. Product details were previously loaded only once at
+     * app start, so a slow or failed first query (e.g. products just created in Play Console) left the
+     * Shop showing "…" until the app was restarted. This retries whenever prices are missing.
+     */
+    fun refreshProducts() {
+        when (_availability.value) {
+            is BillingAvailability.Available ->
+                if (productDetails.size < Products.ALL.size && !loadingProducts) scope.launch { loadProductDetails() }
+            is BillingAvailability.Unavailable -> {
+                // Setup failed earlier (e.g. Play Store was updating): try connecting again.
+                started = false
+                _availability.value = BillingAvailability.Connecting
+                start()
+            }
+            BillingAvailability.Connecting -> Unit // setup in progress; it loads products when it finishes
+        }
+    }
+
+    private var loadingProducts = false
+
     private suspend fun loadProductDetails() {
+        loadingProducts = true
+        try {
+            queryProductDetails()
+        } finally {
+            loadingProducts = false
+        }
+    }
+
+    private suspend fun queryProductDetails() {
         val params = QueryProductDetailsParams.newBuilder()
             .setProductList(
                 Products.ALL.map {
@@ -121,12 +151,17 @@ class BillingManager @Inject constructor(
             .build()
         val (result, details) = suspendCancellableCoroutine { cont ->
             client.queryProductDetailsAsync(params) { billingResult, queryResult ->
+                queryResult.unfetchedProductList.forEach {
+                    // Product ID not found or not active in Play Console for this app/account.
+                    Log.w(TAG, "Product not returned by Play: ${it.productId} (status ${it.statusCode})")
+                }
                 cont.resume(billingResult to queryResult.productDetailsList)
             }
         }
         if (result.responseCode == BillingResponseCode.OK) {
             details.forEach { productDetails[it.productId] = it }
-            _prices.value = details.mapNotNull { d ->
+            Log.i(TAG, "Play returned ${details.size} of ${Products.ALL.size} products")
+            _prices.value = _prices.value + details.mapNotNull { d ->
                 d.oneTimePurchaseOfferDetails?.formattedPrice?.let { d.productId to it }
             }.toMap()
         } else {

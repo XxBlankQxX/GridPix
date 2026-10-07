@@ -40,6 +40,10 @@ class PacksViewModel @Inject constructor(
     billing: BillingManager,
 ) : ViewModel() {
 
+    init {
+        billing.refreshProducts() // pack prices on the cards come from Play
+    }
+
     val cards: StateFlow<List<PackCard>?> = flow { emit(packs.packs()) }
         .flatMapLatest { list ->
             val solvedFlows = list.map { pack -> progress.observePack(pack.idPrefix) }
