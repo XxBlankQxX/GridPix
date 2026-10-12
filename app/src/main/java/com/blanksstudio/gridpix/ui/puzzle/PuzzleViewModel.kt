@@ -58,6 +58,8 @@ sealed interface PuzzleKind {
 data class PuzzleUiState(
     val loading: Boolean = true,
     val error: Boolean = false,
+    /** The puzzle belongs to content the player doesn't own (opened via an old link or saved game). */
+    val locked: Boolean = false,
     val kind: PuzzleKind? = null,
     val puzzle: Puzzle? = null,
     val board: GridState = GridState.empty(5),
@@ -142,6 +144,9 @@ class PuzzleViewModel @Inject constructor(
     private suspend fun load() {
         val (kind, puzzle, colors) = try {
             withContext(Dispatchers.Default) { resolve() }
+        } catch (e: LockedContentException) {
+            _uiState.update { it.copy(loading = false, locked = true) }
+            return
         } catch (e: Exception) {
             _uiState.update { it.copy(loading = false, error = true) }
             return
@@ -178,6 +183,8 @@ class PuzzleViewModel @Inject constructor(
         Routes.KIND_ENDLESS -> {
             val size = argA.toInt()
             val seed = argB.toLong()
+            // Loophole guard: 15x15 / 20x20 need Large grids (e.g. a refunded purchase or an old "Continue").
+            if (!Entitlements.sizeUnlocked(settings.snapshotOwned(), size)) throw LockedContentException()
             val puzzle = PuzzleGenerator.generate(size, seed)
             Triple(PuzzleKind.Endless(size, seed), puzzle, ArtColors.generated(puzzle.solution, seed))
         }
@@ -191,6 +198,8 @@ class PuzzleViewModel @Inject constructor(
             val entry = pack.puzzles.getOrNull(index - 1) ?: return null
             val owned = settings.snapshotOwned()
             val unlocked = Entitlements.packUnlocked(owned, pack.productId)
+            // Loophole guard: a paid pack's pictures can only be opened when the pack is owned.
+            if (!unlocked) throw LockedContentException()
             Triple(
                 PuzzleKind.Pack(pack.id, pack.name, index, pack.puzzles.size, unlocked && index < pack.puzzles.size),
                 entry.toPuzzle(pack.id),
@@ -435,6 +444,9 @@ class PuzzleViewModel @Inject constructor(
         super.onCleared()
     }
 }
+
+/** Thrown while resolving a puzzle the player hasn't unlocked; the screen then shows a Shop link. */
+class LockedContentException : Exception()
 
 /** Google's rating prompt is offered once, after this many solved puzzles. */
 const val REVIEW_AFTER_SOLVES = 5

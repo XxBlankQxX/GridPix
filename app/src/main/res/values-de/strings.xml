@@ -116,7 +116,7 @@
     <string name="shop_event_restored">Käufe wiederhergestellt</string>
     <string name="shop_event_restored_none">Keine Käufe für dieses Konto gefunden</string>
     <string name="shop_event_error">Kauf fehlgeschlagen: %1$s</string>
-    <string name="shop_hints_balance">Du hast %1$d Hinweise</string>
+    <string name="shop_hints_balance">Hinweise: %1$d</string>
 
     <!-- Settings (S7) -->
     <string name="settings_title">Einstellungen</string>

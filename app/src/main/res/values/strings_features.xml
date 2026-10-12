@@ -39,4 +39,19 @@
 
     <!-- Seasonal packs -->
     <string name="pack_limited_time">Limited time</string>
+
+    <!-- Navigation and Home (v1.3) -->
+    <string name="nav_home">Home</string>
+    <string name="nav_packs">Packs</string>
+    <string name="home_ready_title">Ready to play?</string>
+    <string name="home_play_big">PLAY</string>
+    <string name="home_continue_big">CONTINUE</string>
+    <string name="home_continue_sub">Your %1$d×%1$d puzzle is waiting</string>
+    <string name="home_new_puzzle">New puzzle</string>
+    <string name="home_skip_tutorial">I already know how to play</string>
+    <string name="difficulty_easy">Easy</string>
+    <string name="difficulty_medium">Medium</string>
+    <string name="difficulty_hard">Hard</string>
+    <string name="difficulty_expert">Expert</string>
+    <string name="pack_play_next">Play next picture</string>
 </resources>

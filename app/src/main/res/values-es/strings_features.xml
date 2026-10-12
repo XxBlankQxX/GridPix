@@ -40,4 +40,19 @@
 
     <!-- Seasonal packs -->
     <string name="pack_limited_time">Por tiempo limitado</string>
+
+    <!-- Navigation and Home (v1.3) -->
+    <string name="nav_home">Inicio</string>
+    <string name="nav_packs">Paquetes</string>
+    <string name="home_ready_title">¿Listo para jugar?</string>
+    <string name="home_play_big">JUGAR</string>
+    <string name="home_continue_big">CONTINUAR</string>
+    <string name="home_continue_sub">Tu puzle de %1$d×%1$d te espera</string>
+    <string name="home_new_puzzle">Puzle nuevo</string>
+    <string name="home_skip_tutorial">Ya sé jugar</string>
+    <string name="difficulty_easy">Fácil</string>
+    <string name="difficulty_medium">Medio</string>
+    <string name="difficulty_hard">Difícil</string>
+    <string name="difficulty_expert">Experto</string>
+    <string name="pack_play_next">Jugar la siguiente imagen</string>
 </resources>

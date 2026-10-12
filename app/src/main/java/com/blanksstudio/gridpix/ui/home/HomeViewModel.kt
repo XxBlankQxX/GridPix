@@ -131,6 +131,11 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    /** "I already know how to play": skip the tutorial so PLAY starts a real puzzle. */
+    fun skipTutorial() {
+        viewModelScope.launch { settings.setTutorialDone() }
+    }
+
     fun dismissReminderCard() {
         viewModelScope.launch { settings.setReminderPromptShown() }
     }

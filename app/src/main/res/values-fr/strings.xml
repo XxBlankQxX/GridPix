@@ -116,7 +116,7 @@
     <string name="shop_event_restored">Achats restaurés</string>
     <string name="shop_event_restored_none">Aucun achat trouvé pour ce compte</string>
     <string name="shop_event_error">Échec de l\'achat : %1$s</string>
-    <string name="shop_hints_balance">Tu as %1$d indices</string>
+    <string name="shop_hints_balance">Indices : %1$d</string>
 
     <!-- Settings (S7) -->
     <string name="settings_title">Réglages</string>

@@ -80,7 +80,7 @@ class CollectionViewModel @Inject constructor(
 /** Every pack picture in one gallery: solved ones in full colour, the rest as numbered blanks. */
 @Composable
 fun CollectionScreen(
-    onBack: () -> Unit,
+    onBack: (() -> Unit)?,
     onOpenPuzzle: (packId: String, index: Int) -> Unit,
     onShop: () -> Unit,
     viewModel: CollectionViewModel = hiltViewModel(),

@@ -33,6 +33,17 @@ class RulesTest {
     }
 
     @Test
+    fun `setting the clock back does not refill free hints`() {
+        val usedUp = Wallet(freeHintsDate = "2026-10-12", freeHintsLeft = 0, balance = 0)
+        assertEquals(0, HintRules.available(usedUp, "2026-10-11")) // clock moved back a day
+        assertNull(HintRules.spend(usedUp, "2026-10-11"))
+        // Flipping back and forth to the same day changes nothing either.
+        assertEquals(usedUp, HintRules.refreshed(usedUp, "2026-10-12"))
+        // The next real day still refills.
+        assertEquals(3, HintRules.available(usedUp, "2026-10-13"))
+    }
+
+    @Test
     fun `fresh install has three free hints`() {
         val fresh = Wallet(freeHintsDate = "", freeHintsLeft = HintRules.FREE_PER_DAY, balance = 0)
         assertEquals(3, HintRules.available(fresh, "2026-10-07"))

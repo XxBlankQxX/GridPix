@@ -40,4 +40,19 @@
 
     <!-- Pacotes sazonais -->
     <string name="pack_limited_time">Por tempo limitado</string>
+
+    <!-- Navigation and Home (v1.3) -->
+    <string name="nav_home">Início</string>
+    <string name="nav_packs">Pacotes</string>
+    <string name="home_ready_title">Pronto para jogar?</string>
+    <string name="home_play_big">JOGAR</string>
+    <string name="home_continue_big">CONTINUAR</string>
+    <string name="home_continue_sub">Seu quebra-cabeça %1$d×%1$d está esperando</string>
+    <string name="home_new_puzzle">Novo quebra-cabeça</string>
+    <string name="home_skip_tutorial">Eu já sei jogar</string>
+    <string name="difficulty_easy">Fácil</string>
+    <string name="difficulty_medium">Médio</string>
+    <string name="difficulty_hard">Difícil</string>
+    <string name="difficulty_expert">Especialista</string>
+    <string name="pack_play_next">Jogar a próxima imagem</string>
 </resources>

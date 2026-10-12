@@ -16,7 +16,10 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"
-            android:launchMode="singleTop">
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait">
+            <!-- Portrait on phones (decision D28): in landscape the board and Play button don't fit.
+                 Android 16+ ignores this on tablets/foldables, where the layouts adapt instead. -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

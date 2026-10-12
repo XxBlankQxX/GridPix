@@ -75,7 +75,7 @@ class StatsViewModel @Inject constructor(playerProgress: PlayerProgressRepositor
 
 /** Progress screen (SPEC S8, extended): level, streaks, daily calendar with monthly trophies, badges, stats by size. */
 @Composable
-fun StatsScreen(onBack: () -> Unit, viewModel: StatsViewModel = hiltViewModel()) {
+fun StatsScreen(onBack: (() -> Unit)?, viewModel: StatsViewModel = hiltViewModel()) {
     val p by viewModel.progress.collectAsStateWithLifecycle()
     val today = LocalDate.parse(LocalDates.today())
     var monthText by rememberSaveable { mutableStateOf(YearMonth.from(today).toString()) }

@@ -116,7 +116,7 @@
     <string name="shop_event_restored">Compras restauradas</string>
     <string name="shop_event_restored_none">Nenhuma compra encontrada nesta conta</string>
     <string name="shop_event_error">A compra falhou: %1$s</string>
-    <string name="shop_hints_balance">Você tem %1$d dicas</string>
+    <string name="shop_hints_balance">Dicas: %1$d</string>
 
     <!-- Ajustes (S7) -->
     <string name="settings_title">Ajustes</string>

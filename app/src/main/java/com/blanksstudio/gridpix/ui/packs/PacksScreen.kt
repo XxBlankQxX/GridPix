@@ -46,7 +46,7 @@ import com.blanksstudio.gridpix.ui.theme.Accents
 
 @Composable
 fun PacksScreen(
-    onBack: () -> Unit,
+    onBack: (() -> Unit)?,
     onOpenPack: (packId: String) -> Unit,
     onShop: () -> Unit,
     viewModel: PacksViewModel = hiltViewModel(),
@@ -111,6 +111,21 @@ fun PackPuzzlesScreen(
                         drawStopIndicator = {},
                         modifier = Modifier.fillMaxWidth().height(8.dp).clip(RoundedCornerShape(50)),
                     )
+                    val next = state.tiles.firstOrNull { !it.solved }
+                    if (state.unlocked && next != null) {
+                        // One-tap "carry on" so a child doesn't have to work out which picture is next.
+                        Box(
+                            Modifier
+                                .fillMaxWidth()
+                                .height(52.dp)
+                                .clip(RoundedCornerShape(50))
+                                .background(Color.White)
+                                .clickable { onOpenPuzzle(pack.id, next.index) },
+                            contentAlignment = Alignment.Center,
+                        ) {
+                            Text("▶  " + stringResource(R.string.pack_play_next), style = MaterialTheme.typography.titleMedium, color = accent)
+                        }
+                    }
                     if (!state.unlocked) {
                         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                             Icon(Icons.Default.Lock, contentDescription = null, tint = Color.White, modifier = Modifier.size(18.dp))

@@ -16,8 +16,13 @@ object HintRules {
     )
 
     /** Rolls the free allowance forward when [today] differs from the stored date. */
+    /**
+     * Only a LATER date refills the free hints. Dates are ISO `yyyy-MM-dd`, so string order is date
+     * order. Setting the phone's clock back (or flipping between two dates) therefore never gives
+     * extra free hints; it just keeps the current day's allowance.
+     */
     fun refreshed(wallet: Wallet, today: String): Wallet =
-        if (wallet.freeHintsDate == today) wallet else wallet.copy(freeHintsDate = today, freeHintsLeft = FREE_PER_DAY)
+        if (today > wallet.freeHintsDate) wallet.copy(freeHintsDate = today, freeHintsLeft = FREE_PER_DAY) else wallet
 
     fun available(wallet: Wallet, today: String): Int =
         refreshed(wallet, today).let { it.freeHintsLeft + it.balance }

@@ -11,6 +11,17 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Surface
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.LocalTextStyle
+import androidx.compose.ui.unit.sp
+import androidx.compose.foundation.text.TextAutoSize
+import androidx.compose.foundation.text.BasicText
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.draw.alpha
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.clickable
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.foundation.layout.width
@@ -139,7 +150,15 @@ fun PuzzleScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(title) },
+                // One line that shrinks to fit, so "Endless 5 × 5" never breaks over two lines on small phones.
+                title = {
+                    BasicText(
+                        title,
+                        style = LocalTextStyle.current.copy(color = LocalContentColor.current),
+                        maxLines = 1,
+                        autoSize = TextAutoSize.StepBased(minFontSize = 12.sp, maxFontSize = LocalTextStyle.current.fontSize),
+                    )
+                },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.action_back))
@@ -166,6 +185,16 @@ fun PuzzleScreen(
         val puzzle = state.puzzle
         when {
             state.loading -> Box(Modifier.fillMaxSize().padding(padding), contentAlignment = Alignment.Center) { CircularProgressIndicator() }
+            state.locked -> Column(
+                Modifier.fillMaxSize().padding(padding).padding(24.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Text("\uD83D\uDD12", style = MaterialTheme.typography.displaySmall)
+                Text(stringResource(R.string.pack_locked_hint), style = MaterialTheme.typography.titleMedium, textAlign = TextAlign.Center)
+                Button(onClick = onShop) { Text(stringResource(R.string.home_shop)) }
+                TextButton(onClick = onBack) { Text(stringResource(R.string.action_back)) }
+            }
             state.error || puzzle == null -> Box(Modifier.fillMaxSize().padding(padding), contentAlignment = Alignment.Center) {
                 Button(onClick = onBack) { Text(stringResource(R.string.action_back)) }
             }
@@ -277,24 +306,44 @@ private fun Controls(state: PuzzleUiState, viewModel: PuzzleViewModel, modifier:
                 icon = { Icon(painterResource(R.drawable.ic_cross), contentDescription = null) },
             ) { Text(stringResource(R.string.puzzle_mode_mark)) }
         }
-        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly, verticalAlignment = Alignment.CenterVertically) {
-            IconButton(onClick = viewModel::undo, enabled = state.canUndo && !state.paused) {
-                Icon(painterResource(R.drawable.ic_undo), contentDescription = stringResource(R.string.puzzle_undo))
-            }
-            IconButton(onClick = viewModel::redo, enabled = state.canRedo && !state.paused) {
-                Icon(painterResource(R.drawable.ic_redo), contentDescription = stringResource(R.string.puzzle_redo))
-            }
-            IconButton(onClick = viewModel::useHint, enabled = !state.paused) {
-                BadgedBox(badge = {
-                    if (state.kind !is PuzzleKind.Tutorial) Badge { Text(state.hintsAvailable.toString()) }
-                }) {
-                    Icon(painterResource(R.drawable.ic_hint), contentDescription = stringResource(R.string.puzzle_hint))
-                }
-            }
+        // Big labelled buttons (decision D28): icon + word, so children know what each one does.
+        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly, verticalAlignment = Alignment.Top) {
+            ControlButton(R.drawable.ic_undo, R.string.puzzle_undo, enabled = state.canUndo && !state.paused, onClick = viewModel::undo)
+            ControlButton(R.drawable.ic_redo, R.string.puzzle_redo, enabled = state.canRedo && !state.paused, onClick = viewModel::redo)
+            ControlButton(
+                R.drawable.ic_hint,
+                R.string.puzzle_hint,
+                enabled = !state.paused,
+                onClick = viewModel::useHint,
+                badge = if (state.kind !is PuzzleKind.Tutorial) state.hintsAvailable.toString() else null,
+            )
             if (!state.settings.highlightMistakes) {
-                TextButton(onClick = viewModel::check, enabled = !state.paused) { Text(stringResource(R.string.puzzle_check)) }
+                ControlButton(R.drawable.ic_check, R.string.puzzle_check, enabled = !state.paused, onClick = viewModel::check)
             }
         }
+    }
+}
+
+@Composable
+private fun ControlButton(icon: Int, label: Int, enabled: Boolean, onClick: () -> Unit, badge: String? = null) {
+    val alpha = if (enabled) 1f else 0.38f
+    Column(
+        Modifier
+            .widthIn(min = 72.dp)
+            .clip(RoundedCornerShape(16.dp))
+            .clickable(enabled = enabled, role = Role.Button, onClick = onClick)
+            .padding(horizontal = 8.dp, vertical = 6.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        BadgedBox(badge = { if (badge != null) Badge { Text(badge) } }) {
+            Icon(painterResource(icon), contentDescription = null, modifier = Modifier.size(28.dp).alpha(alpha))
+        }
+        Text(
+            stringResource(label),
+            style = MaterialTheme.typography.labelMedium,
+            maxLines = 1,
+            modifier = Modifier.padding(top = 4.dp).alpha(alpha),
+        )
     }
 }
 

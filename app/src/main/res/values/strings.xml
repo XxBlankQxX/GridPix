@@ -118,7 +118,7 @@
     <string name="shop_event_restored">Purchases restored</string>
     <string name="shop_event_restored_none">No purchases found for this account</string>
     <string name="shop_event_error">Purchase failed: %1$s</string>
-    <string name="shop_hints_balance">You have %1$d hints</string>
+    <string name="shop_hints_balance">Hints: %1$d</string>
 
     <!-- Settings (S7) -->
     <string name="settings_title">Settings</string>
