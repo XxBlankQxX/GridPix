@@ -11,11 +11,13 @@ object Products {
     /** Added 2026-10-07 (Christopher approved, decision D25). */
     const val PACK_ANIME = "pack_anime"
     const val LARGE_GRIDS = "large_grids"
+    /** Added 2026-10-12 (Christopher approved, decision D29): turns all ads off. */
+    const val REMOVE_ADS = "remove_ads"
     const val EVERYTHING = "everything"
 
     val CONSUMABLES: Set<String> = setOf(HINTS_10, HINTS_50)
     val NON_CONSUMABLES: Set<String> =
-        setOf(PACK_ANIMALS, PACK_VEHICLES, PACK_FOOD, PACK_NATURE, PACK_ANIME, LARGE_GRIDS, EVERYTHING)
+        setOf(PACK_ANIMALS, PACK_VEHICLES, PACK_FOOD, PACK_NATURE, PACK_ANIME, LARGE_GRIDS, REMOVE_ADS, EVERYTHING)
     val ALL: Set<String> = CONSUMABLES + NON_CONSUMABLES
 
     /** Hints granted when a consumable is bought (SPEC section 6; `everything` grants 100 once). */
@@ -42,6 +44,9 @@ object Entitlements {
     /** Sizes 5 and 10 are free; 15 and 20 need `large_grids` or `everything` (SPEC section 3). */
     fun sizeUnlocked(owned: Set<String>, size: Int): Boolean =
         size <= 10 || Products.LARGE_GRIDS in owned || ownsEverything(owned)
+
+    /** `remove_ads` or `everything` turns off banner and between-puzzle ads (decision D29). */
+    fun adsRemoved(owned: Set<String>): Boolean = Products.REMOVE_ADS in owned || ownsEverything(owned)
 
     /** Products that are already covered and so should show as owned in the Shop. */
     fun effectivelyOwned(owned: Set<String>): Set<String> =

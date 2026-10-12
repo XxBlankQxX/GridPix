@@ -1,9 +1,11 @@
 package com.blanksstudio.gridpix.ui.puzzle
 
+import android.app.Activity
 import android.os.SystemClock
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.blanksstudio.gridpix.ads.AdsManager
 import com.blanksstudio.gridpix.billing.Entitlements
 import com.blanksstudio.gridpix.data.PlayerProgressRepository
 import com.blanksstudio.gridpix.data.ProgressRepository
@@ -37,6 +39,8 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.isActive
@@ -96,6 +100,8 @@ data class SolveReward(
 sealed interface PuzzleEvent {
     data object OutOfHints : PuzzleEvent
     data object NothingToReveal : PuzzleEvent
+    /** The hint video was closed early or couldn't play, so no hint was given. */
+    data object VideoHintFailed : PuzzleEvent
     data class CheckResult(val mistakes: Int, val complete: Boolean) : PuzzleEvent
 }
 
@@ -106,7 +112,20 @@ class PuzzleViewModel @Inject constructor(
     private val progress: ProgressRepository,
     private val packs: PackRepository,
     private val playerProgress: PlayerProgressRepository,
+    private val ads: AdsManager,
 ) : ViewModel() {
+
+    /** Offer "watch a video for a hint" in the out-of-hints dialog (decision D29). */
+    val videoHintAvailable: StateFlow<Boolean> =
+        ads.rewardedAvailable(LocalDates.today()).stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), false)
+
+    /** Leaving the solved screen: a between-puzzle ad may show first, then [then] runs. */
+    fun leaveSolvedScreen(activity: Activity, then: () -> Unit) = ads.afterSolvedScreen(activity, then)
+
+    /** Plays the hint video; when watched to the end the earned hint is used right away. */
+    fun watchVideoForHint(activity: Activity) = ads.showRewardedHint(activity) { credited ->
+        if (credited) useHint() else _events.tryEmit(PuzzleEvent.VideoHintFailed)
+    }
 
     /** Progress just before this puzzle was solved, to work out XP and new achievements afterwards. */
     private var progressBefore: ProgressSnapshot? = null
@@ -389,6 +408,7 @@ class PuzzleViewModel @Inject constructor(
         if (!s.solved && WinChecker.isSolved(puzzle.solution, s.board)) {
             stopTimer()
             _uiState.update { it.copy(solved = true, mistakes = emptySet()) }
+            if (s.kind !is PuzzleKind.Tutorial) ads.onPuzzleSolved()
             viewModelScope.launch {
                 persist()
                 if (s.kind is PuzzleKind.Daily) {

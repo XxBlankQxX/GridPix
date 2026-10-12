@@ -54,4 +54,12 @@
     <string name="difficulty_hard">Schwer</string>
     <string name="difficulty_expert">Experte</string>
     <string name="pack_play_next">Nächstes Bild spielen</string>
+
+    <!-- Ads (v1.4, decision D29) -->
+    <string name="ad_remove_ads">Werbung entfernen</string>
+    <string name="puzzle_hint_video">▶ Video ansehen: +1 Hinweis</string>
+    <string name="puzzle_hint_video_failed">Sieh das ganze Video an, um den Hinweis zu bekommen.</string>
+    <string name="settings_ad_privacy">Datenschutzoptionen für Werbung</string>
+    <string name="shop_remove_ads">Werbung entfernen</string>
+    <string name="shop_remove_ads_desc">Nie wieder Werbung. Hinweis-Videos bleiben verfügbar, wenn du sie willst.</string>
 </resources>

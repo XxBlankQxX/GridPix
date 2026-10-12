@@ -69,6 +69,7 @@ class ShopViewModel @Inject constructor(
         Triple(Products.PACK_FOOD, R.string.shop_pack_food, R.string.shop_pack_desc),
         Triple(Products.PACK_NATURE, R.string.shop_pack_nature, R.string.shop_pack_desc),
         Triple(Products.LARGE_GRIDS, R.string.shop_large_grids, R.string.shop_large_grids_desc),
+    Triple(Products.REMOVE_ADS, R.string.shop_remove_ads, R.string.shop_remove_ads_desc),
         Triple(Products.EVERYTHING, R.string.shop_everything, R.string.shop_everything_desc),
     )
 

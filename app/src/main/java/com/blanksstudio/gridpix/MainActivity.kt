@@ -8,6 +8,7 @@ import androidx.compose.runtime.getValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
+import com.blanksstudio.gridpix.ads.AdsManager
 import com.blanksstudio.gridpix.data.settings.SettingsRepository
 import com.blanksstudio.gridpix.data.settings.ThemeMode
 import com.blanksstudio.gridpix.ui.navigation.GridPixNavHost
@@ -32,9 +33,13 @@ class MainActivity : ComponentActivity() {
 
     private val themeViewModel: ThemeViewModel by viewModels()
 
+    @Inject lateinit var ads: AdsManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        // Consent form (EU/UK) and ad SDK start; the game never waits for it.
+        ads.gatherConsentAndInitialise(this)
         setContent {
             val theme by themeViewModel.theme.collectAsStateWithLifecycle()
             GridPixTheme(mode = theme) {

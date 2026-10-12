@@ -21,6 +21,29 @@ val localProperties = Properties().apply {
 fun secret(name: String): String = localProperties.getProperty(name, "")
 
 /**
+ * AdMob (decision D29). Debug always uses Google's published test IDs (tapping your own live ads
+ * gets the AdMob account banned). Release reads the real IDs from local.properties:
+ *   ADMOB_APP_ID=ca-app-pub-...~...   ADMOB_BANNER_ID=   ADMOB_INTERSTITIAL_ID=   ADMOB_REWARDED_ID=
+ * and falls back to the test IDs with a build warning when one is missing.
+ * Test IDs: https://developers.google.com/admob/android/test-ads
+ */
+val admobTestIds = mapOf(
+    "ADMOB_APP_ID" to "ca-app-pub-3940256099942544~3347511713",
+    "ADMOB_BANNER_ID" to "ca-app-pub-3940256099942544/9214589741",
+    "ADMOB_INTERSTITIAL_ID" to "ca-app-pub-3940256099942544/1033173712",
+    "ADMOB_REWARDED_ID" to "ca-app-pub-3940256099942544/5224354917",
+)
+
+fun admobId(name: String, release: Boolean): String {
+    val test = admobTestIds.getValue(name)
+    if (!release) return test
+    return secret(name).ifBlank {
+        logger.warn("local.properties: $name missing, release will use the AdMob TEST id")
+        test
+    }
+}
+
+/**
  * Release signing (upload key for Play App Signing). keystore.properties is gitignored:
  *   storeFile=C:/dev/Apps/keys/gridpix-upload.jks, storePassword=, keyAlias=gridpix-upload, keyPassword=
  * Without it the release build is unsigned, so a CI/clean clone still compiles.
@@ -39,8 +62,8 @@ android {
         applicationId = "com.blanksstudio.gridpix"
         minSdk = 26
         targetSdk = 36
-        versionCode = 6
-        versionName = "1.3.0"
+        versionCode = 7
+        versionName = "1.4.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -59,7 +82,23 @@ android {
     }
 
     buildTypes {
+        debug {
+            manifestPlaceholders["admobAppId"] = admobId("ADMOB_APP_ID", release = false)
+            listOf("ADMOB_BANNER_ID", "ADMOB_INTERSTITIAL_ID", "ADMOB_REWARDED_ID").forEach {
+                buildConfigField("String", it, "\"${admobId(it, release = false)}\"")
+            }
+            // ADS_DEBUG_EEA=true in local.properties makes the consent form show as if in the EU.
+            buildConfigField("boolean", "ADS_DEBUG_EEA", secret("ADS_DEBUG_EEA").equals("true", ignoreCase = true).toString())
+            // ADS_DEBUG_FAST=true (debug only): no ad-free first day and a between-puzzle ad after every solve, to test ads quickly.
+            buildConfigField("boolean", "ADS_DEBUG_FAST", secret("ADS_DEBUG_FAST").equals("true", ignoreCase = true).toString())
+        }
         release {
+            manifestPlaceholders["admobAppId"] = admobId("ADMOB_APP_ID", release = true)
+            listOf("ADMOB_BANNER_ID", "ADMOB_INTERSTITIAL_ID", "ADMOB_REWARDED_ID").forEach {
+                buildConfigField("String", it, "\"${admobId(it, release = true)}\"")
+            }
+            buildConfigField("boolean", "ADS_DEBUG_EEA", "false")
+            buildConfigField("boolean", "ADS_DEBUG_FAST", "false")
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(
@@ -127,6 +166,9 @@ dependencies {
     // Daily reminder notification (opt-in) and the Play rating prompt (decision D27).
     implementation(libs.androidx.work.runtime.ktx)
     implementation(libs.play.review)
+    // Ads (decision D29): AdMob banner/interstitial/rewarded + Google's consent form (required in the EU/UK).
+    implementation(libs.play.services.ads)
+    implementation(libs.user.messaging.platform)
 
     // Tests (game/ is pure Kotlin and is unit-tested here)
     testImplementation(libs.junit)

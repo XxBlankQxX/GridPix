@@ -93,7 +93,7 @@
 
     <!-- Loja (S6) -->
     <string name="shop_title">Loja</string>
-    <string name="shop_intro">Compras únicas. Sem anúncios, sem assinaturas.</string>
+    <string name="shop_intro">Compras únicas. Sem assinaturas.</string>
     <string name="shop_hints_10">10 dicas</string>
     <string name="shop_hints_50">50 dicas</string>
     <string name="shop_hints_desc">Cada dica revela uma célula certa. 3 são grátis por dia.</string>
@@ -105,7 +105,7 @@
     <string name="shop_large_grids">Grades grandes</string>
     <string name="shop_large_grids_desc">Quebra-cabeças 15 × 15 e 20 × 20 no modo Infinito</string>
     <string name="shop_everything">Pacote Tudo</string>
-    <string name="shop_everything_desc">Todos os pacotes de imagens, atuais e futuros, mais Grades grandes e 100 dicas</string>
+    <string name="shop_everything_desc">Todos os pacotes de imagens, atuais e futuros, mais Grades grandes, sem anúncios e 100 dicas</string>
     <string name="shop_buy">Comprar</string>
     <string name="shop_restore">Restaurar compras</string>
     <string name="shop_unavailable">A Play Store não está disponível agora</string>

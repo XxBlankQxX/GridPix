@@ -54,4 +54,12 @@
     <string name="difficulty_hard">Hard</string>
     <string name="difficulty_expert">Expert</string>
     <string name="pack_play_next">Play next picture</string>
+
+    <!-- Ads (v1.4, decision D29) -->
+    <string name="ad_remove_ads">Remove ads</string>
+    <string name="puzzle_hint_video">▶ Watch a video: +1 hint</string>
+    <string name="puzzle_hint_video_failed">Watch the whole video to get the hint.</string>
+    <string name="settings_ad_privacy">Ad privacy options</string>
+    <string name="shop_remove_ads">Remove ads</string>
+    <string name="shop_remove_ads_desc">No more ads, for good. Hint videos stay available if you want them.</string>
 </resources>

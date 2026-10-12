@@ -55,4 +55,12 @@
     <string name="difficulty_hard">Difficile</string>
     <string name="difficulty_expert">Expert</string>
     <string name="pack_play_next">Jouer l\'image suivante</string>
+
+    <!-- Ads (v1.4, decision D29) -->
+    <string name="ad_remove_ads">Supprimer les pubs</string>
+    <string name="puzzle_hint_video">▶ Regarder une vidéo : +1 indice</string>
+    <string name="puzzle_hint_video_failed">Regarde la vidéo jusqu\'au bout pour recevoir l\'indice.</string>
+    <string name="settings_ad_privacy">Confidentialité des annonces</string>
+    <string name="shop_remove_ads">Supprimer les pubs</string>
+    <string name="shop_remove_ads_desc">Plus aucune pub, pour toujours. Les vidéos d\'indices restent disponibles si tu le veux.</string>
 </resources>

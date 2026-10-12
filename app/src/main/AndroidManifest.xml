@@ -13,6 +13,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GridPix">
 
+        <!-- AdMob app ID: test ID in debug, real ID from local.properties in release (app/build.gradle.kts). -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="${admobAppId}" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true"

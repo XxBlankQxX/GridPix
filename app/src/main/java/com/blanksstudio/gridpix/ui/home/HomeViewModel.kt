@@ -6,6 +6,7 @@ import com.blanksstudio.gridpix.notifications.DailyReminder
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.first
 import androidx.lifecycle.viewModelScope
+import com.blanksstudio.gridpix.ads.AdsManager
 import com.blanksstudio.gridpix.billing.BillingManager
 import com.blanksstudio.gridpix.billing.Entitlements
 import com.blanksstudio.gridpix.data.PlayerProgressRepository
@@ -64,7 +65,11 @@ class HomeViewModel @Inject constructor(
     playerProgress: PlayerProgressRepository,
     packs: PackRepository,
     billing: BillingManager,
+    ads: AdsManager,
 ) : ViewModel() {
+
+    /** Home banner (decision D29): off on the first day and for players who bought ads off. */
+    val showBanner: StateFlow<Boolean> = ads.bannerAllowed.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), false)
 
     private val today = LocalDates.today()
 

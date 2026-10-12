@@ -95,7 +95,7 @@
 
     <!-- Shop (S6) -->
     <string name="shop_title">Shop</string>
-    <string name="shop_intro">One-time purchases. No ads, no subscriptions.</string>
+    <string name="shop_intro">One-time purchases. No subscriptions.</string>
     <string name="shop_hints_10">10 hints</string>
     <string name="shop_hints_50">50 hints</string>
     <string name="shop_hints_desc">Hints reveal one correct cell. 3 are free every day.</string>
@@ -107,7 +107,7 @@
     <string name="shop_large_grids">Large grids</string>
     <string name="shop_large_grids_desc">15 × 15 and 20 × 20 puzzles in Endless mode</string>
     <string name="shop_everything">Everything bundle</string>
-    <string name="shop_everything_desc">All picture packs, present and future, plus Large grids and 100 hints</string>
+    <string name="shop_everything_desc">All picture packs, present and future, plus Large grids, no ads and 100 hints</string>
     <string name="shop_buy">Buy</string>
     <string name="shop_restore">Restore purchases</string>
     <string name="shop_unavailable">The Play Store is not available right now</string>

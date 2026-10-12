@@ -93,7 +93,7 @@
 
     <!-- Shop (S6) -->
     <string name="shop_title">Tienda</string>
-    <string name="shop_intro">Compras únicas. Sin anuncios ni suscripciones.</string>
+    <string name="shop_intro">Compras únicas. Sin suscripciones.</string>
     <string name="shop_hints_10">10 pistas</string>
     <string name="shop_hints_50">50 pistas</string>
     <string name="shop_hints_desc">Cada pista revela una casilla correcta. 3 son gratis cada día.</string>
@@ -105,7 +105,7 @@
     <string name="shop_large_grids">Cuadrículas grandes</string>
     <string name="shop_large_grids_desc">Puzles de 15 × 15 y 20 × 20 en modo Infinito</string>
     <string name="shop_everything">Paquete Todo incluido</string>
-    <string name="shop_everything_desc">Todos los paquetes de imágenes, actuales y futuros, más Cuadrículas grandes y 100 pistas</string>
+    <string name="shop_everything_desc">Todos los paquetes de imágenes, actuales y futuros, más Cuadrículas grandes, sin anuncios y 100 pistas</string>
     <string name="shop_buy">Comprar</string>
     <string name="shop_restore">Restaurar compras</string>
     <string name="shop_unavailable">Play Store no está disponible en este momento</string>

@@ -5,8 +5,10 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
+import com.blanksstudio.gridpix.data.rules.AdRules
 import com.blanksstudio.gridpix.data.rules.HintRules
 import com.blanksstudio.gridpix.data.rules.StreakRules
 import kotlinx.coroutines.flow.Flow
@@ -181,6 +183,50 @@ class SettingsRepository @Inject constructor(
 
     suspend fun snapshotOwned(): Set<String> = ownedProducts.first()
 
+    // ---- Ads (decision D29) ------------------------------------------------------------------
+
+    val firstLaunchAt: Flow<Long?> = dataStore.data.map { it[KEY_FIRST_LAUNCH_AT] }
+
+    /** What AdRules needs, read in one go. */
+    data class AdState(val firstLaunchAt: Long?, val solvesSinceInterstitial: Int, val lastInterstitialAt: Long)
+
+    suspend fun adState(): AdState = dataStore.data.first().let {
+        AdState(it[KEY_FIRST_LAUNCH_AT], it[KEY_AD_SOLVES_SINCE] ?: 0, it[KEY_AD_LAST_INTERSTITIAL_AT] ?: 0L)
+    }
+
+    /** Starts the ad-free first day; does nothing after the first launch. */
+    suspend fun recordFirstLaunchIfMissing(now: Long) = dataStore.edit {
+        if (it[KEY_FIRST_LAUNCH_AT] == null) it[KEY_FIRST_LAUNCH_AT] = now
+    }
+
+    suspend fun countSolveForAds() = dataStore.edit { it[KEY_AD_SOLVES_SINCE] = (it[KEY_AD_SOLVES_SINCE] ?: 0) + 1 }
+
+    suspend fun markInterstitialShown(now: Long) = dataStore.edit {
+        it[KEY_AD_SOLVES_SINCE] = 0
+        it[KEY_AD_LAST_INTERSTITIAL_AT] = now
+    }
+
+    fun rewardedLeft(today: String): Flow<Int> = dataStore.data.map {
+        AdRules.rewardedLeft(it[KEY_REWARDED_DATE] ?: "", it[KEY_REWARDED_COUNT] ?: 0, today)
+    }
+
+    /** Pays one hint for a watched video, if today's limit allows. Returns true when credited. */
+    suspend fun creditRewardedHint(today: String): Boolean {
+        var credited = false
+        dataStore.edit { prefs ->
+            val date = prefs[KEY_REWARDED_DATE] ?: ""
+            val count = prefs[KEY_REWARDED_COUNT] ?: 0
+            if (AdRules.rewardedLeft(date, count, today) > 0) {
+                val sameDay = today <= date
+                prefs[KEY_REWARDED_DATE] = if (sameDay) date else today
+                prefs[KEY_REWARDED_COUNT] = if (sameDay) count + 1 else 1
+                prefs.write(HintRules.credit(prefs.wallet(), 1))
+                credited = true
+            }
+        }
+        return credited
+    }
+
     private companion object {
         val KEY_HINTS_BALANCE = intPreferencesKey("hints_balance")
         val KEY_FREE_HINTS_DATE = stringPreferencesKey("free_hints_date")
@@ -204,5 +250,10 @@ class SettingsRepository @Inject constructor(
         val KEY_REMINDER_PROMPT_SHOWN = booleanPreferencesKey("reminder_prompt_shown")
         val KEY_REVIEW_ASKED = booleanPreferencesKey("review_asked")
         val KEY_LEVEL_REWARDED = intPreferencesKey("level_rewarded")
+        val KEY_FIRST_LAUNCH_AT = longPreferencesKey("first_launch_at")
+        val KEY_AD_SOLVES_SINCE = intPreferencesKey("ad_solves_since")
+        val KEY_AD_LAST_INTERSTITIAL_AT = longPreferencesKey("ad_last_interstitial_at")
+        val KEY_REWARDED_DATE = stringPreferencesKey("rewarded_date")
+        val KEY_REWARDED_COUNT = intPreferencesKey("rewarded_count")
     }
 }

@@ -1,6 +1,8 @@
 package com.blanksstudio.gridpix.ui.settings
 
+import android.app.Activity
 import android.content.Intent
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -38,6 +40,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewModelScope
 import com.blanksstudio.gridpix.BuildConfig
+import com.blanksstudio.gridpix.ads.AdsManager
 import com.blanksstudio.gridpix.R
 import com.blanksstudio.gridpix.data.settings.GameSettings
 import com.blanksstudio.gridpix.data.settings.SettingsRepository
@@ -57,7 +60,11 @@ const val PRIVACY_POLICY_URL = "https://xxblankqxx.github.io/GridPix/privacy.htm
 class SettingsViewModel @Inject constructor(
     private val settings: SettingsRepository,
     @ApplicationContext private val appContext: Context,
+    private val ads: AdsManager,
 ) : ViewModel() {
+    /** EU/UK players must be able to change their ad consent (Google's consent rules). */
+    val adPrivacyRequired: StateFlow<Boolean> = ads.privacyOptionsRequired
+    fun showAdPrivacy(activity: Activity) = ads.showPrivacyOptions(activity)
     val state: StateFlow<GameSettings?> = settings.settings.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), null)
     fun setAutoCross(on: Boolean) = viewModelScope.launch { settings.setAutoCross(on) }
     fun setShareEnabled(on: Boolean) = viewModelScope.launch { settings.setShareEnabled(on) }
@@ -85,6 +92,8 @@ fun SettingsScreen(
     val settings by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val snackbar = remember { SnackbarHostState() }
+    val activity = LocalActivity.current
+    val adPrivacyRequired by viewModel.adPrivacyRequired.collectAsStateWithLifecycle()
     val scope = rememberCoroutineScope()
     val deniedText = stringResource(R.string.reminder_denied)
     val enableReminder = rememberEnableReminder { granted ->
@@ -181,6 +190,12 @@ fun SettingsScreen(
                     runCatching { context.startActivity(Intent(Intent.ACTION_VIEW, PRIVACY_POLICY_URL.toUri())) }
                 },
             )
+            if (adPrivacyRequired && activity != null) {
+                ListItem(
+                    headlineContent = { Text(stringResource(R.string.settings_ad_privacy)) },
+                    modifier = Modifier.clickable { viewModel.showAdPrivacy(activity) },
+                )
+            }
             ListItem(
                 headlineContent = { Text(stringResource(R.string.settings_about)) },
                 supportingContent = { Text(stringResource(R.string.settings_about_body, BuildConfig.VERSION_NAME)) },

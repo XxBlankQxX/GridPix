@@ -11,6 +11,11 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Surface
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.material3.FilledTonalButton
+import kotlinx.coroutines.launch
+import androidx.lifecycle.withResumed
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.activity.compose.LocalActivity
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.ui.unit.sp
@@ -103,9 +108,19 @@ fun PuzzleScreen(
     val feedback = rememberFeedback(state.settings.haptics, state.settings.sound)
     var showHintDialog by remember { mutableStateOf(false) }
     var showRestartDialog by remember { mutableStateOf(false) }
+    val activity = LocalActivity.current
+    val videoHintAvailable by viewModel.videoHintAvailable.collectAsStateWithLifecycle()
+    val scope = rememberCoroutineScope()
 
     // Timer follows the screen lifecycle (SPEC section 2: pauses when the app backgrounds).
     val lifecycleOwner = LocalLifecycleOwner.current
+
+    // Next / Home on the solved screen may show a between-puzzle ad first (decision D29). The move
+    // waits until this screen is back in front, because navigation ignores taps on a covered screen.
+    fun afterAd(action: () -> Unit) {
+        if (activity == null) return action()
+        viewModel.leaveSolvedScreen(activity) { scope.launch { lifecycleOwner.lifecycle.withResumed { action() } } }
+    }
     DisposableEffect(lifecycleOwner, viewModel) {
         val observer = LifecycleEventObserver { _, event ->
             when (event) {
@@ -126,6 +141,7 @@ fun PuzzleScreen(
             when (event) {
                 PuzzleEvent.OutOfHints -> showHintDialog = true
                 PuzzleEvent.NothingToReveal -> snackbar.showSnackbar(context.getString(R.string.puzzle_hint_nothing))
+                PuzzleEvent.VideoHintFailed -> snackbar.showSnackbar(context.getString(R.string.puzzle_hint_video_failed))
                 is PuzzleEvent.CheckResult -> snackbar.showSnackbar(
                     when {
                         event.mistakes > 0 -> context.getString(R.string.puzzle_check_mistakes, event.mistakes)
@@ -201,8 +217,8 @@ fun PuzzleScreen(
             state.solved -> SolvedContent(
                 state = state,
                 modifier = Modifier.fillMaxSize().padding(padding),
-                onNext = { viewModel.nextRoute()?.let(onOpenPuzzle) ?: onHome() },
-                onHome = onHome,
+                onNext = { afterAd { viewModel.nextRoute()?.let(onOpenPuzzle) ?: onHome() } },
+                onHome = { afterAd(onHome) },
             )
             else -> Column(
                 Modifier
@@ -255,7 +271,17 @@ fun PuzzleScreen(
         AlertDialog(
             onDismissRequest = { showHintDialog = false },
             title = { Text(stringResource(R.string.puzzle_hint_none_title)) },
-            text = { Text(stringResource(R.string.puzzle_hint_none_body)) },
+            text = {
+                Column(verticalArrangement = Arrangement.spacedBy(16.dp)) {
+                    Text(stringResource(R.string.puzzle_hint_none_body))
+                    if (videoHintAvailable && activity != null) {
+                        FilledTonalButton(
+                            onClick = { showHintDialog = false; viewModel.watchVideoForHint(activity) },
+                            modifier = Modifier.fillMaxWidth(),
+                        ) { Text(stringResource(R.string.puzzle_hint_video)) }
+                    }
+                }
+            },
             confirmButton = {
                 TextButton(onClick = { showHintDialog = false; onShop() }) { Text(stringResource(R.string.puzzle_hint_none_shop)) }
             },

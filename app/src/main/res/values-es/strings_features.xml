@@ -55,4 +55,12 @@
     <string name="difficulty_hard">Difícil</string>
     <string name="difficulty_expert">Experto</string>
     <string name="pack_play_next">Jugar la siguiente imagen</string>
+
+    <!-- Ads (v1.4, decision D29) -->
+    <string name="ad_remove_ads">Quitar anuncios</string>
+    <string name="puzzle_hint_video">▶ Ver un vídeo: +1 pista</string>
+    <string name="puzzle_hint_video_failed">Mira el vídeo completo para recibir la pista.</string>
+    <string name="settings_ad_privacy">Opciones de privacidad de anuncios</string>
+    <string name="shop_remove_ads">Quitar anuncios</string>
+    <string name="shop_remove_ads_desc">Sin anuncios para siempre. Los vídeos de pistas siguen disponibles si los quieres.</string>
 </resources>

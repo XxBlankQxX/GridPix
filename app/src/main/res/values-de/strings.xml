@@ -93,7 +93,7 @@
 
     <!-- Shop (S6) -->
     <string name="shop_title">Shop</string>
-    <string name="shop_intro">Einmalkäufe. Keine Werbung, keine Abos.</string>
+    <string name="shop_intro">Einmalkäufe. Keine Abos.</string>
     <string name="shop_hints_10">10 Hinweise</string>
     <string name="shop_hints_50">50 Hinweise</string>
     <string name="shop_hints_desc">Ein Hinweis deckt ein richtiges Feld auf. 3 sind jeden Tag gratis.</string>
@@ -105,7 +105,7 @@
     <string name="shop_large_grids">Große Raster</string>
     <string name="shop_large_grids_desc">Rätsel in 15 × 15 und 20 × 20 im Endlos-Modus</string>
     <string name="shop_everything">Alles-Bundle</string>
-    <string name="shop_everything_desc">Alle Bilderpakete, jetzige und künftige, plus Große Raster und 100 Hinweise</string>
+    <string name="shop_everything_desc">Alle Bilderpakete, jetzige und künftige, plus Große Raster, keine Werbung und 100 Hinweise</string>
     <string name="shop_buy">Kaufen</string>
     <string name="shop_restore">Käufe wiederherstellen</string>
     <string name="shop_unavailable">Der Play Store ist gerade nicht verfügbar</string>

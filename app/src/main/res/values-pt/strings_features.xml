@@ -55,4 +55,12 @@
     <string name="difficulty_hard">Difícil</string>
     <string name="difficulty_expert">Especialista</string>
     <string name="pack_play_next">Jogar a próxima imagem</string>
+
+    <!-- Ads (v1.4, decision D29) -->
+    <string name="ad_remove_ads">Remover anúncios</string>
+    <string name="puzzle_hint_video">▶ Ver um vídeo: +1 dica</string>
+    <string name="puzzle_hint_video_failed">Assista ao vídeo inteiro para ganhar a dica.</string>
+    <string name="settings_ad_privacy">Opções de privacidade de anúncios</string>
+    <string name="shop_remove_ads">Remover anúncios</string>
+    <string name="shop_remove_ads_desc">Sem anúncios, para sempre. Os vídeos de dicas continuam disponíveis se você quiser.</string>
 </resources>

@@ -93,7 +93,7 @@
 
     <!-- Shop (S6) -->
     <string name="shop_title">Boutique</string>
-    <string name="shop_intro">Achats uniques. Pas de pubs, pas d\'abonnement.</string>
+    <string name="shop_intro">Achats uniques. Pas d\'abonnement.</string>
     <string name="shop_hints_10">10 indices</string>
     <string name="shop_hints_50">50 indices</string>
     <string name="shop_hints_desc">Un indice révèle une case correcte. 3 sont gratuits chaque jour.</string>
@@ -105,7 +105,7 @@
     <string name="shop_large_grids">Grandes grilles</string>
     <string name="shop_large_grids_desc">Des puzzles 15 × 15 et 20 × 20 en mode Infini</string>
     <string name="shop_everything">Pack Tout-en-un</string>
-    <string name="shop_everything_desc">Tous les packs d\'images, actuels et à venir, plus les grandes grilles et 100 indices</string>
+    <string name="shop_everything_desc">Tous les packs d\'images, actuels et à venir, plus les grandes grilles, sans pub et 100 indices</string>
     <string name="shop_buy">Acheter</string>
     <string name="shop_restore">Restaurer les achats</string>
     <string name="shop_unavailable">Le Play Store n\'est pas disponible pour le moment</string>

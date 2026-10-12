@@ -57,6 +57,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.blanksstudio.gridpix.R
+import com.blanksstudio.gridpix.ads.BannerAdSlot
 import com.blanksstudio.gridpix.data.rules.Trophy
 import com.blanksstudio.gridpix.ui.common.PackCardView
 import com.blanksstudio.gridpix.ui.common.emoji
@@ -92,8 +93,9 @@ fun HomeScreen(
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     val progress = state.progress
+    val showBanner by viewModel.showBanner.collectAsStateWithLifecycle()
 
-    Scaffold { padding ->
+    Scaffold(bottomBar = { if (showBanner) BannerAdSlot(onRemoveAds = onShop) }) { padding ->
         Column(
             Modifier
                 .fillMaxSize()
